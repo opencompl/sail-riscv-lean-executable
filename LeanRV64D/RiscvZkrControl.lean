@@ -190,11 +190,16 @@ def opst_code_forwards (arg_ : seed_opst) : (BitVec 2) :=
   | DEAD => (0b11 : (BitVec 2))
 
 def opst_code_backwards (arg_ : (BitVec 2)) : seed_opst :=
-  match_bv arg_ with
-  | 00 => BIST
-  | 01 => WAIT
-  | 10 => ES16
-  | _ => DEAD
+  let b__0 := arg_
+  bif (b__0 == (0b00 : (BitVec 2)))
+  then BIST
+  else
+    (bif (b__0 == (0b01 : (BitVec 2)))
+    then WAIT
+    else
+      (bif (b__0 == (0b10 : (BitVec 2)))
+      then ES16
+      else DEAD))
 
 def opst_code_forwards_matches (arg_ : seed_opst) : Bool :=
   match arg_ with
@@ -202,15 +207,21 @@ def opst_code_forwards_matches (arg_ : seed_opst) : Bool :=
   | WAIT => true
   | ES16 => true
   | DEAD => true
-  | _ => false
 
 def opst_code_backwards_matches (arg_ : (BitVec 2)) : Bool :=
-  match_bv arg_ with
-  | 00 => true
-  | 01 => true
-  | 10 => true
-  | 11 => true
-  | _ => false
+  let b__0 := arg_
+  bif (b__0 == (0b00 : (BitVec 2)))
+  then true
+  else
+    (bif (b__0 == (0b01 : (BitVec 2)))
+    then true
+    else
+      (bif (b__0 == (0b10 : (BitVec 2)))
+      then true
+      else
+        (bif (b__0 == (0b11 : (BitVec 2)))
+        then true
+        else false)))
 
 def read_seed_csr (_ : Unit) : SailM (BitVec (2 ^ 3 * 8)) := do
   let reserved_bits : (BitVec 6) := (0b000000 : (BitVec 6))

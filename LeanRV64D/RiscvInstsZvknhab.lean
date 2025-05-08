@@ -170,25 +170,31 @@ def encdec_zvkfunct6_forwards (arg_ : zvkfunct6) : (BitVec 6) :=
   | ZVK_VSHA2CL => (0b101111 : (BitVec 6))
 
 def encdec_zvkfunct6_backwards (arg_ : (BitVec 6)) : SailM zvkfunct6 := do
-  match_bv arg_ with
-  | 101110 => do (pure ZVK_VSHA2CH)
-  | 101111 => do (pure ZVK_VSHA2CL)
-  | _ => do
+  let b__0 := arg_
+  bif (b__0 == (0b101110 : (BitVec 6)))
+  then (pure ZVK_VSHA2CH)
+  else
     (do
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit)
+      bif (b__0 == (0b101111 : (BitVec 6)))
+      then (pure ZVK_VSHA2CL)
+      else
+        (do
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit))
 
 def encdec_zvkfunct6_forwards_matches (arg_ : zvkfunct6) : Bool :=
   match arg_ with
   | ZVK_VSHA2CH => true
   | ZVK_VSHA2CL => true
-  | _ => false
 
 def encdec_zvkfunct6_backwards_matches (arg_ : (BitVec 6)) : Bool :=
-  match_bv arg_ with
-  | 101110 => true
-  | 101111 => true
-  | _ => false
+  let b__0 := arg_
+  bif (b__0 == (0b101110 : (BitVec 6)))
+  then true
+  else
+    (bif (b__0 == (0b101111 : (BitVec 6)))
+    then true
+    else false)
 
 def vsha2c_mnemonic_backwards (arg_ : String) : SailM zvkfunct6 := do
   match arg_ with
@@ -203,7 +209,6 @@ def vsha2c_mnemonic_forwards_matches (arg_ : zvkfunct6) : Bool :=
   match arg_ with
   | ZVK_VSHA2CH => true
   | ZVK_VSHA2CL => true
-  | _ => false
 
 def vsha2c_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

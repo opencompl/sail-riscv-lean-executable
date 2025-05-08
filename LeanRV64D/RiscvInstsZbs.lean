@@ -181,7 +181,6 @@ def zbs_iop_mnemonic_forwards_matches (arg_ : biop_zbs) : Bool :=
   | BEXTI => true
   | BINVI => true
   | BSETI => true
-  | _ => false
 
 def zbs_iop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
@@ -208,7 +207,6 @@ def zbs_rtype_mnemonic_forwards_matches (arg_ : brop_zbs) : Bool :=
   | BEXT => true
   | BINV => true
   | BSET => true
-  | _ => false
 
 def zbs_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   match arg_ with

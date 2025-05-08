@@ -51,50 +51,52 @@
 ✔ [52/102] Built LeanRV64D.RiscvFdextRegs
 ✔ [53/102] Built LeanRV64D.RiscvSmcntrpmf
 ✔ [54/102] Built LeanRV64D.RiscvSysControl
-✖ [55/102] Building LeanRV64D.RiscvPlatform
-trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-04-07/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvPlatform.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvPlatform.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvPlatform.c --json
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: unsolved goals
-app_0 : physaddr
-width : Nat
-data : BitVec (8 * width)
-paddr : physaddrbits
-x✝² : Unit :=
-  bif get_config_print_platform () then
-    print_endline ("htif[" ++ (hex_bits_str paddr ++ ("] <- " ++ BitVec.toFormatted data)))
-  else ()
-x✝¹ : PUnit
-cmd : BitVec 64
-x✝ :
-  ((True ∧ ¬(true && BitVec.extractLsb 7 0 (_get_htif_cmd_device cmd) == 0#8) = true) ∧
-      ¬(true && BitVec.extractLsb 7 0 (_get_htif_cmd_device cmd) == 1#8) = true) ∧
-    ¬true = true
-⊢ SailM PUnit
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: unsolved goals
-app_0 : physaddr
-width : Nat
-data : BitVec (8 * width)
-paddr : physaddrbits
-x✝³ : Unit :=
-  bif get_config_print_platform () then
-    print_endline ("htif[" ++ (hex_bits_str paddr ++ ("] <- " ++ BitVec.toFormatted data)))
-  else ()
-x✝² : PUnit
-cmd : BitVec 64
-x✝¹ : Unit :=
-  bif get_config_print_platform () then
-    print_endline ("htif-term cmd: " ++ BitVec.toFormatted (_get_htif_cmd_payload cmd))
-  else ()
-x✝ :
-  ((True ∧ ¬(true && BitVec.extractLsb 7 0 (_get_htif_cmd_cmd cmd) == 0#8) = true) ∧
-      ¬(true && BitVec.extractLsb 7 0 (_get_htif_cmd_cmd cmd) == 1#8) = true) ∧
-    ¬true = true
-⊢ SailM PUnit
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:659:6: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvPlatform.lean:683:10: (kernel) incorrect number of universe levels parameters for 'PUnit', #1 expected, #0 provided
-error: Lean exited with code 1
-Some required builds logged failures:
-- LeanRV64D.RiscvPlatform
+✔ [55/102] Built LeanRV64D.RiscvPlatform
+✔ [56/102] Built LeanRV64D.RiscvMem
+✔ [57/102] Built LeanRV64D.RiscvInstRetire
+✔ [58/102] Built LeanRV64D.RiscvVmemPte
+✔ [59/102] Built LeanRV64D.RiscvVmemPtw
+✔ [60/102] Built LeanRV64D.RiscvVmemTlb
+⚠ [61/102] Built LeanRV64D.RiscvVmem
+warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmem.lean:210:20: The `grind` tactic is experimental and still under development. Avoid using it in production projects.
+✔ [62/102] Built LeanRV64D.RiscvVmemUtils
+✔ [63/102] Built LeanRV64D.RiscvTypesKext
+✔ [64/102] Built LeanRV64D.RiscvZvkUtils
+✔ [65/102] Built LeanRV64D.RiscvInstsBase
+✔ [66/102] Built LeanRV64D.RiscvInstsAext
+✔ [67/102] Built LeanRV64D.RiscvInstsMext
+✔ [68/102] Built LeanRV64D.RiscvInstsZicsr
+✔ [69/102] Built LeanRV64D.RiscvInstsFext
+✔ [70/102] Built LeanRV64D.RiscvInstsDext
+✔ [71/102] Built LeanRV64D.RiscvInstsZba
+✔ [72/102] Built LeanRV64D.RiscvInstsZbb
+✔ [73/102] Built LeanRV64D.RiscvInstsZbs
+✔ [74/102] Built LeanRV64D.RiscvInstsZfh
+✔ [75/102] Built LeanRV64D.RiscvInstsZfa
+✔ [76/102] Built LeanRV64D.RiscvInstsZbkb
+✔ [77/102] Built LeanRV64D.RiscvInstsZicond
+✔ [78/102] Built LeanRV64D.RiscvInstsVextUtils
+✔ [79/102] Built LeanRV64D.RiscvInstsVextFpUtils
+✔ [80/102] Built LeanRV64D.RiscvInstsVextVset
+✔ [81/102] Built LeanRV64D.RiscvInstsVextArith
+✔ [82/102] Built LeanRV64D.RiscvInstsVextFp
+✔ [83/102] Built LeanRV64D.RiscvInstsVextMem
+✔ [84/102] Built LeanRV64D.RiscvInstsVextMask
+✔ [85/102] Built LeanRV64D.RiscvInstsVextVm
+✔ [86/102] Built LeanRV64D.RiscvInstsVextFpVm
+✔ [87/102] Built LeanRV64D.RiscvInstsVextRed
+✔ [88/102] Built LeanRV64D.RiscvInstsVextFpRed
+✔ [89/102] Built LeanRV64D.RiscvInstsZicbom
+✔ [90/102] Built LeanRV64D.RiscvInstsZicboz
+✔ [91/102] Built LeanRV64D.RiscvInstsZvknhab
+✔ [92/102] Built LeanRV64D.RiscvInstsEnd
+✔ [93/102] Built LeanRV64D.RiscvCsrEnd
+✔ [94/102] Built LeanRV64D.RiscvStepCommon
+✔ [95/102] Built LeanRV64D.RiscvStepExt
+✔ [96/102] Built LeanRV64D.RiscvDecodeExt
+✔ [97/102] Built LeanRV64D.RiscvFetch
+✔ [98/102] Built LeanRV64D.RiscvStep
+✔ [99/102] Built LeanRV64D.RiscvTermination
+✔ [100/102] Built LeanRV64D.Main
+✔ [101/102] Built LeanRV64D
+Build completed successfully.
