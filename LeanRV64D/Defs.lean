@@ -76,6 +76,20 @@ structure RISCV_strong_access where
   variety : Access_variety
   deriving Inhabited, BEq
 
+abbrev RVFI_DII_Instruction_Packet := (BitVec 64)
+
+abbrev RVFI_DII_Execution_Packet_V1 := (BitVec 704)
+
+abbrev RVFI_DII_Execution_Packet_InstMetaData := (BitVec 192)
+
+abbrev RVFI_DII_Execution_Packet_PC := (BitVec 128)
+
+abbrev RVFI_DII_Execution_Packet_Ext_Integer := (BitVec 320)
+
+abbrev RVFI_DII_Execution_Packet_Ext_MemAccess := (BitVec 704)
+
+abbrev RVFI_DII_Execution_PacketV2 := (BitVec 512)
+
 inductive extension where | Ext_M | Ext_A | Ext_F | Ext_D | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zawrs | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_C | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Zvbc | Ext_Zvkned | Ext_Zvknha | Ext_Zvknhb | Ext_Zvksh | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Svbare | Ext_Sv32 | Ext_Sv39 | Ext_Sv48 | Ext_Sv57 | Ext_Smcntrpmf
   deriving Inhabited, BEq
 
@@ -1278,6 +1292,13 @@ inductive Register : Type where
   | x1
   | nextPC
   | PC
+  | rvfi_mem_data_present
+  | rvfi_mem_data
+  | rvfi_int_data_present
+  | rvfi_int_data
+  | rvfi_pc_data
+  | rvfi_inst_data
+  | rvfi_instruction
   deriving DecidableEq, Hashable
 open Register
 
@@ -1435,6 +1456,13 @@ abbrev RegisterType : Register → Type
   | .x1 => (BitVec (2 ^ 3 * 8))
   | .nextPC => (BitVec (2 ^ 3 * 8))
   | .PC => (BitVec (2 ^ 3 * 8))
+  | .rvfi_mem_data_present => Bool
+  | .rvfi_mem_data => (BitVec 704)
+  | .rvfi_int_data_present => Bool
+  | .rvfi_int_data => (BitVec 320)
+  | .rvfi_pc_data => (BitVec 128)
+  | .rvfi_inst_data => (BitVec 192)
+  | .rvfi_instruction => (BitVec 64)
 
 instance : Inhabited (RegisterRef RegisterType HartState) where
   default := .Reg hart_state
@@ -1442,20 +1470,28 @@ instance : Inhabited (RegisterRef RegisterType Privilege) where
   default := .Reg cur_privilege
 instance : Inhabited (RegisterRef RegisterType (BitVec 1)) where
   default := .Reg htif_cmd_write
+instance : Inhabited (RegisterRef RegisterType (BitVec 128)) where
+  default := .Reg rvfi_pc_data
 instance : Inhabited (RegisterRef RegisterType (BitVec 16)) where
   default := .Reg vstart
+instance : Inhabited (RegisterRef RegisterType (BitVec 192)) where
+  default := .Reg rvfi_inst_data
 instance : Inhabited (RegisterRef RegisterType (BitVec 3)) where
   default := .Reg vcsr
 instance : Inhabited (RegisterRef RegisterType (BitVec 32)) where
   default := .Reg scounteren
+instance : Inhabited (RegisterRef RegisterType (BitVec 320)) where
+  default := .Reg rvfi_int_data
 instance : Inhabited (RegisterRef RegisterType (BitVec 4)) where
   default := .Reg htif_payload_writes
-instance : Inhabited (RegisterRef RegisterType (BitVec (2 ^ 3 * 8))) where
-  default := .Reg PC
+instance : Inhabited (RegisterRef RegisterType (BitVec 64)) where
+  default := .Reg rvfi_instruction
 instance : Inhabited (RegisterRef RegisterType (BitVec 65536)) where
   default := .Reg vr0
+instance : Inhabited (RegisterRef RegisterType (BitVec 704)) where
+  default := .Reg rvfi_mem_data
 instance : Inhabited (RegisterRef RegisterType Bool) where
-  default := .Reg minstret_increment
+  default := .Reg rvfi_int_data_present
 instance : Inhabited (RegisterRef RegisterType (Vector (BitVec 64) 32)) where
   default := .Reg mhpmevent
 instance : Inhabited (RegisterRef RegisterType (Vector (BitVec (2 ^ 3 * 8)) 64)) where

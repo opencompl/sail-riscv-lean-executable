@@ -171,6 +171,13 @@ open Architecture
 open AccessType
 
 def initialize_registers (_ : Unit) : SailM Unit := do
+  writeReg rvfi_instruction (← (undefined_RVFI_DII_Instruction_Packet ()))
+  writeReg rvfi_inst_data (← (undefined_RVFI_DII_Execution_Packet_InstMetaData ()))
+  writeReg rvfi_pc_data (← (undefined_RVFI_DII_Execution_Packet_PC ()))
+  writeReg rvfi_int_data (← (undefined_RVFI_DII_Execution_Packet_Ext_Integer ()))
+  writeReg rvfi_int_data_present (← (undefined_bool ()))
+  writeReg rvfi_mem_data (← (undefined_RVFI_DII_Execution_Packet_Ext_MemAccess ()))
+  writeReg rvfi_mem_data_present (← (undefined_bool ()))
   writeReg PC (← (undefined_bitvector ((2 ^i 3) *i 8)))
   writeReg nextPC (← (undefined_bitvector ((2 ^i 3) *i 8)))
   writeReg x1 (← (undefined_bitvector ((2 ^i 3) *i 8)))

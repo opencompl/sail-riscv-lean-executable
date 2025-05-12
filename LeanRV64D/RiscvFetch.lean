@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvDecodeExt
+import LeanRV64D.RiscvFetchRvfi
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -174,38 +174,43 @@ def isRVC (h : (BitVec 16)) : Bool :=
   (not ((Sail.BitVec.extractLsb h 1 0) == (0b11 : (BitVec 2))))
 
 def fetch (_ : Unit) : SailM FetchResult := do
-  match (ext_fetch_check_pc (← readReg PC) (← readReg PC)) with
-  | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
-  | .Ext_FetchAddr_OK use_pc =>
+  bif (get_config_rvfi ())
+  then (rvfi_fetch ())
+  else
     (do
-      let use_pc_bits := (bits_of_virtaddr use_pc)
-      bif ((bne (BitVec.access use_pc_bits 0) 0#1) || ((bne (BitVec.access use_pc_bits 1) 0#1) && (not
-               (← (currentlyEnabled Ext_Zca)))))
-      then (pure (F_Error ((E_Fetch_Addr_Align ()), (← readReg PC))))
-      else
+      match (ext_fetch_check_pc (← readReg PC) (← readReg PC)) with
+      | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
+      | .Ext_FetchAddr_OK use_pc =>
         (do
-          match (← (translateAddr use_pc (InstructionFetch ()))) with
-          | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
-          | .TR_Address (ppclo, _) =>
+          let use_pc_bits := (bits_of_virtaddr use_pc)
+          bif ((bne (BitVec.access use_pc_bits 0) 0#1) || ((bne (BitVec.access use_pc_bits 1) 0#1) && (not
+                   (← (currentlyEnabled Ext_Zca)))))
+          then (pure (F_Error ((E_Fetch_Addr_Align ()), (← readReg PC))))
+          else
             (do
-              match (← (mem_read (InstructionFetch ()) ppclo 2 false false false)) with
-              | .Err e => (pure (F_Error (e, (← readReg PC))))
-              | .Ok ilo =>
+              match (← (translateAddr use_pc (InstructionFetch ()))) with
+              | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
+              | .TR_Address (ppclo, _) =>
                 (do
-                  bif (isRVC ilo)
-                  then (pure (F_RVC ilo))
-                  else
+                  match (← (mem_read (InstructionFetch ()) ppclo 2 false false false)) with
+                  | .Err e => (pure (F_Error (e, (← readReg PC))))
+                  | .Ok ilo =>
                     (do
-                      let PC_hi ← do (pure (BitVec.addInt (← readReg PC) 2))
-                      match (ext_fetch_check_pc (← readReg PC) PC_hi) with
-                      | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
-                      | .Ext_FetchAddr_OK use_pc_hi =>
+                      bif (isRVC ilo)
+                      then (pure (F_RVC ilo))
+                      else
                         (do
-                          match (← (translateAddr use_pc_hi (InstructionFetch ()))) with
-                          | .TR_Failure (e, _) => (pure (F_Error (e, PC_hi)))
-                          | .TR_Address (ppchi, _) =>
+                          let PC_hi ← do (pure (BitVec.addInt (← readReg PC) 2))
+                          match (ext_fetch_check_pc (← readReg PC) PC_hi) with
+                          | .Ext_FetchAddr_Error e => (pure (F_Ext_Error e))
+                          | .Ext_FetchAddr_OK use_pc_hi =>
                             (do
-                              match (← (mem_read (InstructionFetch ()) ppchi 2 false false false)) with
-                              | .Err e => (pure (F_Error (e, PC_hi)))
-                              | .Ok ihi => (pure (F_Base (ihi ++ ilo))))))))))
+                              match (← (translateAddr use_pc_hi (InstructionFetch ()))) with
+                              | .TR_Failure (e, _) => (pure (F_Error (e, PC_hi)))
+                              | .TR_Address (ppchi, _) =>
+                                (do
+                                  match (← (mem_read (InstructionFetch ()) ppchi 2 false false
+                                      false)) with
+                                  | .Err e => (pure (F_Error (e, PC_hi)))
+                                  | .Ok ihi => (pure (F_Base (ihi ++ ilo)))))))))))
 

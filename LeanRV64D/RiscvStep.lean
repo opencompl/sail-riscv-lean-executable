@@ -170,7 +170,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex430116# : Bool, step_no : Int -/
+/-- Type quantifiers: k_ex430505# : Bool, step_no : Int -/
 def run_hart_waiting (step_no : Int) (wr : WaitReason) (instbits : (BitVec 32)) (exit_wait : Bool) : SailM Step := do
   bif (← (shouldWakeForInterrupt ()))
   then
@@ -319,7 +319,7 @@ def wait_is_nop (wr : WaitReason) : Bool :=
   | WAIT_WRS_STO => false
   | WAIT_WRS_NTO => false
 
-/-- Type quantifiers: k_ex430153# : Bool, step_no : Nat, 0 ≤ step_no -/
+/-- Type quantifiers: k_ex430542# : Bool, step_no : Nat, 0 ≤ step_no -/
 def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))
@@ -377,6 +377,11 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
         | _ => false
       bif (retired && (← readReg minstret_increment))
       then writeReg minstret (BitVec.addInt (← readReg minstret) 1)
+      else (pure ())
+      bif (get_config_rvfi ())
+      then
+        writeReg rvfi_pc_data (Sail.BitVec.updateSubrange (← readReg rvfi_pc_data) 127 64
+          (zero_extend (m := 64) (← (get_arch_pc ()))))
       else (pure ())
       let _ : Unit := (ext_post_step_hook ())
       (pure true))

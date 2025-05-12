@@ -707,11 +707,15 @@ def htif_store (app_0 : physaddr) (width : Nat) (data : (BitVec (8 * width))) : 
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def within_mmio_readable (addr : physaddr) (width : Nat) : Bool :=
-  ((within_clint addr width) || ((within_htif_readable addr width) && (1 ≤b width)))
+  bif (get_config_rvfi ())
+  then false
+  else ((within_clint addr width) || ((within_htif_readable addr width) && (1 ≤b width)))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def within_mmio_writable (addr : physaddr) (width : Nat) : Bool :=
-  ((within_clint addr width) || ((within_htif_writable addr width) && (width ≤b 8)))
+  bif (get_config_rvfi ())
+  then false
+  else ((within_clint addr width) || ((within_htif_writable addr width) && (width ≤b 8)))
 
 /-- Type quantifiers: width : Nat, 0 < width ∧ width ≤ max_mem_access -/
 def mmio_read (t : (AccessType Unit)) (paddr : physaddr) (width : Nat) : SailM (Result (BitVec (8 * width)) ExceptionType) := do

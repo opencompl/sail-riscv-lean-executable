@@ -8,10 +8,10 @@ is still work-in-progress. As a result, our semantics are still full of warnings
 and errors. Similarly, our output is not yet polished for readability.
 # Statistics
 
-Lines: 128425  
-Definitions: 3733  
+Lines: 129792  
+Definitions: 3966  
 Inductive definitions: 165  
-Abbreviations: 136  
+Abbreviations: 143  
 
 # Warnings and Errors
 
