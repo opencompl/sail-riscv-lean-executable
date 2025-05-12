@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step
@@ -190,6 +192,7 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zaamo => false
   | Ext_Zabha => true
   | Ext_Zalrsc => false
+  | Ext_Zawrs => true
   | Ext_Zfa => true
   | Ext_Zfh => true
   | Ext_Zfhmin => false

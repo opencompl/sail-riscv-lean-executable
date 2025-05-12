@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvInstsZicboz
+import LeanRV64D.RiscvInstsZawrs
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step

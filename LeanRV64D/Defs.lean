@@ -76,7 +76,7 @@ structure RISCV_strong_access where
   variety : Access_variety
   deriving Inhabited, BEq
 
-inductive extension where | Ext_M | Ext_A | Ext_F | Ext_D | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_C | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Zvbc | Ext_Zvknha | Ext_Zvknhb | Ext_Zvksh | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Svbare | Ext_Sv32 | Ext_Sv39 | Ext_Sv48 | Ext_Sv57 | Ext_Smcntrpmf
+inductive extension where | Ext_M | Ext_A | Ext_F | Ext_D | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zawrs | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_C | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Zvbc | Ext_Zvknha | Ext_Zvknhb | Ext_Zvksh | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Svbare | Ext_Sv32 | Ext_Sv39 | Ext_Sv48 | Ext_Sv57 | Ext_Smcntrpmf
   deriving Inhabited, BEq
 
 abbrev exc_code := (BitVec 8)
@@ -484,6 +484,9 @@ inductive zicondop where | CZERO_EQZ | CZERO_NEZ
 inductive f_un_rm_ff_op_S where | FSQRT_S
   deriving Inhabited, BEq
 
+inductive wrsop where | WRS_STO | WRS_NTO
+  deriving Inhabited, BEq
+
 inductive ast where
   | ILLEGAL (_ : word)
   | C_ILLEGAL (_ : half)
@@ -792,6 +795,7 @@ inductive ast where
   | RFVVTYPE (_ : (rfvvfunct6 × (BitVec 1) × vregidx × vregidx × vregidx))
   | ZICBOM (_ : (cbop_zicbom × regidx))
   | ZICBOZ (_ : regidx)
+  | WRS (_ : wrsop)
   | VANDN_VV (_ : ((BitVec 1) × vregidx × vregidx × vregidx))
   | VANDN_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
   | VBREV_V (_ : ((BitVec 1) × vregidx × vregidx))
@@ -829,6 +833,9 @@ inductive PTW_Error where
   | PTW_Misaligned (_ : Unit)
   | PTW_PTE_Update (_ : Unit)
   | PTW_Ext_Error (_ : ext_ptw_error)
+  deriving Inhabited, BEq
+
+inductive WaitReason where | WAIT_WFI | WAIT_WRS_STO | WAIT_WRS_NTO
   deriving Inhabited, BEq
 
 inductive InterruptType where | I_U_Software | I_S_Software | I_M_Software | I_U_Timer | I_S_Timer | I_M_Timer | I_U_External | I_S_External | I_M_External
@@ -1006,7 +1013,7 @@ abbrev htif_cmd := (BitVec 64)
 
 inductive ExecutionResult where
   | Retire_Success (_ : Unit)
-  | Wait_For_Interrupt (_ : Unit)
+  | Enter_Wait (_ : WaitReason)
   | Illegal_Instruction (_ : Unit)
   | Trap (_ : (Privilege × ctl_result × xlenbits))
   | Memory_Exception (_ : (virtaddr × ExceptionType))
@@ -1080,7 +1087,7 @@ inductive checked_cbop where | CBOP_ILLEGAL | CBOP_ILLEGAL_VIRTUAL | CBOP_INVAL_
 
 inductive HartState where
   | HART_ACTIVE (_ : Unit)
-  | HART_WAITING (_ : instbits)
+  | HART_WAITING (_ : (WaitReason × instbits))
   deriving Inhabited, BEq
 
 inductive FetchResult where
@@ -1095,7 +1102,7 @@ inductive Step where
   | Step_Ext_Fetch_Failure (_ : ext_fetch_addr_error)
   | Step_Fetch_Failure (_ : (virtaddr × ExceptionType))
   | Step_Execute (_ : (ExecutionResult × instbits))
-  | Step_Waiting (_ : Unit)
+  | Step_Waiting (_ : WaitReason)
   deriving Inhabited, BEq
 
 inductive Register : Type where

@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step
@@ -278,7 +280,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
           (Sail.BitVec.extractLsb v ((8 *i i) +i 7) (8 *i i))))
   (pure loop_vars)
 
-/-- Type quantifiers: k_ex348079# : Bool, k_ex348078# : Bool -/
+/-- Type quantifiers: k_ex348304# : Bool, k_ex348303# : Bool -/
 def pmpWriteAddr (locked : Bool) (tor_locked : Bool) (reg : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   bif (locked || tor_locked)
   then reg

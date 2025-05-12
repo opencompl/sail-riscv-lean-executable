@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step
@@ -363,7 +365,7 @@ def feq_quiet_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) : (Bool × (BitVec 5)) :=
     else (zeros (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex353696# : Bool -/
+/-- Type quantifiers: k_ex353921# : Bool -/
 def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)
@@ -395,7 +397,7 @@ def flt_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros (n := 5)))
   (result, fflags)
 
-/-- Type quantifiers: k_ex353764# : Bool -/
+/-- Type quantifiers: k_ex353989# : Bool -/
 def fle_S (v1 : (BitVec 32)) (v2 : (BitVec 32)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_S v1)
   let (s2, e2, m2) := (fsplit_S v2)

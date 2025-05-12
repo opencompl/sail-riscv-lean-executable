@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step
@@ -2530,7 +2532,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex346108# : Bool -/
+/-- Type quantifiers: k_ex346328# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2569,19 +2571,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex346116# : Bool -/
+/-- Type quantifiers: k_ex346336# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex346117# : Bool -/
+/-- Type quantifiers: k_ex346337# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex346118# : Bool -/
+/-- Type quantifiers: k_ex346338# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -5907,6 +5909,10 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .C_ILLEGAL s =>
     (pure (String.append "c.illegal"
         (String.append (spc_forwards ()) (String.append (← (hex_bits_16_forwards s)) ""))))
+  | _ =>
+    (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
 
 def print_insn (insn : ast) : SailM String := do
   (assembly_forwards insn)
@@ -5920,6 +5926,22 @@ def ptw_error_to_str (e : PTW_Error) : String :=
   | .PTW_Misaligned () => "misaligned-superpage"
   | .PTW_PTE_Update () => "pte-update-needed"
   | .PTW_Ext_Error e => "extension-error"
+
+def wait_name_backwards (arg_ : String) : SailM WaitReason := do
+  match arg_ with
+  | "WAIT-WFI" => (pure WAIT_WFI)
+  | "WAIT-WRS-STO" => (pure WAIT_WRS_STO)
+  | "WAIT-WRS-NTO" => (pure WAIT_WRS_NTO)
+  | _ =>
+    (do
+      assert false "Pattern match failure at unknown location"
+      throw Error.Exit)
+
+def wait_name_forwards (arg_ : WaitReason) : String :=
+  match arg_ with
+  | WAIT_WFI => "WAIT-WFI"
+  | WAIT_WRS_STO => "WAIT-WRS-STO"
+  | WAIT_WRS_NTO => "WAIT-WRS-NTO"
 
 def undefined_word_width (_ : Unit) : SailM word_width := do
   (internal_pick [BYTE, HALF, WORD, DOUBLE])
@@ -6512,6 +6534,49 @@ def num_of_zicondop (arg_ : zicondop) : Int :=
   match arg_ with
   | CZERO_EQZ => 0
   | CZERO_NEZ => 1
+
+def undefined_wrsop (_ : Unit) : SailM wrsop := do
+  (internal_pick [WRS_STO, WRS_NTO])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def wrsop_of_num (arg_ : Nat) : wrsop :=
+  match arg_ with
+  | 0 => WRS_STO
+  | _ => WRS_NTO
+
+def num_of_wrsop (arg_ : wrsop) : Int :=
+  match arg_ with
+  | WRS_STO => 0
+  | WRS_NTO => 1
+
+def undefined_WaitReason (_ : Unit) : SailM WaitReason := do
+  (internal_pick [WAIT_WFI, WAIT_WRS_STO, WAIT_WRS_NTO])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
+def WaitReason_of_num (arg_ : Nat) : WaitReason :=
+  match arg_ with
+  | 0 => WAIT_WFI
+  | 1 => WAIT_WRS_STO
+  | _ => WAIT_WRS_NTO
+
+def num_of_WaitReason (arg_ : WaitReason) : Int :=
+  match arg_ with
+  | WAIT_WFI => 0
+  | WAIT_WRS_STO => 1
+  | WAIT_WRS_NTO => 2
+
+def wait_name_forwards_matches (arg_ : WaitReason) : Bool :=
+  match arg_ with
+  | WAIT_WFI => true
+  | WAIT_WRS_STO => true
+  | WAIT_WRS_NTO => true
+
+def wait_name_backwards_matches (arg_ : String) : Bool :=
+  match arg_ with
+  | "WAIT-WFI" => true
+  | "WAIT-WRS-STO" => true
+  | "WAIT-WRS-NTO" => true
+  | _ => false
 
 def size_enc_forwards (arg_ : word_width) : (BitVec 2) :=
   match arg_ with

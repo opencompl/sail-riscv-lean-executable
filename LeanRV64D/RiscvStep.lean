@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step
@@ -164,43 +166,92 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex406590# : Bool, step_no : Nat, 0 ≤ step_no -/
-def run_hart_waiting (step_no : Nat) (exit_wait : Bool) (instbits : (BitVec 32)) : SailM Step := do
+/-- Type quantifiers: k_ex406832# : Bool, step_no : Int -/
+def run_hart_waiting (step_no : Int) (wr : WaitReason) (instbits : (BitVec 32)) (exit_wait : Bool) : SailM Step := do
   bif (← (shouldWakeForInterrupt ()))
   then
     (do
       bif (get_config_print_instr ())
       then
         (pure (print_endline
-            (HAppend.hAppend "interrupt exit from WAIT state at PC "
-              (BitVec.toFormatted (← readReg PC)))))
+            (HAppend.hAppend "interrupt exit from "
+              (HAppend.hAppend (wait_name_forwards wr)
+                (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
       else (pure ())
       writeReg hart_state (HART_ACTIVE ())
       (pure (Step_Execute ((Retire_Success ()), instbits))))
   else
     (do
-      bif exit_wait
-      then
+      match (wr, (valid_reservation ()), exit_wait) with
+      | (WAIT_WRS_STO, false, _) =>
         (do
           bif (get_config_print_instr ())
           then
             (pure (print_endline
-                (HAppend.hAppend "forced exit from WAIT state at PC "
-                  (BitVec.toFormatted (← readReg PC)))))
+                (HAppend.hAppend "reservation invalid exit from "
+                  (HAppend.hAppend (wait_name_forwards WAIT_WRS_STO)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
+          else (pure ())
+          writeReg hart_state (HART_ACTIVE ())
+          (pure (Step_Execute ((Retire_Success ()), instbits))))
+      | (WAIT_WRS_NTO, false, _) =>
+        (do
+          bif (get_config_print_instr ())
+          then
+            (pure (print_endline
+                (HAppend.hAppend "reservation invalid exit from "
+                  (HAppend.hAppend (wait_name_forwards WAIT_WRS_NTO)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
+          else (pure ())
+          writeReg hart_state (HART_ACTIVE ())
+          (pure (Step_Execute ((Retire_Success ()), instbits))))
+      | (WAIT_WFI, _, true) =>
+        (do
+          bif (get_config_print_instr ())
+          then
+            (pure (print_endline
+                (HAppend.hAppend "forced exit from "
+                  (HAppend.hAppend (wait_name_forwards WAIT_WFI)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
           else (pure ())
           writeReg hart_state (HART_ACTIVE ())
           bif (((← readReg cur_privilege) == Machine) || ((_get_Mstatus_TW (← readReg mstatus)) == (0b0 : (BitVec 1))))
           then (pure (Step_Execute ((Retire_Success ()), instbits)))
           else (pure (Step_Execute ((Illegal_Instruction ()), instbits))))
-      else
+      | (WAIT_WRS_STO, _, true) =>
         (do
           bif (get_config_print_instr ())
           then
             (pure (print_endline
-                (HAppend.hAppend "remaining in WAIT state at PC "
-                  (BitVec.toFormatted (← readReg PC)))))
+                (HAppend.hAppend "timed-out exit from "
+                  (HAppend.hAppend (wait_name_forwards WAIT_WRS_STO)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
           else (pure ())
-          (pure (Step_Waiting ()))))
+          writeReg hart_state (HART_ACTIVE ())
+          (pure (Step_Execute ((Retire_Success ()), instbits))))
+      | (WAIT_WRS_NTO, _, true) =>
+        (do
+          bif (get_config_print_instr ())
+          then
+            (pure (print_endline
+                (HAppend.hAppend "timed-out exit from "
+                  (HAppend.hAppend (wait_name_forwards WAIT_WRS_NTO)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
+          else (pure ())
+          writeReg hart_state (HART_ACTIVE ())
+          bif (((← readReg cur_privilege) == Machine) || ((_get_Mstatus_TW (← readReg mstatus)) == (0b0 : (BitVec 1))))
+          then (pure (Step_Execute ((Retire_Success ()), instbits)))
+          else (pure (Step_Execute ((Illegal_Instruction ()), instbits))))
+      | (_, _, false) =>
+        (do
+          bif (get_config_print_instr ())
+          then
+            (pure (print_endline
+                (HAppend.hAppend "remaining in "
+                  (HAppend.hAppend (wait_name_forwards wr)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
+          else (pure ())
+          (pure (Step_Waiting wr))))
 
 /-- Type quantifiers: step_no : Nat, 0 ≤ step_no -/
 def run_hart_active (step_no : Nat) : SailM Step := do
@@ -258,16 +309,19 @@ def run_hart_active (step_no : Nat) : SailM Step := do
           let r ← do (execute ast)
           (pure (Step_Execute (r, instbits)))))
 
-def wfi_is_nop (_ : Unit) : Bool :=
-  true
+def wait_is_nop (wr : WaitReason) : Bool :=
+  match wr with
+  | WAIT_WFI => true
+  | WAIT_WRS_STO => false
+  | WAIT_WRS_NTO => false
 
-/-- Type quantifiers: k_ex406610# : Bool, step_no : Nat, 0 ≤ step_no -/
+/-- Type quantifiers: k_ex406869# : Bool, step_no : Nat, 0 ≤ step_no -/
 def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))
   let step_val ← (( do
     match (← readReg hart_state) with
-    | .HART_WAITING instbits => (run_hart_waiting step_no exit_wait instbits)
+    | .HART_WAITING (wr, instbits) => (run_hart_waiting step_no wr instbits exit_wait)
     | .HART_ACTIVE () => (run_hart_active step_no) ) : SailM Step )
   match step_val with
   | .Step_Pending_Interrupt (intr, priv) =>
@@ -279,25 +333,27 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
       (handle_interrupt intr priv))
   | .Step_Ext_Fetch_Failure e => (pure (ext_handle_fetch_check_error e))
   | .Step_Fetch_Failure (vaddr, e) => (handle_mem_exception vaddr e)
-  | .Step_Waiting () =>
+  | .Step_Waiting _ =>
     assert (hart_is_waiting (← readReg hart_state)) "cannot be Waiting in a non-Wait state"
   | .Step_Execute (.Retire_Success (), _) =>
-    assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:147.74-147.75"
+    assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:190.74-190.75"
   | .Step_Execute (.Trap (priv, ctl, pc), _) => (set_next_pc (← (exception_handler priv ctl pc)))
   | .Step_Execute (.Memory_Exception (vaddr, e), _) => (handle_mem_exception vaddr e)
   | .Step_Execute (.Illegal_Instruction (), instbits) => (handle_illegal instbits)
-  | .Step_Execute (.Wait_For_Interrupt (), instbits) =>
+  | .Step_Execute (.Enter_Wait wr, instbits) =>
     (do
-      bif (wfi_is_nop ())
-      then assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:155.41-155.42"
+      bif (wait_is_nop wr)
+      then assert (hart_is_active (← readReg hart_state)) "riscv_step.sail:198.41-198.42"
       else
         (do
           bif (get_config_print_instr ())
           then
             (pure (print_endline
-                (HAppend.hAppend "entering WAIT state at PC " (BitVec.toFormatted (← readReg PC)))))
+                (HAppend.hAppend "entering "
+                  (HAppend.hAppend (wait_name_forwards wr)
+                    (HAppend.hAppend " state at PC " (BitVec.toFormatted (← readReg PC)))))))
           else (pure ())
-          writeReg hart_state (HART_WAITING instbits)))
+          writeReg hart_state (HART_WAITING (wr, instbits))))
   | .Step_Execute (.Ext_CSR_Check_Failure (), _) => (pure (ext_check_CSR_fail ()))
   | .Step_Execute (.Ext_ControlAddr_Check_Failure e, _) => (pure (ext_handle_control_check_error e))
   | .Step_Execute (.Ext_DataAddr_Check_Failure e, _) => (pure (ext_handle_data_check_error e))
@@ -310,8 +366,8 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
       let retired : Bool :=
         match step_val with
         | .Step_Execute (.Retire_Success (), g__0) => true
-        | .Step_Execute (.Wait_For_Interrupt (), g__1) =>
-          (bif (wfi_is_nop ())
+        | .Step_Execute (.Enter_Wait wr, g__1) =>
+          (bif (wait_is_nop wr)
           then true
           else false)
         | _ => false

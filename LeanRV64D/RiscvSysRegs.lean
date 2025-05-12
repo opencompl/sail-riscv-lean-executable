@@ -17,6 +17,7 @@ open wxfunct6
 open wvxfunct6
 open wvvfunct6
 open wvfunct6
+open wrsop
 open write_kind
 open word_width
 open wmvxfunct6
@@ -142,6 +143,7 @@ open barrier_kind
 open ast
 open amoop
 open agtype
+open WaitReason
 open TrapVectorMode
 open TR_Result
 open Step
@@ -984,6 +986,7 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zicond => (pure (hartSupports Ext_Zicond))
   | Ext_Zicbom => (pure (hartSupports Ext_Zicbom))
   | Ext_Zicboz => (pure (hartSupports Ext_Zicboz))
+  | Ext_Zawrs => (pure (hartSupports Ext_Zawrs))
   | Ext_Zvbb => (pure ((hartSupports Ext_Zvbb) && (← (currentlyEnabled Ext_V))))
   | Ext_Zvkb =>
     (pure (((hartSupports Ext_Zvkb) || (← (currentlyEnabled Ext_Zvbb))) && (← (currentlyEnabled

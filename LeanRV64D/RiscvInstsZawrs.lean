@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvInstsZba
+import LeanRV64D.RiscvInstsZicboz
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -166,87 +166,35 @@ open ExceptionType
 open Architecture
 open AccessType
 
-def zbb_rtypew_mnemonic_backwards (arg_ : String) : SailM bropw_zbb := do
+def encdec_wrsop_forwards (arg_ : wrsop) : (BitVec 12) :=
   match arg_ with
-  | "rolw" => (pure ROLW)
-  | "rorw" => (pure RORW)
-  | _ =>
+  | WRS_STO => (0x01D : (BitVec 12))
+  | WRS_NTO => (0x00D : (BitVec 12))
+
+def encdec_wrsop_backwards (arg_ : (BitVec 12)) : SailM wrsop := do
+  let b__0 := arg_
+  bif (b__0 == (0x01D : (BitVec 12)))
+  then (pure WRS_STO)
+  else
     (do
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit)
+      bif (b__0 == (0x00D : (BitVec 12)))
+      then (pure WRS_NTO)
+      else
+        (do
+          assert false "Pattern match failure at unknown location"
+          throw Error.Exit))
 
-def zbb_rtypew_mnemonic_forwards_matches (arg_ : bropw_zbb) : Bool :=
+def encdec_wrsop_forwards_matches (arg_ : wrsop) : Bool :=
   match arg_ with
-  | ROLW => true
-  | RORW => true
+  | WRS_STO => true
+  | WRS_NTO => true
 
-def zbb_rtypew_mnemonic_backwards_matches (arg_ : String) : Bool :=
-  match arg_ with
-  | "rolw" => true
-  | "rorw" => true
-  | _ => false
-
-def zbb_rtype_mnemonic_backwards (arg_ : String) : SailM brop_zbb := do
-  match arg_ with
-  | "andn" => (pure ANDN)
-  | "orn" => (pure ORN)
-  | "xnor" => (pure XNOR)
-  | "max" => (pure MAX)
-  | "maxu" => (pure MAXU)
-  | "min" => (pure MIN)
-  | "minu" => (pure MINU)
-  | "rol" => (pure ROL)
-  | "ror" => (pure ROR)
-  | _ =>
-    (do
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit)
-
-def zbb_rtype_mnemonic_forwards_matches (arg_ : brop_zbb) : Bool :=
-  match arg_ with
-  | ANDN => true
-  | ORN => true
-  | XNOR => true
-  | MAX => true
-  | MAXU => true
-  | MIN => true
-  | MINU => true
-  | ROL => true
-  | ROR => true
-
-def zbb_rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
-  match arg_ with
-  | "andn" => true
-  | "orn" => true
-  | "xnor" => true
-  | "max" => true
-  | "maxu" => true
-  | "min" => true
-  | "minu" => true
-  | "rol" => true
-  | "ror" => true
-  | _ => false
-
-def zbb_extop_mnemonic_backwards (arg_ : String) : SailM extop_zbb := do
-  match arg_ with
-  | "sext.b" => (pure SEXTB)
-  | "sext.h" => (pure SEXTH)
-  | "zext.h" => (pure ZEXTH)
-  | _ =>
-    (do
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit)
-
-def zbb_extop_mnemonic_forwards_matches (arg_ : extop_zbb) : Bool :=
-  match arg_ with
-  | SEXTB => true
-  | SEXTH => true
-  | ZEXTH => true
-
-def zbb_extop_mnemonic_backwards_matches (arg_ : String) : Bool :=
-  match arg_ with
-  | "sext.b" => true
-  | "sext.h" => true
-  | "zext.h" => true
-  | _ => false
+def encdec_wrsop_backwards_matches (arg_ : (BitVec 12)) : Bool :=
+  let b__0 := arg_
+  bif (b__0 == (0x01D : (BitVec 12)))
+  then true
+  else
+    (bif (b__0 == (0x00D : (BitVec 12)))
+    then true
+    else false)
 
