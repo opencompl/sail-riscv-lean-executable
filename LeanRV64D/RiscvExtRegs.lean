@@ -12,6 +12,10 @@ noncomputable section
 namespace LeanRV64D.Functions
 
 open zvkfunct6
+open zvk_vaesem_funct6
+open zvk_vaesef_funct6
+open zvk_vaesdm_funct6
+open zvk_vaesdf_funct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -166,7 +170,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex348422# : Bool -/
+/-- Type quantifiers: k_ex368456# : Bool -/
 def ext_check_CSR (csrno : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   true
 

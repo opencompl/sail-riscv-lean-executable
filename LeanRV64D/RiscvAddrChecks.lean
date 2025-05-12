@@ -12,6 +12,10 @@ noncomputable section
 namespace LeanRV64D.Functions
 
 open zvkfunct6
+open zvk_vaesem_funct6
+open zvk_vaesef_funct6
+open zvk_vaesdm_funct6
+open zvk_vaesdf_funct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -189,7 +193,7 @@ def ext_data_get_addr (base : regidx) (offset : (BitVec (2 ^ 3 * 8))) (acc : (Ac
 def ext_handle_data_check_error (err : Unit) : Unit :=
   ()
 
-/-- Type quantifiers: k_ex348428# : Bool, k_ex348427# : Bool, k_ex348426# : Bool, k_ex348425# : Bool, size
+/-- Type quantifiers: k_ex368462# : Bool, k_ex368461# : Bool, k_ex368460# : Bool, k_ex368459# : Bool, size
   : Nat, 0 < size ∧ size ≤ max_mem_access -/
 def ext_check_phys_mem_read (access_type : (AccessType Unit)) (paddr : physaddr) (size : Nat) (acquire : Bool) (release : Bool) (reserved : Bool) (read_meta : Bool) : Ext_PhysAddr_Check :=
   (Ext_PhysAddr_OK ())

@@ -76,7 +76,7 @@ structure RISCV_strong_access where
   variety : Access_variety
   deriving Inhabited, BEq
 
-inductive extension where | Ext_M | Ext_A | Ext_F | Ext_D | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zawrs | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_C | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Zvbc | Ext_Zvknha | Ext_Zvknhb | Ext_Zvksh | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Svbare | Ext_Sv32 | Ext_Sv39 | Ext_Sv48 | Ext_Sv57 | Ext_Smcntrpmf
+inductive extension where | Ext_M | Ext_A | Ext_F | Ext_D | Ext_B | Ext_V | Ext_S | Ext_U | Ext_Zicbom | Ext_Zicboz | Ext_Zicntr | Ext_Zicond | Ext_Zifencei | Ext_Zihpm | Ext_Zimop | Ext_Zmmul | Ext_Zaamo | Ext_Zabha | Ext_Zalrsc | Ext_Zawrs | Ext_Zfa | Ext_Zfh | Ext_Zfhmin | Ext_Zfinx | Ext_Zdinx | Ext_Zca | Ext_Zcb | Ext_Zcd | Ext_Zcf | Ext_Zcmop | Ext_C | Ext_Zba | Ext_Zbb | Ext_Zbc | Ext_Zbkb | Ext_Zbkc | Ext_Zbkx | Ext_Zbs | Ext_Zknd | Ext_Zkne | Ext_Zknh | Ext_Zkr | Ext_Zksed | Ext_Zksh | Ext_Zhinx | Ext_Zvbb | Ext_Zvkb | Ext_Zvbc | Ext_Zvkned | Ext_Zvknha | Ext_Zvknhb | Ext_Zvksh | Ext_Sscofpmf | Ext_Sstc | Ext_Svinval | Ext_Svnapot | Ext_Svpbmt | Ext_Svbare | Ext_Sv32 | Ext_Sv39 | Ext_Sv48 | Ext_Sv57 | Ext_Smcntrpmf
   deriving Inhabited, BEq
 
 abbrev exc_code := (BitVec 8)
@@ -349,6 +349,18 @@ inductive word_width where | BYTE | HALF | WORD | DOUBLE
   deriving Inhabited, BEq
 
 inductive uop where | LUI | AUIPC
+  deriving Inhabited, BEq
+
+inductive zvk_vaesdf_funct6 where | ZVK_VAESDF_VV | ZVK_VAESDF_VS
+  deriving Inhabited, BEq
+
+inductive zvk_vaesdm_funct6 where | ZVK_VAESDM_VV | ZVK_VAESDM_VS
+  deriving Inhabited, BEq
+
+inductive zvk_vaesef_funct6 where | ZVK_VAESEF_VV | ZVK_VAESEF_VS
+  deriving Inhabited, BEq
+
+inductive zvk_vaesem_funct6 where | ZVK_VAESEM_VV | ZVK_VAESEM_VS
   deriving Inhabited, BEq
 
 inductive vext2funct6 where | VEXT2_ZVF2 | VEXT2_SVF2
@@ -816,6 +828,13 @@ inductive ast where
   | VCLMUL_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
   | VCLMULH_VV (_ : ((BitVec 1) × vregidx × vregidx × vregidx))
   | VCLMULH_VX (_ : ((BitVec 1) × vregidx × regidx × vregidx))
+  | VAESDF (_ : (zvk_vaesdf_funct6 × vregidx × vregidx))
+  | VAESDM (_ : (zvk_vaesdm_funct6 × vregidx × vregidx))
+  | VAESEF (_ : (zvk_vaesef_funct6 × vregidx × vregidx))
+  | VAESEM (_ : (zvk_vaesem_funct6 × vregidx × vregidx))
+  | VAESKF1_VI (_ : (vregidx × (BitVec 5) × vregidx))
+  | VAESKF2_VI (_ : (vregidx × (BitVec 5) × vregidx))
+  | VAESZ_VS (_ : (vregidx × vregidx))
   | VSHA2MS_VV (_ : (vregidx × vregidx × vregidx))
   | ZVKSHA2TYPE (_ : (zvkfunct6 × vregidx × vregidx × vregidx))
   | VSM3ME_VV (_ : (vregidx × vregidx × vregidx))

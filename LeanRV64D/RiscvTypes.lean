@@ -12,6 +12,10 @@ noncomputable section
 namespace LeanRV64D.Functions
 
 open zvkfunct6
+open zvk_vaesem_funct6
+open zvk_vaesef_funct6
+open zvk_vaesdm_funct6
+open zvk_vaesdf_funct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -2532,7 +2536,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex346328# : Bool -/
+/-- Type quantifiers: k_ex366353# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2571,19 +2575,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex346336# : Bool -/
+/-- Type quantifiers: k_ex366361# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex346337# : Bool -/
+/-- Type quantifiers: k_ex366362# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex346338# : Bool -/
+/-- Type quantifiers: k_ex366363# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -2834,6 +2838,26 @@ def utype_mnemonic_forwards (arg_ : uop) : String :=
   match arg_ with
   | LUI => "lui"
   | AUIPC => "auipc"
+
+def vaesdf_mnemonic_forwards (arg_ : zvk_vaesdf_funct6) : String :=
+  match arg_ with
+  | ZVK_VAESDF_VV => "vaesdf.vv"
+  | ZVK_VAESDF_VS => "vaesdf.vs"
+
+def vaesdm_mnemonic_forwards (arg_ : zvk_vaesdm_funct6) : String :=
+  match arg_ with
+  | ZVK_VAESDM_VV => "vaesdm.vv"
+  | ZVK_VAESDM_VS => "vaesdm.vs"
+
+def vaesef_mnemonic_forwards (arg_ : zvk_vaesef_funct6) : String :=
+  match arg_ with
+  | ZVK_VAESEF_VV => "vaesef.vv"
+  | ZVK_VAESEF_VS => "vaesef.vs"
+
+def vaesem_mnemonic_forwards (arg_ : zvk_vaesem_funct6) : String :=
+  match arg_ with
+  | ZVK_VAESEM_VV => "vaesem.vv"
+  | ZVK_VAESEM_VS => "vaesem.vs"
 
 def vext2type_mnemonic_forwards (arg_ : vext2funct6) : String :=
   match arg_ with
@@ -5859,6 +5883,45 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (reg_name_forwards rs1)
                     (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VAESDF (funct6, vs2, vd) =>
+    (pure (String.append (vaesdf_mnemonic_forwards funct6)
+        (String.append (sep_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+  | .VAESDM (funct6, vs2, vd) =>
+    (pure (String.append (vaesdm_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+  | .VAESEF (funct6, vs2, vd) =>
+    (pure (String.append (vaesef_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (spc_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+  | .VAESEM (funct6, vs2, vd) =>
+    (pure (String.append (vaesem_mnemonic_forwards funct6)
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+  | .VAESKF1_VI (vs2, rnd, vd) =>
+    (pure (String.append "vaeskf1.vi"
+        (String.append (sep_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards rnd)) ""))))))))
+  | .VAESKF2_VI (vs2, rnd, vd) =>
+    (pure (String.append "vaeskf2.vi"
+        (String.append (sep_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards rnd)) ""))))))))
+  | .VAESZ_VS (vs2, vd) =>
+    (pure (String.append "vaesz.vs"
+        (String.append (sep_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VSHA2MS_VV (vs2, vs1, vd) =>
     (pure (String.append "vsha2ms.vv"
         (String.append (spc_forwards ())

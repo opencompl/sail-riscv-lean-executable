@@ -12,6 +12,10 @@ noncomputable section
 namespace LeanRV64D.Functions
 
 open zvkfunct6
+open zvk_vaesem_funct6
+open zvk_vaesef_funct6
+open zvk_vaesdm_funct6
+open zvk_vaesdf_funct6
 open zicondop
 open wxfunct6
 open wvxfunct6
@@ -293,4 +297,60 @@ def zvk_sm3_round (A_H : (Vector (BitVec 32) 8)) (w : (BitVec 32)) (x : (BitVec 
   let G1 := (rotatel (GetElem?.getElem! A_H 5) 19)
   #v[A1, (GetElem?.getElem! A_H 0), C1, (GetElem?.getElem! A_H 2), E1, (GetElem?.getElem! A_H 4), G1, (GetElem?.getElem!
       A_H 6)]
+
+def undefined_zvk_vaesdf_funct6 (_ : Unit) : SailM zvk_vaesdf_funct6 := do
+  (internal_pick [ZVK_VAESDF_VV, ZVK_VAESDF_VS])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def zvk_vaesdf_funct6_of_num (arg_ : Nat) : zvk_vaesdf_funct6 :=
+  match arg_ with
+  | 0 => ZVK_VAESDF_VV
+  | _ => ZVK_VAESDF_VS
+
+def num_of_zvk_vaesdf_funct6 (arg_ : zvk_vaesdf_funct6) : Int :=
+  match arg_ with
+  | ZVK_VAESDF_VV => 0
+  | ZVK_VAESDF_VS => 1
+
+def undefined_zvk_vaesdm_funct6 (_ : Unit) : SailM zvk_vaesdm_funct6 := do
+  (internal_pick [ZVK_VAESDM_VV, ZVK_VAESDM_VS])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def zvk_vaesdm_funct6_of_num (arg_ : Nat) : zvk_vaesdm_funct6 :=
+  match arg_ with
+  | 0 => ZVK_VAESDM_VV
+  | _ => ZVK_VAESDM_VS
+
+def num_of_zvk_vaesdm_funct6 (arg_ : zvk_vaesdm_funct6) : Int :=
+  match arg_ with
+  | ZVK_VAESDM_VV => 0
+  | ZVK_VAESDM_VS => 1
+
+def undefined_zvk_vaesef_funct6 (_ : Unit) : SailM zvk_vaesef_funct6 := do
+  (internal_pick [ZVK_VAESEF_VV, ZVK_VAESEF_VS])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def zvk_vaesef_funct6_of_num (arg_ : Nat) : zvk_vaesef_funct6 :=
+  match arg_ with
+  | 0 => ZVK_VAESEF_VV
+  | _ => ZVK_VAESEF_VS
+
+def num_of_zvk_vaesef_funct6 (arg_ : zvk_vaesef_funct6) : Int :=
+  match arg_ with
+  | ZVK_VAESEF_VV => 0
+  | ZVK_VAESEF_VS => 1
+
+def undefined_zvk_vaesem_funct6 (_ : Unit) : SailM zvk_vaesem_funct6 := do
+  (internal_pick [ZVK_VAESEM_VV, ZVK_VAESEM_VS])
+
+/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 1 -/
+def zvk_vaesem_funct6_of_num (arg_ : Nat) : zvk_vaesem_funct6 :=
+  match arg_ with
+  | 0 => ZVK_VAESEM_VV
+  | _ => ZVK_VAESEM_VS
+
+def num_of_zvk_vaesem_funct6 (arg_ : zvk_vaesem_funct6) : Int :=
+  match arg_ with
+  | ZVK_VAESEM_VV => 0
+  | ZVK_VAESEM_VS => 1
 
