@@ -871,6 +871,8 @@ inductive PTW_Error where
 inductive WaitReason where | WAIT_WFI | WAIT_WRS_STO | WAIT_WRS_NTO
   deriving Inhabited, BEq
 
+
+
 inductive InterruptType where | I_U_Software | I_S_Software | I_M_Software | I_U_Timer | I_S_Timer | I_M_Timer | I_U_External | I_S_External | I_M_External
   deriving Inhabited, BEq
 

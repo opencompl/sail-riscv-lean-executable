@@ -439,7 +439,7 @@ def vlewidth_pow_backwards_matches (arg_ : Nat) : Bool :=
   | _ => false
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, num_elem : Nat, EMUL_pow : Int, nfields_range(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ num_elem > 0 -/
 def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM ExecutionResult := SailME.run do
   let EMUL_reg : Int :=
     bif (EMUL_pow ≤b 0)
@@ -499,7 +499,7 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
   (pure RETIRE_SUCCESS)
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, num_elem : Nat, EMUL_pow : Int, nfields_range(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ num_elem > 0 -/
 def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM ExecutionResult := SailME.run do
   let EMUL_reg : Int :=
     bif (EMUL_pow ≤b 0)
@@ -595,7 +595,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
   (pure RETIRE_SUCCESS)
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, num_elem : Nat, EMUL_pow : Int, nfields_range(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ num_elem > 0 -/
 def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM ExecutionResult := SailME.run do
   let EMUL_reg : Int :=
     bif (EMUL_pow ≤b 0)
@@ -642,7 +642,7 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
   (pure RETIRE_SUCCESS)
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, num_elem : Nat, EMUL_pow : Int, nfields_range(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ num_elem > 0 -/
 def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (rs2 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM ExecutionResult := SailME.run do
   let EMUL_reg : Int :=
     bif (EMUL_pow ≤b 0)
@@ -704,7 +704,7 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
   (pure RETIRE_SUCCESS)
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, num_elem : Nat, EMUL_pow : Int, nfields_range(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ num_elem > 0 -/
 def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (rs2 : regidx) (EMUL_pow : Int) (num_elem : Nat) : SailM ExecutionResult := SailME.run do
   let EMUL_reg : Int :=
     bif (EMUL_pow ≤b 0)
@@ -754,7 +754,7 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
 
 /-- Type quantifiers: mop : Int, nf : Nat, EEW_index_bytes : Nat, EEW_data_bytes : Nat, EMUL_index_pow
   : Int, EMUL_data_pow : Int, num_elem : Nat, nfields_range(nf) ∧
-  EEW_index_bytes ∈ {1, 2, 4, 8} ∧ EEW_data_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  is_mem_width(EEW_index_bytes) ∧ is_mem_width(EEW_data_bytes) ∧ num_elem > 0 -/
 def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes : Nat) (EEW_data_bytes : Nat) (EMUL_index_pow : Int) (EMUL_data_pow : Int) (rs1 : regidx) (vs2 : vregidx) (num_elem : Nat) (mop : Int) : SailM ExecutionResult := SailME.run do
   let EMUL_data_reg : Int :=
     bif (EMUL_data_pow ≤b 0)
@@ -819,7 +819,7 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
 
 /-- Type quantifiers: mop : Int, nf : Nat, EEW_index_bytes : Nat, EEW_data_bytes : Nat, EMUL_index_pow
   : Int, EMUL_data_pow : Int, num_elem : Nat, nfields_range(nf) ∧
-  EEW_index_bytes ∈ {1, 2, 4, 8} ∧ EEW_data_bytes ∈ {1, 2, 4, 8} ∧ num_elem > 0 -/
+  is_mem_width(EEW_index_bytes) ∧ is_mem_width(EEW_data_bytes) ∧ num_elem > 0 -/
 def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes : Nat) (EEW_data_bytes : Nat) (EMUL_index_pow : Int) (EMUL_data_pow : Int) (rs1 : regidx) (vs2 : vregidx) (num_elem : Nat) (mop : Int) : SailM ExecutionResult := SailME.run do
   let EMUL_data_reg : Int :=
     bif (EMUL_data_pow ≤b 0)
@@ -869,7 +869,7 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
   (pure RETIRE_SUCCESS)
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, elem_per_reg : Nat, nfields_range_pow2(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ elem_per_reg ≥ 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ elem_per_reg ≥ 0 -/
 def process_vlre (nf : Nat) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regidx) (elem_per_reg : Nat) : SailM ExecutionResult := SailME.run do
   let width_type : word_width := (size_bytes_backwards load_width_bytes)
   let start_element ← (( do
@@ -936,7 +936,7 @@ def process_vlre (nf : Nat) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regid
       (pure RETIRE_SUCCESS))
 
 /-- Type quantifiers: nf : Nat, load_width_bytes : Nat, elem_per_reg : Nat, nfields_range_pow2(nf)
-  ∧ load_width_bytes ∈ {1, 2, 4, 8} ∧ elem_per_reg ≥ 0 -/
+  ∧ is_mem_width(load_width_bytes) ∧ elem_per_reg ≥ 0 -/
 def process_vsre (nf : Nat) (load_width_bytes : Nat) (rs1 : regidx) (vs3 : vregidx) (elem_per_reg : Nat) : SailM ExecutionResult := SailME.run do
   let width_type : word_width := BYTE
   let start_element ← (( do
