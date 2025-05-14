@@ -16,7 +16,7 @@ This repository generates automatically the RISC-V Lean model from the official 
 The released version of Sail does not support Lean output, so we need to build
 Sail from its git repository. All the details are given in the [official
 instructions](https://github.com/rems-project/sail/blob/sail2/INSTALL.md#installing-development-versions-of-sail).
-What follows here are a summary.
+What follows here is a summary:
 
 #### 1. Install `OCaml`'s opam using your package manager
 #### 2. Install the depdencies
