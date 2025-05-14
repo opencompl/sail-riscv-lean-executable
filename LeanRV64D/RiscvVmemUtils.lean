@@ -225,7 +225,7 @@ def misaligned_order (n : Int) : (Int × Int × Int) :=
   then ((n -i 1), 0, (-1))
   else (0, (n -i 1), 1)
 
-/-- Type quantifiers: k_ex373044# : Bool, k_ex373043# : Bool, k_ex373042# : Bool, width : Nat, is_mem_width(width) -/
+/-- Type quantifiers: k_ex373068# : Bool, k_ex373067# : Bool, k_ex373066# : Bool, width : Nat, is_mem_width(width) -/
 def vmem_write_addr (vaddr : virtaddr) (width : Nat) (data : (BitVec (8 * width))) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result Bool ExecutionResult) := SailME.run do
   let (n, bytes) ← do (split_misaligned vaddr width)
   let (first, last, step) := (misaligned_order n)
@@ -281,7 +281,7 @@ def check_misaligned (vaddr : virtaddr) (width : word_width) : Bool :=
   then false
   else (not (is_aligned_vaddr vaddr (size_bytes_forwards width)))
 
-/-- Type quantifiers: k_ex373095# : Bool, k_ex373094# : Bool, k_ex373093# : Bool, width : Nat, is_mem_width(width) -/
+/-- Type quantifiers: k_ex373119# : Bool, k_ex373118# : Bool, k_ex373117# : Bool, width : Nat, is_mem_width(width) -/
 def vmem_read (rs : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result (BitVec (8 * width)) ExecutionResult) := SailME.run do
   let vaddr ← (( do
     match (← (ext_data_get_addr rs offset acc width)) with
@@ -346,7 +346,7 @@ def vmem_read (rs : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (acc :
     ((BitVec (8 * n * bytes)) × Bool × Nat) )
   (pure (Ok data))
 
-/-- Type quantifiers: k_ex373130# : Bool, k_ex373129# : Bool, k_ex373128# : Bool, width : Nat, is_mem_width(width) -/
+/-- Type quantifiers: k_ex373154# : Bool, k_ex373153# : Bool, k_ex373152# : Bool, width : Nat, is_mem_width(width) -/
 def vmem_write (rs_addr : regidx) (offset : (BitVec (2 ^ 3 * 8))) (width : Nat) (data : (BitVec (8 * width))) (acc : (AccessType Unit)) (aq : Bool) (rl : Bool) (res : Bool) : SailM (Result Bool ExecutionResult) := SailME.run do
   let vaddr ← (( do
     match (← (ext_data_get_addr rs_addr offset acc width)) with

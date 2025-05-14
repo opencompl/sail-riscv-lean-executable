@@ -96,8 +96,8 @@ er Hicks](http://verified-zkevm.org/).
 
 # Statistics
 
-Lines: 129,791  
-Definitions: 3,966  
+Lines: 129,813  
+Definitions: 3,968  
 Inductive definitions: 165  
 Abbreviations: 143  
 
