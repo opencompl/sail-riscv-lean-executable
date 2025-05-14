@@ -43,16 +43,16 @@ errors.sort(reverse=True)
 
 print(f"# Statistics\n")
 
-print(f"Lines: {total_lines}  ")
-print(f"Definitions: {total_defs}  ")
-print(f"Inductive definitions: {total_inductives}  ")
-print(f"Abbreviations: {total_abbrevs}  ")
+print(f"Lines: {total_lines:,}  ")
+print(f"Definitions: {total_defs:,}  ")
+print(f"Inductive definitions: {total_inductives:,}  ")
+print(f"Abbreviations: {total_abbrevs:,}  ")
 
 print("")
 print("# Warnings and Errors\n")
 
-print(f"Errors found: {errorcount}  ")
-print(f"Warnings found: {warningcount}  ")
+print(f"Errors found: {errorcount:,}  ")
+print(f"Warnings found: {warningcount:,}  ")
 
 print("")
 print("## Error Classes\n")
