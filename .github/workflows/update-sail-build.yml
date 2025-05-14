@@ -85,7 +85,7 @@ jobs:
         cp report.py sail-riscv/build/model/Lean_RV64D
         cd sail-riscv/build/model/Lean_RV64D
         (lake build | tee build_log.txt || true)
-        sed '/Statistics/,$d' README.md
+        sed -i '/Statistics/,$d' README.md
 
         ./report.py >> README.md
         cd ../../../..
