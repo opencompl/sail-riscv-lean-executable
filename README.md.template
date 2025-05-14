@@ -62,8 +62,6 @@ cmake --build build/ --target generated_lean_rv64d
 
 The resulting Lean model will be in `build/model/Lean_RV64D` and can be built using `lake build`
 
-<<<<<<< HEAD
-=======
 # Development & Support
 
 This project is developed by
@@ -92,4 +90,3 @@ SAIL semantics in support of this project.
 We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
 
 This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexander Hicks](http://verified-zkevm.org/).
->>>>>>> 3d950e9 (RISC-V lean semantics)
