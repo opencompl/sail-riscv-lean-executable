@@ -65,6 +65,33 @@ The resulting Lean model will be in `build/model/Lean_RV64D` and can be built us
 
 # Development & Support
 
-This project is developed by [Tobias Grosser](https://grosser.science) and [Leo Stefanesco](https://stefanesco.com/) at the [University of Cambridge](http://cam.ac.uk/), [James Parker](https://www.galois.com/team/james-parker) at [Galois Inc.](https://www.galois.com/), and [Jakob von Raumer](https://von-raumer.de/) and [Ryan Lahfa](https://github.com/RaitoBezarius) at [LindyLabs](https://lindylabs.net/). [Peter Sewell](https://www.cl.cam.ac.uk/~pes20/), [Alasdair Armstrong](https://www.cst.cam.ac.uk/people/aa2019) (both Cambridge) and [Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) (Edinburgh) supported through consulting and code.
+This project is developed by
+[Tobias Grosser](https://grosser.science) and
+[Leo Stefanesco](https://stefanesco.com/) at the
+[University of Cambridge](http://cam.ac.uk/),
+[James Parker](https://www.galois.com/team/james-parker) at
+[Galois Inc.](https://www.galois.com/), and
+[Jakob von Raumer](https://von-raumer.de/)
+and [Ryan Lahfa](https://github.com/RaitoBezarius) at
+[LindyLabs](https://lindylabs.net/).
+[Peter Sewell](https://www.cl.cam.ac.uk/~pes20/),
+[Alasdair Armstrong](https://www.cst.cam.ac.uk/people/aa2019) (both
+[Cambridge](https://cam.ac.uk)) and
+[Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) ([University of
+Edinburgh](https://ed.ac.uk)) supported through consulting and code.
 
-This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexander Hicks](http://verified-zkevm.org/).
+[Luisa Cicolini](https://github.com/luisacicolini),
+[Leo Stefanesco](https://stefanesco.com/),
+[Siddharth Bhat](https://pixel-druid.com/),
+[Sarah Kuhn](https://ch.linkedin.com/in/sarah-kuhn-9b64b1226) and
+[Tobias Grosser](https://grosser.science) (all Cambridge) also polish Lean's BitVector library (maintained by the [Lean FRO](https://lean-fro.org)),
+develop further proof
+automation, and work on manually improving the bitvector level statements of these
+SAIL semantics in support of this project.
+
+We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
+
+This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexand
+er Hicks](http://verified-zkevm.org/).
+
+# Statistics
