@@ -82,6 +82,12 @@ and [Ryan Lahfa](https://github.com/RaitoBezarius) at
 [Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) ([University of
 Edinburgh](https://ed.ac.uk)) supported through consulting and code.
 
+[Luisa Cicolini](https://github.com/luisacicolini),
+[Leo Stefanesco](https://stefanesco.com/),
+[Siddharth Bhat](https://pixel-druid.com/),
+[Sarah Kuhn](https://ch.linkedin.com/in/sarah-kuhn-9b64b1226) and
+[Tobias Grosser](https://grosser.science) also polish Lean's BitVector library (maintained by the [Lean FRO](https://lean-fro.org)) in support of this project.
+
 We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
 
 This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexander Hicks](http://verified-zkevm.org/).
