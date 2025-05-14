@@ -67,8 +67,22 @@ The resulting Lean model will be in `build/model/Lean_RV64D` and can be built us
 
 # Development & Support
 
-This project is developed by [Tobias Grosser](https://grosser.science) and [Leo Stefanesco](https://stefanesco.com/) at the [University of Cambridge](http://cam.ac.uk/), [James Parker](https://www.galois.com/team/james-parker) at [Galois Inc.](https://www.galois.com/), and [Jakob von Raumer](https://von-raumer.de/) and [Ryan Lahfa](https://github.com/RaitoBezarius) at [LindyLabs](https://lindylabs.net/). [Peter Sewell](https://www.cl.cam.ac.uk/~pes20/), [Alasdair Armstrong](https://www.cst.cam.ac.uk/people/aa2019) (both [Cambridge](https://cam.ac.uk)) and [Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) ([University of Edinburgh](https://ed.ac.uk)) supported through consulting and code.
+This project is developed by
+[Tobias Grosser](https://grosser.science) and
+[Leo Stefanesco](https://stefanesco.com/) at the
+[University of Cambridge](http://cam.ac.uk/),
+[James Parker](https://www.galois.com/team/james-parker) at
+[Galois Inc.](https://www.galois.com/), and
+[Jakob von Raumer](https://von-raumer.de/)
+and [Ryan Lahfa](https://github.com/RaitoBezarius) at
+[LindyLabs](https://lindylabs.net/).
+[Peter Sewell](https://www.cl.cam.ac.uk/~pes20/),
+[Alasdair Armstrong](https://www.cst.cam.ac.uk/people/aa2019) (both
+[Cambridge](https://cam.ac.uk)) and
+[Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) ([University of
+Edinburgh](https://ed.ac.uk)) supported through consulting and code.
 
+We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
 
 This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexander Hicks](http://verified-zkevm.org/).
 
