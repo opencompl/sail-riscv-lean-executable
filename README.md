@@ -108,17 +108,3 @@ Warnings found: 1
 
 ## Error Classes
 
-# Statistics
-
-Lines: 129791  
-Definitions: 3966  
-Inductive definitions: 165  
-Abbreviations: 143  
-
-# Warnings and Errors
-
-Errors found: 0  
-Warnings found: 1  
-
-## Error Classes
-
