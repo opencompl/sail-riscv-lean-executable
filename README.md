@@ -18,7 +18,7 @@ Sail from its git repository. All the details are given in the [official
 instructions](https://github.com/rems-project/sail/blob/sail2/INSTALL.md#installing-development-versions-of-sail).
 What follows here are a summary.
 
-#### Install opan using your package manager
+#### Install `OCaml`'s opam using your package manager
 #### Install the depdencies
 
 On Debian/Ubuntu
