@@ -18,8 +18,8 @@ Sail from its git repository. All the details are given in the [official
 instructions](https://github.com/rems-project/sail/blob/sail2/INSTALL.md#installing-development-versions-of-sail).
 What follows here are a summary.
 
-#### Install opan using your package manager
-#### Install the depdencies
+#### 1. Install opan using your package manager
+#### 2. Install the depdencies
 
 On Debian/Ubuntu
 ```
@@ -30,7 +30,7 @@ or on MacOS
 brew install gmp z3 pkgconf
 ```
 
-#### Install sail
+#### 3. Install sail
 ```
 git clone https://github.com/rems-project/sail.git
 ```
