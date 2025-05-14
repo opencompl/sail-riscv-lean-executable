@@ -1,14 +1,11 @@
 # RISC-V ISA Semantics for Lean
 
-This repository contains a translation of the official [SAIL RISC-V
-SPEC](https://github.com/riscv/sail-riscv/) into the [Lean Theorem Prover](https://lean-lang.org).
+These semantics are generated from the official RISC-V SPEC available at
+https://github.com/riscv/sail-riscv/.
 
-
-This repository covers the full RISC-V SPEC and passes the Lean type-checkers
-without errors.
-
-⚠️ However, our Lean backend for sail is still work-in-progress.  This means,
-this resulting Lean code is neither executable nor polished in any way. ⚠️
+⚠️ While this repository covers the full RISC-V SPEC, our Lean backend for sail
+is still work-in-progress. As a result, our semantics are still full of warnings
+and errors. Similarly, our output is not yet polished for readability.
 
 ## How to build this model
 
@@ -63,34 +60,7 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cmake --build build/ --target generated_lean_rv64d
 ```
 
-The resulting Lean model will be in `build/model/Lean_RV64D` and can be built using `lake build`.
-
-# Development & Support
-
-This project is developed by
-[Tobias Grosser](https://grosser.science) and
-[Leo Stefanesco](https://stefanesco.com/) at the
-[University of Cambridge](http://cam.ac.uk/),
-[James Parker](https://www.galois.com/team/james-parker) at
-[Galois Inc.](https://www.galois.com/), and
-[Jakob von Raumer](https://von-raumer.de/)
-and [Ryan Lahfa](https://github.com/RaitoBezarius) at
-[LindyLabs](https://lindylabs.net/).
-[Peter Sewell](https://www.cl.cam.ac.uk/~pes20/),
-[Alasdair Armstrong](https://www.cst.cam.ac.uk/people/aa2019) (both
-[Cambridge](https://cam.ac.uk)) and
-[Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) ([University of
-Edinburgh](https://ed.ac.uk)) supported through consulting and code.
-
-[Luisa Cicolini](https://github.com/luisacicolini),
-[Leo Stefanesco](https://stefanesco.com/),
-[Siddharth Bhat](https://pixel-druid.com/),
-[Sarah Kuhn](https://ch.linkedin.com/in/sarah-kuhn-9b64b1226) and
-[Tobias Grosser](https://grosser.science) also polish Lean's BitVector library (maintained by the [Lean FRO](https://lean-fro.org)) in support of this project.
-
-We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
-
-This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexander Hicks](http://verified-zkevm.org/).
+The resulting Lean model will be in `build/model/Lean_RV64D` and can be built using `lake build`
 
 # Statistics
 
