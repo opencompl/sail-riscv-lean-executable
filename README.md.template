@@ -1,11 +1,9 @@
 # RISC-V ISA Semantics for Lean
 
-This repository contains a translation of the official [SAIL RISC-V
-SPEC](https://github.com/riscv/sail-riscv/) into the [Lean Theorem Prover](https://lean-lang.org).
-
-
-This repository covers the full RISC-V SPEC and passes the Lean type-checkers
-without errors.
+This translation of the official [SAIL RISC-V
+SPEC](https://github.com/riscv/sail-riscv/) into the [Lean Theorem
+Prover](https://lean-lang.org) covers the full RISC-V SPEC and passes the Lean
+type-checkers without errors.
 
 ⚠️ However, our Lean backend for sail is still work-in-progress.  This means,
 this resulting Lean code is neither executable nor polished in any way. ⚠️
