@@ -69,7 +69,11 @@ This project is developed by
 [Tobias Grosser](https://grosser.science) and
 [Leo Stefanesco](https://stefanesco.com/) at the
 [University of Cambridge](http://cam.ac.uk/),
-[James Parker](https://www.galois.com/team/james-parker) at
+[James Parker](https://www.galois.com/team/james-parker),
+[Lee Newcomb](https://www.galois.com/team/julie-newcomb),
+[Ben Selfridge](https://www.galois.com/team/ben-selfridge),
+and [Ben Hamlin](https://www.galois.com/team/ben-hamlin)
+at
 [Galois Inc.](https://www.galois.com/), and
 [Jakob von Raumer](https://von-raumer.de/)
 and [Ryan Lahfa](https://github.com/RaitoBezarius) at
@@ -91,8 +95,8 @@ SAIL semantics in support of this project.
 
 We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
 
-This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexand
-er Hicks](http://verified-zkevm.org/).
+This work was funded by a grant provided by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by
+[Alexander Hicks](http://verified-zkevm.org/).
 
 # Statistics
 
