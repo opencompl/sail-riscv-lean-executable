@@ -1,11 +1,14 @@
 # RISC-V ISA Semantics for Lean
 
-These semantics are generated from the official RISC-V SPEC available at
-https://github.com/riscv/sail-riscv/.
+This repository contains a translation of the official [SAIL RISC-V
+SPEC](https://github.com/riscv/sail-riscv/) into the [Lean Theorem Prover](https://lean-lang.org).
 
-⚠️ While this repository covers the full RISC-V SPEC, our Lean backend for sail
-is still work-in-progress. As a result, our semantics are still full of warnings
-and errors. Similarly, our output is not yet polished for readability.
+
+This repository covers the full RISC-V SPEC and passes the Lean type-checkers
+without errors.
+
+⚠️ However, our Lean backend for sail is still work-in-progress.  This means,
+this resulting Lean code is neither executable nor polished in any way. ⚠️
 
 ## How to build this model
 
@@ -16,10 +19,10 @@ This repository generates automatically the RISC-V Lean model from the official 
 The released version of Sail does not support Lean output, so we need to build
 Sail from its git repository. All the details are given in the [official
 instructions](https://github.com/rems-project/sail/blob/sail2/INSTALL.md#installing-development-versions-of-sail).
-What follows here are a summary.
+What follows here is a summary:
 
-#### Install `OCaml`'s opam using your package manager
-#### Install the depdencies
+#### 1. Install `OCaml`'s opam using your package manager
+#### 2. Install the depdencies
 
 On Debian/Ubuntu
 ```
@@ -30,7 +33,7 @@ or on MacOS
 brew install gmp z3 pkgconf
 ```
 
-#### Install sail
+#### 3. Install sail
 ```
 git clone https://github.com/rems-project/sail.git
 ```
@@ -60,7 +63,13 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cmake --build build/ --target generated_lean_rv64d
 ```
 
-The resulting Lean model will be in `build/model/Lean_RV64D` and can be built using `lake build`
+The resulting Lean model will be in `build/model/Lean_RV64D` and can be built using `lake build`.
+
+# Development & Support
+
+This project is developed by [Tobias Grosser](https://grosser.science) and [Leo Stefanesco](https://stefanesco.com/) at the [University of Cambridge](http://cam.ac.uk/), [James Parker](https://www.galois.com/team/james-parker) at [Galois Inc.](https://www.galois.com/), and [Jakob von Raumer](https://von-raumer.de/) and [Ryan Lahfa](https://github.com/RaitoBezarius) at [LindyLabs](https://lindylabs.net/). [Peter Sewell](https://www.cl.cam.ac.uk/~pes20/), [Alasdair Armstrong](https://www.cst.cam.ac.uk/people/aa2019) (both Cambridge) and [Brian Campbell](https://people.inf.ed.ac.uk/Brian_Campbell.html) (Edinburgh) supported through consulting and code.
+
+This work was funded by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by [Alexander Hicks](http://verified-zkevm.org/).
 
 # Statistics
 
