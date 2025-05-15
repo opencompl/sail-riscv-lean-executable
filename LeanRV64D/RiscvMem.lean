@@ -333,7 +333,7 @@ def mem_write_value_priv_meta (paddr : physaddr) (width : Nat) (value : (BitVec 
       let result ← do (checked_mem_write paddr width value typ priv meta aq rl con)
       let _ : Unit :=
         match result with
-        | .Ok _ => (mem_write_callback (bits_of_physaddr paddr) width value)
+        | .Ok _ => (mem_write_callback (accessType_to_str typ) (bits_of_physaddr paddr) width value)
         | .Err e => (mem_exception_callback (bits_of_physaddr paddr) (num_of_ExceptionType e))
       (pure result))
 
