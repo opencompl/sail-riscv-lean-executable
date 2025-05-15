@@ -54,10 +54,11 @@ print("# Warnings and Errors\n")
 print(f"Errors found: {errorcount:,}  ")
 print(f"Warnings found: {warningcount:,}  ")
 
-print("")
-print("## Error Classes\n")
+if len(errors):
+  print("")
+  print("## Error Classes\n")
 
-for error in errors:
-    print(f"- {error[0]}x {error[1]}")
+  for error in errors:
+      print(f"- {error[0]}x {error[1]}")
 
 
