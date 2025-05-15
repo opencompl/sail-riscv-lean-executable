@@ -49,14 +49,14 @@ print(f"Inductive definitions: {total_inductives:,}  ")
 print(f"Abbreviations: {total_abbrevs:,}  ")
 
 print("")
-print("# Warnings and Errors\n")
+print("## Warnings and Errors\n")
 
 print(f"Errors found: {errorcount:,}  ")
 print(f"Warnings found: {warningcount:,}  ")
 
 if len(errors):
   print("")
-  print("## Error Classes\n")
+  print("### Error Classes\n")
 
   for error in errors:
       print(f"- {error[0]}x {error[1]}")
