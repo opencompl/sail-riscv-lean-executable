@@ -2147,7 +2147,7 @@ def get_sew (_ : Unit) : SailM Int := do
   | 6 => (pure 64)
   | _ =>
     (do
-      (internal_error "riscv_sys_regs.sail" 953 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 954 "invalid SEW")
       (pure 8))
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
@@ -2158,7 +2158,7 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
   | 6 => (pure 8)
   | _ =>
     (do
-      (internal_error "riscv_sys_regs.sail" 964 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 965 "invalid SEW")
       (pure 1))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do

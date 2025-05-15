@@ -202,6 +202,7 @@ def csr_name_map_backwards (arg_ : String) : SailM (BitVec 12) := do
   match (match head_exp_ with
   | "misa" => (some (0x301 : (BitVec 12)))
   | "mstatus" => (some (0x300 : (BitVec 12)))
+  | "mstatush" => (some (0x310 : (BitVec 12)))
   | "menvcfg" => (some (0x30A : (BitVec 12)))
   | "menvcfgh" => (some (0x31A : (BitVec 12)))
   | "senvcfg" => (some (0x10A : (BitVec 12)))

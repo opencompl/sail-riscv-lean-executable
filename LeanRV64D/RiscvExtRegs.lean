@@ -170,7 +170,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex369674# : Bool -/
+/-- Type quantifiers: k_ex369981# : Bool -/
 def ext_check_CSR (csrno : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   true
 
