@@ -100,17 +100,12 @@ This work was funded by a grant provided by the [Ethereum Foundation](https://et
 
 # Statistics
 
-Lines: 129,870  
+Lines: 129,872  
 Definitions: 3,968  
 Inductive definitions: 165  
 Abbreviations: 143  
 
 ## Warnings and Errors
 
-Errors found: 2  
-Warnings found: 0  
-
-### Error Classes
-
-- 1x failed to synthesize
-- 1x Lean exited with code 1
+Errors found: 0  
+Warnings found: 1  
