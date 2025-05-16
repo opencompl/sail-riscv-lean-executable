@@ -95,7 +95,7 @@ SAIL semantics in support of this project.
 
 We also thank [Arthur Adjedj](https://github.com/arthur-adjedj) for support and code.
 
-This work was funded by a grant provided by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](verified-zkevm.org) led by
+This work was funded by a grant provided by the [Ethereum Foundation](https://ethereum.foundation/) and its [Verified zkEVM Project](https://verified-zkevm.org) led by
 [Alexander Hicks](http://verified-zkevm.org/).
 
 # Statistics
