@@ -1762,12 +1762,12 @@ def tvec_addr (m : (BitVec (2 ^ 3 * 8))) (c : (BitVec (2 ^ 3 * 8))) : (Option (B
   | TV_Reserved => none
 
 def legalize_xepc (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
-  bif (hartSupports Ext_C)
+  bif (hartSupports Ext_Zca)
   then (BitVec.update v 0 0#1)
   else (Sail.BitVec.updateSubrange v 1 0 (zeros (n := (1 -i (0 -i 1)))))
 
 def align_pc (addr : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
-  bif ((_get_Misa_C (← readReg misa)) == (0b1 : (BitVec 1)))
+  bif (← (currentlyEnabled Ext_Zca))
   then (pure (BitVec.update addr 0 0#1))
   else (pure (Sail.BitVec.updateSubrange addr 1 0 (zeros (n := (1 -i (0 -i 1))))))
 
@@ -2147,7 +2147,7 @@ def get_sew (_ : Unit) : SailM Int := do
   | 6 => (pure 64)
   | _ =>
     (do
-      (internal_error "riscv_sys_regs.sail" 954 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 952 "invalid SEW")
       (pure 8))
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
@@ -2158,7 +2158,7 @@ def get_sew_bytes (_ : Unit) : SailM Int := do
   | 6 => (pure 8)
   | _ =>
     (do
-      (internal_error "riscv_sys_regs.sail" 965 "invalid SEW")
+      (internal_error "riscv_sys_regs.sail" 963 "invalid SEW")
       (pure 1))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do
