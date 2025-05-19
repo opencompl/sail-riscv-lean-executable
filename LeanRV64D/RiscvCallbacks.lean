@@ -185,7 +185,7 @@ def mem_exception_callback (x_0 : (BitVec 64)) (x_1 : Nat) : Unit :=
 def pc_write_callback (x_0 : (BitVec (2 ^ 3 * 8))) : Unit :=
   ()
 
-def xreg_write_callback (x_0 : regidx) (x_1 : (BitVec (2 ^ 3 * 8))) : Unit :=
+def xreg_full_write_callback (x_0 : String) (x_1 : regidx) (x_2 : (BitVec (2 ^ 3 * 8))) : Unit :=
   ()
 
 def csr_full_write_callback (x_0 : String) (x_1 : (BitVec 12)) (x_2 : (BitVec (2 ^ 3 * 8))) : Unit :=
