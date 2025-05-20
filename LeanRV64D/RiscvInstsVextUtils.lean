@@ -605,7 +605,8 @@ def read_vreg_seg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (nf : Nat) (vrid
       let vreg_list := loop_vars
       loop_vars ← do
         (pure (vectorUpdate vreg_list j
-            (← (read_vreg num_elem SEW LMUL_pow (vregidx_offset vrid (to_bits 5 (j *i LMUL_reg)))))))
+            (← (read_vreg num_elem SEW LMUL_pow
+                (vregidx_offset vrid (to_bits_unsafe (l := 5) (j *i LMUL_reg)))))))
     (pure loop_vars) ) : SailM (Vector (Vector (BitVec SEW) num_elem) nf) )
   let loop_i_lower := 0
   let loop_i_upper := (num_elem -i 1)

@@ -174,10 +174,10 @@ def plat_cache_block_size_exp (_ : Unit) : Nat :=
   6
 
 def plat_ram_base (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (2147483648 : Int))
+  (to_bits_unsafe (l := physaddrbits_len) (2147483648 : Int))
 
 def plat_ram_size (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (2147483648 : Int))
+  (to_bits_unsafe (l := physaddrbits_len) (2147483648 : Int))
 
 def plat_enable_dirty_update (_ : Unit) : Bool :=
   false
@@ -189,19 +189,19 @@ def plat_mtval_has_illegal_inst_bits (_ : Unit) : Bool :=
   false
 
 def plat_rom_base (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (4096 : Int))
+  (to_bits_unsafe (l := physaddrbits_len) (4096 : Int))
 
 def plat_rom_size (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (4096 : Int))
+  (to_bits_unsafe (l := physaddrbits_len) (4096 : Int))
 
 def plat_clint_base (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (33554432 : Int))
+  (to_bits_unsafe (l := physaddrbits_len) (33554432 : Int))
 
 def plat_clint_size (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (786432 : Int))
+  (to_bits_unsafe (l := physaddrbits_len) (786432 : Int))
 
 def plat_htif_tohost (_ : Unit) : (BitVec 64) :=
-  (to_bits physaddrbits_len (elf_tohost ()))
+  (to_bits_unsafe (l := physaddrbits_len) (elf_tohost ()))
 
 /-- Type quantifiers: width : Int, width ≤ max_mem_access -/
 def within_phys_mem (typ_0 : physaddr) (width : Int) : Bool :=

@@ -210,7 +210,7 @@ def fregidx_to_fregno (app_0 : fregidx) : fregno :=
 
 def fregno_to_fregidx (app_0 : fregno) : fregidx :=
   let .Fregno b := app_0
-  (Fregidx (to_bits 5 b))
+  (Fregidx (to_bits (l := 5) b))
 
 def fregidx_offset (typ_0 : fregidx) (o : (BitVec 5)) : fregidx :=
   let .Fregidx r : fregidx := typ_0

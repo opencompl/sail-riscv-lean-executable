@@ -176,7 +176,7 @@ def vregidx_to_vregno (app_0 : vregidx) : vregno :=
 
 def vregno_to_vregidx (app_0 : vregno) : vregidx :=
   let .Vregno b := app_0
-  (Vregidx (to_bits 5 b))
+  (Vregidx (to_bits (l := 5) b))
 
 def vregidx_offset (typ_0 : vregidx) (o : (BitVec 5)) : vregidx :=
   let .Vregidx r : vregidx := typ_0
@@ -649,7 +649,7 @@ def read_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) : S
                 loop_vars ← do
                   let r_start_i : Int := (i_lmul *i num_elem_single)
                   let r_end_i : Int := ((r_start_i +i num_elem_single) -i 1)
-                  let vrid_lmul : vregidx := (vregidx_offset vrid (to_bits 5 i_lmul))
+                  let vrid_lmul : vregidx := (vregidx_offset vrid (to_bits_unsafe (l := 5) i_lmul))
                   let single_result ← (( do (read_single_vreg num_elem_single SEW vrid_lmul) ) :
                     SailM (Vector (BitVec SEW) num_elem_single) )
                   let loop_r_i_lower := r_start_i
@@ -670,7 +670,8 @@ def read_single_element (EEW : Nat) (index : Int) (vrid : vregidx) : SailM (BitV
   assert (VLEN ≥b EEW) "riscv_vext_regs.sail:320.20-320.21"
   let elem_per_reg : Int := (Int.tdiv VLEN EEW)
   assert (elem_per_reg ≥b 0) "riscv_vext_regs.sail:322.27-322.28"
-  let real_vrid : vregidx := (vregidx_offset vrid (to_bits 5 (Int.tdiv index elem_per_reg)))
+  let real_vrid : vregidx :=
+    (vregidx_offset vrid (to_bits_unsafe (l := 5) (Int.tdiv index elem_per_reg)))
   let real_index : Int := (Int.emod index elem_per_reg)
   let vrid_val ← (( do (read_single_vreg elem_per_reg EEW real_vrid) ) : SailM
     (Vector (BitVec EEW) elem_per_reg) )
@@ -692,7 +693,7 @@ def write_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) (v
     let () := loop_vars
     loop_vars ← do
       let single_vec : (Vector (BitVec SEW) num_elem_single) := (vectorInit (zeros (n := SEW)))
-      let vrid_lmul : vregidx := (vregidx_offset vrid (to_bits 5 i_lmul))
+      let vrid_lmul : vregidx := (vregidx_offset vrid (to_bits_unsafe (l := 5) i_lmul))
       let r_start_i : Int := (i_lmul *i num_elem_single)
       let r_end_i : Int := ((r_start_i +i num_elem_single) -i 1)
       let single_vec ← (( do
@@ -714,7 +715,8 @@ def write_vreg (num_elem : Nat) (SEW : Nat) (LMUL_pow : Int) (vrid : vregidx) (v
 def write_single_element (EEW : Nat) (index : Int) (vrid : vregidx) (value : (BitVec EEW)) : SailM Unit := do
   let elem_per_reg : Int := (Int.tdiv VLEN EEW)
   assert (elem_per_reg ≥b 0) "riscv_vext_regs.sail:356.27-356.28"
-  let real_vrid : vregidx := (vregidx_offset vrid (to_bits 5 (Int.tdiv index elem_per_reg)))
+  let real_vrid : vregidx :=
+    (vregidx_offset vrid (to_bits_unsafe (l := 5) (Int.tdiv index elem_per_reg)))
   let real_index : Int := (Int.emod index elem_per_reg)
   let vrid_val ← (( do (read_single_vreg elem_per_reg EEW real_vrid) ) : SailM
     (Vector (BitVec EEW) elem_per_reg) )

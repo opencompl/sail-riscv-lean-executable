@@ -261,7 +261,7 @@ def accessToFault (acc : (AccessType Unit)) : ExceptionType :=
 
 /-- Type quantifiers: width : Nat, width > 0 -/
 def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : Privilege) : SailM (Option ExceptionType) := SailME.run do
-  let width : xlenbits := (to_bits xlen width)
+  let width : xlenbits := (to_bits_unsafe (l := xlen) width)
   let loop_i_lower := 0
   let loop_i_upper := 63
   let mut loop_vars := ()

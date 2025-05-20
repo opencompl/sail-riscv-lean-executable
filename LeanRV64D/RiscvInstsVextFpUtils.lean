@@ -591,7 +591,7 @@ def riscv_f32ToUi16 (rm : (BitVec 3)) (v : (BitVec 32)) : SailM ((BitVec 5) × (
   then (pure ((nvFlag ()), (ones (n := 16))))
   else (pure ((zeros (n := 5)), (Sail.BitVec.extractLsb sig32 15 0)))
 
-/-- Type quantifiers: k_ex378357# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
+/-- Type quantifiers: k_ex378402# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
 def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
@@ -613,7 +613,7 @@ def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
       (do
         let nr_leadingzeros ← do (count_leadingzeros sig s)
         assert (nr_leadingzeros ≥b 0) "riscv_insts_vext_fp_utils.sail:480.35-480.36"
-        (pure ((to_bits 64 (0 -i nr_leadingzeros)), (zero_extend (m := 64)
+        (pure ((to_bits_unsafe (l := 64) (0 -i nr_leadingzeros)), (zero_extend (m := 64)
             (shiftl (Sail.BitVec.extractLsb sig (s -i 1) 0) (1 +i nr_leadingzeros))))))
     else (pure (exp, sig))
   let idx : Nat :=
@@ -631,9 +631,10 @@ def rsqrt7 (v : (BitVec k_m)) (sub : Bool) : SailM (BitVec 64) := do
         ((BitVec.join1 [(BitVec.access normalized_exp 0)]) ++ (Sail.BitVec.extractLsb normalized_sig
             51 46)))
   assert ((idx ≥b 0) && (idx <b 128)) "riscv_insts_vext_fp_utils.sail:491.29-491.30"
-  let out_sig := (shiftl (to_bits s (GetElem?.getElem! table (127 -i idx))) (s -i 7))
+  let out_sig := (shiftl (to_bits_unsafe (l := s) (GetElem?.getElem! table (127 -i idx))) (s -i 7))
   let out_exp :=
-    (to_bits e (Int.tdiv (((3 *i ((2 ^i (e -i 1)) -i 1)) -i 1) -i (BitVec.toInt normalized_exp)) 2))
+    (to_bits_unsafe (l := e)
+      (Int.tdiv (((3 *i ((2 ^i (e -i 1)) -i 1)) -i 1) -i (BitVec.toInt normalized_exp)) 2))
   (pure (zero_extend (m := 64) (sign ++ (out_exp ++ out_sig))))
 
 def riscv_f16Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 16)) : SailM ((BitVec 5) × (BitVec 16)) := do
@@ -762,7 +763,7 @@ def riscv_f64Rsqrte7 (rm : (BitVec 3)) (v : (BitVec 64)) : SailM ((BitVec 5) × 
                                     (pure ((zeros (n := 5)), (Sail.BitVec.extractLsb
                                         (← (rsqrt7 v false)) 63 0)))))))))))
 
-/-- Type quantifiers: k_ex378593# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
+/-- Type quantifiers: k_ex378638# : Bool, k_m : Nat, k_m ∈ {16, 32, 64} -/
 def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool × (BitVec 64)) := do
   let (sig, exp, sign, e, s) : ((BitVec 64) × (BitVec 64) × (BitVec 1) × Nat × Nat) :=
     match (Sail.BitVec.length v) with
@@ -783,7 +784,7 @@ def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool ×
   let (normalized_exp, normalized_sig) :=
     bif sub
     then
-      ((to_bits 64 (0 -i nr_leadingzeros)), (zero_extend (m := 64)
+      ((to_bits_unsafe (l := 64) (0 -i nr_leadingzeros)), (zero_extend (m := 64)
         (shiftl (Sail.BitVec.extractLsb sig (s -i 1) 0) (1 +i nr_leadingzeros))))
     else (exp, sig)
   let idx : Nat :=
@@ -792,8 +793,9 @@ def recip7 (v : (BitVec k_m)) (rm_3b : (BitVec 3)) (sub : Bool) : SailM (Bool ×
     | 32 => (BitVec.toNat (Sail.BitVec.extractLsb normalized_sig 22 16))
     | _ => (BitVec.toNat (Sail.BitVec.extractLsb normalized_sig 51 45))
   assert ((idx ≥b 0) && (idx <b 128)) "riscv_insts_vext_fp_utils.sail:585.29-585.30"
-  let mid_exp := (to_bits e (((2 *i ((2 ^i (e -i 1)) -i 1)) -i 1) -i (BitVec.toInt normalized_exp)))
-  let mid_sig := (shiftl (to_bits s (GetElem?.getElem! table (127 -i idx))) (s -i 7))
+  let mid_exp :=
+    (to_bits_unsafe (l := e) (((2 *i ((2 ^i (e -i 1)) -i 1)) -i 1) -i (BitVec.toInt normalized_exp)))
+  let mid_sig := (shiftl (to_bits_unsafe (l := s) (GetElem?.getElem! table (127 -i idx))) (s -i 7))
   let (out_exp, out_sig) :=
     bif (mid_exp == (zeros (n := e)))
     then (mid_exp, ((shiftr mid_sig 1) ||| ((0b1 : (BitVec 1)) ++ (zeros (n := (s -i 1))))))

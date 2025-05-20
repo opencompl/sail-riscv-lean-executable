@@ -2040,7 +2040,7 @@ def legalize_satp (arch : Architecture) (prev_value : (BitVec (2 ^ 3 * 8))) (wri
       | _ => (pure prev_value))
 
 def get_vlenb (_ : Unit) : (BitVec (2 ^ 3 * 8)) :=
-  (to_bits xlen (Int.tdiv (2 ^i (get_vlen_pow ())) 8))
+  (to_bits_unsafe (l := xlen) (Int.tdiv (2 ^i (get_vlen_pow ())) 8))
 
 def undefined_Vtype (_ : Unit) : SailM (BitVec (2 ^ 3 * 8)) := do
   (undefined_bitvector ((2 ^i 3) *i 8))

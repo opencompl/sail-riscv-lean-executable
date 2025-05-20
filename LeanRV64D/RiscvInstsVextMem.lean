@@ -464,7 +464,7 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
       bif ((BitVec.access mask i) == 1#1)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           let loop_j_lower := 0
           let loop_j_upper := (nf -i 1)
           let mut loop_vars_2 := ()
@@ -472,11 +472,11 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
             let () := loop_vars_2
             loop_vars_2 ← do
               let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
-              match (← (vmem_read rs1 (to_bits xlen elem_offset) load_width_bytes (Read Data)
-                  false false false)) with
+              match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) elem_offset) load_width_bytes
+                  (Read Data) false false false)) with
               | .Ok elem =>
                 (write_single_element (load_width_bytes *i 8) i
-                  (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
+                  (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) elem)
               | .Err e => SailME.throw (e : ExecutionResult)
           (pure loop_vars_2))
       else
@@ -492,7 +492,7 @@ def process_vlseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes 
                   (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
                   ((load_width_bytes *i 8) -i 1) 0)
               (write_single_element (load_width_bytes *i 8) i
-                (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+                (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) skipped_elem)
           (pure loop_vars_1))
   (pure loop_vars)
   (set_vstart (zeros (n := 16)))
@@ -537,12 +537,12 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                   let trimmed := loop_vars_3
                   loop_vars_3 ← do
                     let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
-                    match (← (vmem_read rs1 (to_bits xlen elem_offset) load_width_bytes
-                        (Read Data) false false false)) with
+                    match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) elem_offset)
+                        load_width_bytes (Read Data) false false false)) with
                     | .Ok elem =>
                       (do
                         (write_single_element (load_width_bytes *i 8) i
-                          (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
+                          (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) elem)
                         (pure trimmed))
                     | .Err e =>
                       (do
@@ -550,7 +550,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                         then SailME.throw (e : ExecutionResult)
                         else
                           (do
-                            writeReg vl (to_bits xlen i)
+                            writeReg vl (to_bits_unsafe (l := xlen) i)
                             (csr_name_write_callback "vl" (← readReg vl))
                             (pure true)))
                 (pure loop_vars_3))
@@ -567,7 +567,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                         (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
                         ((load_width_bytes *i 8) -i 1) 0)
                     (write_single_element (load_width_bytes *i 8) i
-                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+                      (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) skipped_elem)
                 (pure loop_vars_2)
                 (pure trimmed)))
         else
@@ -586,7 +586,7 @@ def process_vlsegff (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_byte
                         (shiftr (GetElem?.getElem! vd_seg i) ((j *i load_width_bytes) *i 8))
                         ((load_width_bytes *i 8) -i 1) 0)
                     (write_single_element (load_width_bytes *i 8) i
-                      (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+                      (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) skipped_elem)
                 (pure loop_vars_1))
             else (pure ())
             (pure trimmed))
@@ -619,7 +619,7 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
       bif ((BitVec.access mask i) == 1#1)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           let loop_j_lower := 0
           let loop_j_upper := (nf -i 1)
           let mut loop_vars_1 := ()
@@ -627,10 +627,10 @@ def process_vsseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_bytes
             let () := loop_vars_1
             loop_vars_1 ← do
               let elem_offset := (((i *i nf) +i j) *i load_width_bytes)
-              let vs := (vregidx_offset vs3 (to_bits 5 (j *i EMUL_reg)))
+              let vs := (vregidx_offset vs3 (to_bits_unsafe (l := 5) (j *i EMUL_reg)))
               let data ← do (read_single_element (load_width_bytes *i 8) i vs)
-              match (← (vmem_write rs1 (to_bits xlen elem_offset) load_width_bytes data
-                  (Write Data) false false false)) with
+              match (← (vmem_write rs1 (to_bits_unsafe (l := xlen) elem_offset) load_width_bytes
+                  data (Write Data) false false false)) with
               | .Ok true => (pure ())
               | .Ok false =>
                 (internal_error "riscv_insts_vext_mem.sail" 234 "store got false from vmem_write")
@@ -669,7 +669,7 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
       bif ((BitVec.access mask i) == 1#1)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           let loop_j_lower := 0
           let loop_j_upper := (nf -i 1)
           let mut loop_vars_2 := ()
@@ -677,11 +677,11 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
             let () := loop_vars_2
             loop_vars_2 ← do
               let elem_offset := ((i *i rs2_val) +i (j *i load_width_bytes))
-              match (← (vmem_read rs1 (to_bits xlen elem_offset) load_width_bytes (Read Data)
-                  false false false)) with
+              match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) elem_offset) load_width_bytes
+                  (Read Data) false false false)) with
               | .Ok elem =>
                 (write_single_element (load_width_bytes *i 8) i
-                  (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) elem)
+                  (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) elem)
               | .Err e => SailME.throw (e : ExecutionResult)
           (pure loop_vars_2))
       else
@@ -697,7 +697,7 @@ def process_vlsseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (load_width_bytes
                   (shiftr (GetElem?.getElem! result i) ((j *i load_width_bytes) *i 8))
                   ((load_width_bytes *i 8) -i 1) 0)
               (write_single_element (load_width_bytes *i 8) i
-                (vregidx_offset vd (to_bits 5 (j *i EMUL_reg))) skipped_elem)
+                (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_reg))) skipped_elem)
           (pure loop_vars_1))
   (pure loop_vars)
   (set_vstart (zeros (n := 16)))
@@ -730,7 +730,7 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
       bif ((BitVec.access mask i) == 1#1)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           let loop_j_lower := 0
           let loop_j_upper := (nf -i 1)
           let mut loop_vars_1 := ()
@@ -738,10 +738,10 @@ def process_vssseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (load_width_byte
             let () := loop_vars_1
             loop_vars_1 ← do
               let elem_offset := ((i *i rs2_val) +i (j *i load_width_bytes))
-              let vs := (vregidx_offset vs3 (to_bits 5 (j *i EMUL_reg)))
+              let vs := (vregidx_offset vs3 (to_bits_unsafe (l := 5) (j *i EMUL_reg)))
               let data ← do (read_single_element (load_width_bytes *i 8) i vs)
-              match (← (vmem_write rs1 (to_bits xlen elem_offset) load_width_bytes data
-                  (Write Data) false false false)) with
+              match (← (vmem_write rs1 (to_bits_unsafe (l := xlen) elem_offset) load_width_bytes
+                  data (Write Data) false false false)) with
               | .Ok true => (pure ())
               | .Ok false =>
                 (internal_error "riscv_insts_vext_mem.sail" 357 "store got false from vmem_write")
@@ -782,7 +782,7 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
       bif ((BitVec.access mask i) == 1#1)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           let loop_j_lower := 0
           let loop_j_upper := (nf -i 1)
           let mut loop_vars_2 := ()
@@ -791,11 +791,11 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
             loop_vars_2 ← do
               let elem_offset : Int :=
                 ((BitVec.toNat (GetElem?.getElem! vs2_val i)) +i (j *i EEW_data_bytes))
-              match (← (vmem_read rs1 (to_bits xlen elem_offset) EEW_data_bytes (Read Data) false
-                  false false)) with
+              match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) elem_offset) EEW_data_bytes
+                  (Read Data) false false false)) with
               | .Ok elem =>
                 (write_single_element (EEW_data_bytes *i 8) i
-                  (vregidx_offset vd (to_bits 5 (j *i EMUL_data_reg))) elem)
+                  (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_data_reg))) elem)
               | .Err e => SailME.throw (e : ExecutionResult)
           (pure loop_vars_2))
       else
@@ -811,7 +811,7 @@ def process_vlxseg (nf : Nat) (vm : (BitVec 1)) (vd : vregidx) (EEW_index_bytes 
                   (shiftr (GetElem?.getElem! result i) ((j *i EEW_data_bytes) *i 8))
                   ((EEW_data_bytes *i 8) -i 1) 0)
               (write_single_element (EEW_data_bytes *i 8) i
-                (vregidx_offset vd (to_bits 5 (j *i EMUL_data_reg))) skipped_elem)
+                (vregidx_offset vd (to_bits_unsafe (l := 5) (j *i EMUL_data_reg))) skipped_elem)
           (pure loop_vars_1))
   (pure loop_vars)
   (set_vstart (zeros (n := 16)))
@@ -845,7 +845,7 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
       bif ((BitVec.access mask i) == 1#1)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           let loop_j_lower := 0
           let loop_j_upper := (nf -i 1)
           let mut loop_vars_1 := ()
@@ -854,10 +854,10 @@ def process_vsxseg (nf : Nat) (vm : (BitVec 1)) (vs3 : vregidx) (EEW_index_bytes
             loop_vars_1 ← do
               let elem_offset : Int :=
                 ((BitVec.toNat (GetElem?.getElem! vs2_val i)) +i (j *i EEW_data_bytes))
-              let vs := (vregidx_offset vs3 (to_bits 5 (j *i EMUL_data_reg)))
+              let vs := (vregidx_offset vs3 (to_bits_unsafe (l := 5) (j *i EMUL_data_reg)))
               let data ← do (read_single_element (EEW_data_bytes *i 8) i vs)
-              match (← (vmem_write rs1 (to_bits xlen elem_offset) EEW_data_bytes data (Write Data)
-                  false false false)) with
+              match (← (vmem_write rs1 (to_bits_unsafe (l := xlen) elem_offset) EEW_data_bytes
+                  data (Write Data) false false false)) with
               | .Ok true => (pure ())
               | .Ok false =>
                 (internal_error "riscv_insts_vext_mem.sail" 511 "store got false from vmem_write")
@@ -895,13 +895,13 @@ def process_vlre (nf : Nat) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regid
               for i in [loop_i_lower:loop_i_upper:1]i do
                 let cur_elem := loop_vars
                 loop_vars ← do
-                  (set_vstart (to_bits 16 cur_elem))
+                  (set_vstart (to_bits_unsafe (l := 16) cur_elem))
                   let elem_offset := (cur_elem *i load_width_bytes)
-                  match (← (vmem_read rs1 (to_bits xlen elem_offset) load_width_bytes (Read Data)
-                      false false false)) with
+                  match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) elem_offset)
+                      load_width_bytes (Read Data) false false false)) with
                   | .Ok elem =>
                     (write_single_element (load_width_bytes *i 8) i
-                      (vregidx_offset vd (to_bits 5 cur_field)) elem)
+                      (vregidx_offset vd (to_bits_unsafe (l := 5) cur_field)) elem)
                   | .Err e => SailME.throw (e : ExecutionResult)
                   (pure (cur_elem +i 1))
               (pure loop_vars) ) : SailME ExecutionResult Int )
@@ -921,13 +921,13 @@ def process_vlre (nf : Nat) (vd : vregidx) (load_width_bytes : Nat) (rs1 : regid
             for i in [loop_i_lower:loop_i_upper:1]i do
               let cur_elem := loop_vars_2
               loop_vars_2 ← do
-                (set_vstart (to_bits 16 cur_elem))
+                (set_vstart (to_bits_unsafe (l := 16) cur_elem))
                 let elem_offset := (cur_elem *i load_width_bytes)
-                match (← (vmem_read rs1 (to_bits xlen elem_offset) load_width_bytes (Read Data)
-                    false false false)) with
+                match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) elem_offset) load_width_bytes
+                    (Read Data) false false false)) with
                 | .Ok elem =>
-                  (write_single_element (load_width_bytes *i 8) i (vregidx_offset vd (to_bits 5 j))
-                    elem)
+                  (write_single_element (load_width_bytes *i 8) i
+                    (vregidx_offset vd (to_bits_unsafe (l := 5) j)) elem)
                 | .Err e => SailME.throw (e : ExecutionResult)
                 (pure (cur_elem +i 1))
             (pure loop_vars_2)
@@ -962,12 +962,12 @@ def process_vsre (nf : Nat) (load_width_bytes : Nat) (rs1 : regidx) (vs3 : vregi
               for i in [loop_i_lower:loop_i_upper:1]i do
                 let cur_elem := loop_vars
                 loop_vars ← do
-                  (set_vstart (to_bits 16 cur_elem))
+                  (set_vstart (to_bits_unsafe (l := 16) cur_elem))
                   let elem_offset : Int := (cur_elem *i load_width_bytes)
-                  let vs := (vregidx_offset vs3 (to_bits 5 cur_field))
+                  let vs := (vregidx_offset vs3 (to_bits_unsafe (l := 5) cur_field))
                   let data ← do (read_single_element (load_width_bytes *i 8) i vs)
-                  match (← (vmem_write rs1 (to_bits xlen elem_offset) load_width_bytes data
-                      (Write Data) false false false)) with
+                  match (← (vmem_write rs1 (to_bits_unsafe (l := xlen) elem_offset)
+                      load_width_bytes data (Write Data) false false false)) with
                   | .Ok true => (pure ())
                   | .Ok false =>
                     (internal_error "riscv_insts_vext_mem.sail" 661
@@ -986,17 +986,18 @@ def process_vsre (nf : Nat) (load_width_bytes : Nat) (rs1 : regidx) (vs3 : vregi
           let cur_elem := loop_vars_1
           loop_vars_1 ← do
             let vs3_val ← (( do
-              (read_vreg elem_per_reg (load_width_bytes *i 8) 0 (vregidx_offset vs3 (to_bits 5 j)))
-              ) : SailME ExecutionResult (Vector (BitVec (load_width_bytes * 8)) elem_per_reg) )
+              (read_vreg elem_per_reg (load_width_bytes *i 8) 0
+                (vregidx_offset vs3 (to_bits_unsafe (l := 5) j))) ) : SailME ExecutionResult
+              (Vector (BitVec (load_width_bytes * 8)) elem_per_reg) )
             let loop_i_lower := 0
             let loop_i_upper := (elem_per_reg -i 1)
             let mut loop_vars_2 := cur_elem
             for i in [loop_i_lower:loop_i_upper:1]i do
               let cur_elem := loop_vars_2
               loop_vars_2 ← do
-                (set_vstart (to_bits 16 cur_elem))
+                (set_vstart (to_bits_unsafe (l := 16) cur_elem))
                 let elem_offset := (cur_elem *i load_width_bytes)
-                match (← (vmem_write rs1 (to_bits xlen elem_offset) load_width_bytes
+                match (← (vmem_write rs1 (to_bits_unsafe (l := xlen) elem_offset) load_width_bytes
                     (GetElem?.getElem! vs3_val i) (Write Data) false false false)) with
                 | .Ok true => (pure ())
                 | .Ok false =>
@@ -1059,11 +1060,12 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
       bif (i <b evl)
       then
         (do
-          (set_vstart (to_bits 16 i))
+          (set_vstart (to_bits_unsafe (l := 16) i))
           bif (op == VLM)
           then
             (do
-              match (← (vmem_read rs1 (to_bits xlen i) 1 (Read Data) false false false)) with
+              match (← (vmem_read rs1 (to_bits_unsafe (l := xlen) i) 1 (Read Data) false false
+                  false)) with
               | .Ok elem => (write_single_element 8 i vd_or_vs3 elem)
               | .Err e => SailME.throw (e : ExecutionResult))
           else
@@ -1071,8 +1073,8 @@ def process_vm (vd_or_vs3 : vregidx) (rs1 : regidx) (num_elem : Nat) (evl : Nat)
               bif (op == VSM)
               then
                 (do
-                  match (← (vmem_write rs1 (to_bits xlen i) 1 (GetElem?.getElem! vd_or_vs3_val i)
-                      (Write Data) false false false)) with
+                  match (← (vmem_write rs1 (to_bits_unsafe (l := xlen) i) 1
+                      (GetElem?.getElem! vd_or_vs3_val i) (Write Data) false false false)) with
                   | .Ok true => (pure ())
                   | .Ok false =>
                     (internal_error "riscv_insts_vext_mem.sail" 734

@@ -317,7 +317,7 @@ def sm4_sbox (x : (BitVec 8)) : (BitVec 8) :=
 
 /-- Type quantifiers: c : Nat, 0 ≤ c -/
 def aes_get_column (state : (BitVec 128)) (c : Nat) : (BitVec 32) :=
-  (Sail.BitVec.extractLsb (shift_bits_right state (to_bits 7 (32 *i c))) 31 0)
+  (Sail.BitVec.extractLsb (shift_bits_right state (to_bits_unsafe (l := 7) (32 *i c))) 31 0)
 
 def aes_apply_fwd_sbox_to_each_byte (x : (BitVec 64)) : (BitVec 64) :=
   ((aes_sbox_fwd (Sail.BitVec.extractLsb x 63 56)) ++ ((aes_sbox_fwd
@@ -335,7 +335,7 @@ def aes_apply_inv_sbox_to_each_byte (x : (BitVec 64)) : (BitVec 64) :=
 
 /-- Type quantifiers: i : Int -/
 def getbyte (x : (BitVec 64)) (i : Int) : (BitVec 8) :=
-  (Sail.BitVec.extractLsb (shift_bits_right x (to_bits 6 (i *i 8))) 7 0)
+  (Sail.BitVec.extractLsb (shift_bits_right x (to_bits_unsafe (l := 6) (i *i 8))) 7 0)
 
 def aes_rv64_shiftrows_fwd (rs2 : (BitVec 64)) (rs1 : (BitVec 64)) : (BitVec 64) :=
   ((getbyte rs1 3) ++ ((getbyte rs2 6) ++ ((getbyte rs2 1) ++ ((getbyte rs1 4) ++ ((getbyte rs2 7) ++ ((getbyte

@@ -291,5 +291,5 @@ def calculate_new_vl (AVL : Int) (VLMAX : Int) : (BitVec (2 ^ 3 * 8)) :=
         then (Int.tdiv (AVL +i 1) 2)
         else VLMAX)
       else VLMAX)
-  (to_bits xlen new_vl)
+  (to_bits_unsafe (l := xlen) new_vl)
 
