@@ -685,23 +685,6 @@ def signed_saturation (len : Nat) (elem : (BitVec k_n)) : SailM (BitVec len) := 
           (pure ((0b1 : (BitVec 1)) ++ (zeros (n := (len -i 1))))))
       else (pure (Sail.BitVec.extractLsb elem (len -i 1) 0)))
 
-/-- Type quantifiers: len : Int -/
-def count_leadingzeros (sig : (BitVec 64)) (len : Int) : SailM Int := do
-  let idx : Int := (-1)
-  assert ((len == 10) || ((len == 23) || (len == 52))) "riscv_insts_vext_utils.sail:499.42-499.43"
-  let idx ← (( do
-    let loop_i_lower := 0
-    let loop_i_upper := (len -i 1)
-    let mut loop_vars := idx
-    for i in [loop_i_lower:loop_i_upper:1]i do
-      let idx := loop_vars
-      loop_vars :=
-        bif ((BitVec.access sig i) == 1#1)
-        then i
-        else idx
-    (pure loop_vars) ) : SailM Int )
-  (pure ((len -i idx) -i 1))
-
 /-- Type quantifiers: k_n : Nat, m : Nat, k_n ≥ 0 ∧ m ≥ 0 -/
 def vrev8 {m : _} (input : (Vector (BitVec (m * 8)) k_n)) : (Vector (BitVec (m * 8)) k_n) := Id.run do
   let output : (Vector (BitVec (m * 8)) k_n) := input

@@ -220,3 +220,21 @@ def rev8 (input : (BitVec k_m)) : (BitVec k_m) := Id.run do
           (((Sail.BitVec.length output) -i i) -i 8)))
   (pure loop_vars)
 
+/-- Type quantifiers: k_n : Nat, k_n ≥ 0 -/
+def count_ones (x : (BitVec k_n)) : SailM Nat := do
+  let count : Nat := 0
+  let loop_i_lower := 0
+  let loop_i_upper := ((Sail.BitVec.length x) -i 1)
+  let mut loop_vars := count
+  for i in [loop_i_lower:loop_i_upper:1]i do
+    let count := loop_vars
+    loop_vars ← do
+      bif ((BitVec.access x i) == 1#1)
+      then
+        (do
+          let new_count := (count +i 1)
+          assert (new_count ≤b (Sail.BitVec.length x)) "arithmetic.sail:58.28-58.29"
+          (pure new_count))
+      else (pure count)
+  (pure loop_vars)
+
