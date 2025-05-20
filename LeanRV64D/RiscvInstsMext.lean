@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvInstsAext
+import LeanRV64D.RiscvInstsZalrsc
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -285,7 +285,7 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex374957# : Bool -/
+/-- Type quantifiers: k_ex374923# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | false => true

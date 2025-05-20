@@ -2648,7 +2648,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex368437# : Bool -/
+/-- Type quantifiers: k_ex368407# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2687,19 +2687,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex368445# : Bool -/
+/-- Type quantifiers: k_ex368415# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex368446# : Bool -/
+/-- Type quantifiers: k_ex368416# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex368447# : Bool -/
+/-- Type quantifiers: k_ex368417# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3537,6 +3537,19 @@ def assembly_forwards (arg_ : ast) : SailM String := do
           (String.append (← (reg_name_forwards rs1))
             (String.append (sep_forwards ()) (String.append (← (reg_name_forwards rs2)) ""))))))
   | .FENCEI () => (pure "fence.i")
+  | .AMO (op, aq, rl, rs2, rs1, width, rd) =>
+    (pure (String.append (amo_mnemonic_forwards op)
+        (String.append "."
+          (String.append (size_mnemonic_forwards width)
+            (String.append (maybe_aq_forwards aq)
+              (String.append (maybe_rl_forwards rl)
+                (String.append (spc_forwards ())
+                  (String.append (← (reg_name_forwards rd))
+                    (String.append (sep_forwards ())
+                      (String.append (← (reg_name_forwards rs2))
+                        (String.append (sep_forwards ())
+                          (String.append "("
+                            (String.append (← (reg_name_forwards rs1)) (String.append ")" ""))))))))))))))
   | .LOADRES (aq, rl, rs1, size, rd) =>
     (pure (String.append "lr."
         (String.append (size_mnemonic_forwards size)
@@ -3559,19 +3572,6 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (sep_forwards ())
                         (String.append "("
                           (String.append (← (reg_name_forwards rs1)) (String.append ")" "")))))))))))))
-  | .AMO (op, aq, rl, rs2, rs1, width, rd) =>
-    (pure (String.append (amo_mnemonic_forwards op)
-        (String.append "."
-          (String.append (size_mnemonic_forwards width)
-            (String.append (maybe_aq_forwards aq)
-              (String.append (maybe_rl_forwards rl)
-                (String.append (spc_forwards ())
-                  (String.append (← (reg_name_forwards rd))
-                    (String.append (sep_forwards ())
-                      (String.append (← (reg_name_forwards rs2))
-                        (String.append (sep_forwards ())
-                          (String.append "("
-                            (String.append (← (reg_name_forwards rs1)) (String.append ")" ""))))))))))))))
   | .C_NOP () => (pure "c.nop")
   | .C_ADDI4SPN (rdc, nzimm) =>
     (do

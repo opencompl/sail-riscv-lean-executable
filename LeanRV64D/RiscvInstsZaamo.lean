@@ -170,20 +170,6 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex374892# : Bool, k_ex374891# : Bool -/
-def aqrl_str (aq : Bool) (rl : Bool) : String :=
-  match (aq, rl) with
-  | (false, false) => ""
-  | (false, true) => ".rl"
-  | (true, false) => ".aq"
-  | (true, true) => ".aqrl"
-
-def lrsc_width_valid (size : word_width) : Bool :=
-  match size with
-  | WORD => true
-  | DOUBLE => (xlen ≥b 64)
-  | _ => false
-
 def amo_width_valid (size : word_width) : SailM Bool := do
   match size with
   | BYTE => (currentlyEnabled Ext_Zabha)

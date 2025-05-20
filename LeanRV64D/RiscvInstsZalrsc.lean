@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvPmpControl
+import LeanRV64D.RiscvInstsZaamo
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -170,10 +170,9 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex370549# : Bool -/
-def ext_check_CSR (csrno : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
-  true
-
-def ext_check_CSR_fail (_ : Unit) : Unit :=
-  ()
+def lrsc_width_valid (size : word_width) : Bool :=
+  match size with
+  | WORD => true
+  | DOUBLE => (xlen ≥b 64)
+  | _ => false
 
