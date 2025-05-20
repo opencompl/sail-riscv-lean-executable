@@ -223,7 +223,7 @@ def ones {n : _} : (BitVec n) :=
 def trunc {m : _} (v : (BitVec k_n)) : (BitVec m) :=
   (Sail.BitVec.truncate v m)
 
-/-- Type quantifiers: k_ex366984# : Bool -/
+/-- Type quantifiers: k_ex366960# : Bool -/
 def bool_bit_forwards (arg_ : Bool) : (BitVec 1) :=
   match arg_ with
   | true => 1#1
@@ -238,7 +238,7 @@ def bool_bit_backwards (arg_ : (BitVec 1)) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex366985# : Bool -/
+/-- Type quantifiers: k_ex366961# : Bool -/
 def bool_bit_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -250,7 +250,7 @@ def bool_bit_backwards_matches (arg_ : (BitVec 1)) : Bool :=
   | 0#1 => true
   | g__3 => false
 
-/-- Type quantifiers: k_ex366986# : Bool -/
+/-- Type quantifiers: k_ex366962# : Bool -/
 def bool_bits_forwards (arg_ : Bool) : (BitVec 1) :=
   match arg_ with
   | true => (0b1 : (BitVec 1))
@@ -262,7 +262,7 @@ def bool_bits_backwards (arg_ : (BitVec 1)) : Bool :=
   then true
   else false
 
-/-- Type quantifiers: k_ex366988# : Bool -/
+/-- Type quantifiers: k_ex366964# : Bool -/
 def bool_bits_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -277,7 +277,7 @@ def bool_bits_backwards_matches (arg_ : (BitVec 1)) : Bool :=
     then true
     else false)
 
-/-- Type quantifiers: k_ex366991# : Bool -/
+/-- Type quantifiers: k_ex366967# : Bool -/
 def bool_not_bits_forwards (arg_ : Bool) : (BitVec 1) :=
   match arg_ with
   | true => (0b0 : (BitVec 1))
@@ -289,7 +289,7 @@ def bool_not_bits_backwards (arg_ : (BitVec 1)) : Bool :=
   then true
   else false
 
-/-- Type quantifiers: k_ex366993# : Bool -/
+/-- Type quantifiers: k_ex366969# : Bool -/
 def bool_not_bits_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -304,14 +304,14 @@ def bool_not_bits_backwards_matches (arg_ : (BitVec 1)) : Bool :=
     then true
     else false)
 
-/-- Type quantifiers: k_ex366996# : Bool -/
+/-- Type quantifiers: k_ex366972# : Bool -/
 def bool_to_bit (x : Bool) : (BitVec 1) :=
   (bool_bit_forwards x)
 
 def bit_to_bool (x : (BitVec 1)) : SailM Bool := do
   (bool_bit_backwards x)
 
-/-- Type quantifiers: k_ex366998# : Bool -/
+/-- Type quantifiers: k_ex366974# : Bool -/
 def bool_to_bits (x : Bool) : (BitVec 1) :=
   (bool_bits_forwards x)
 
@@ -379,23 +379,21 @@ def shift_right_arith (value : (BitVec k_n)) (shift : Nat) : (BitVec k_n) :=
 def shift_bits_right_arith (value : (BitVec k_n)) (shift : (BitVec k_m)) : (BitVec k_n) :=
   (shift_right_arith value (BitVec.toNat shift))
 
-/-- Type quantifiers: k_n : Int, k_m : Nat, k_m ≥ 0 -/
-def rotate_bits_right (v : (BitVec k_n)) (n : (BitVec k_m)) : (BitVec k_n) :=
-  ((shift_bits_right v n) ||| (shift_bits_left v
-      ((to_bits_unsafe (l := (Sail.BitVec.length n)) (Sail.BitVec.length v)) - n)))
+/-- Type quantifiers: k_m : Nat, shift : Nat, k_m ≥ shift ∧ shift ≥ 0 -/
+def rotater (value : (BitVec k_m)) (shift : Nat) : (BitVec k_m) :=
+  ((shiftr value shift) ||| (shiftl value ((Sail.BitVec.length value) -i shift)))
 
-/-- Type quantifiers: k_n : Int, k_m : Nat, k_m ≥ 0 -/
-def rotate_bits_left (v : (BitVec k_n)) (n : (BitVec k_m)) : (BitVec k_n) :=
-  ((shift_bits_left v n) ||| (shift_bits_right v
-      ((to_bits_unsafe (l := (Sail.BitVec.length n)) (Sail.BitVec.length v)) - n)))
+/-- Type quantifiers: k_m : Nat, shift : Nat, k_m ≥ shift ∧ shift ≥ 0 -/
+def rotatel (value : (BitVec k_m)) (shift : Nat) : (BitVec k_m) :=
+  ((shiftl value shift) ||| (shiftr value ((Sail.BitVec.length value) -i shift)))
 
-/-- Type quantifiers: k_m : Nat, n : Nat, k_m ≥ n ∧ n ≥ 0 -/
-def rotater (v : (BitVec k_m)) (n : Nat) : (BitVec k_m) :=
-  ((shiftr v n) ||| (shiftl v ((Sail.BitVec.length v) -i n)))
+/-- Type quantifiers: k_m : Nat, k_n : Nat, k_n ≥ 0 ∧ k_m ≥ (2 ^ k_n) -/
+def rotate_bits_right (value : (BitVec k_m)) (shift : (BitVec k_n)) : (BitVec k_m) :=
+  (rotater value (BitVec.toNat shift))
 
-/-- Type quantifiers: k_m : Nat, n : Nat, k_m ≥ n ∧ n ≥ 0 -/
-def rotatel (v : (BitVec k_m)) (n : Nat) : (BitVec k_m) :=
-  ((shiftl v n) ||| (shiftr v ((Sail.BitVec.length v) -i n)))
+/-- Type quantifiers: k_m : Nat, k_n : Nat, k_n ≥ 0 ∧ k_m ≥ (2 ^ k_n) -/
+def rotate_bits_left (value : (BitVec k_m)) (shift : (BitVec k_n)) : (BitVec k_m) :=
+  (rotatel value (BitVec.toNat shift))
 
 /-- Type quantifiers: k_n : Nat, k_n > 0 -/
 def reverse_bits (xs : (BitVec k_n)) : (BitVec k_n) := Id.run do

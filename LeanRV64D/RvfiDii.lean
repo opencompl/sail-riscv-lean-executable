@@ -1201,7 +1201,7 @@ def rvfi_get_exec_packet_v1 (_ : Unit) : SailM (BitVec 704) := do
       (_get_RVFI_DII_Execution_Packet_Ext_MemAccess_rvfi_mem_addr (← readReg rvfi_mem_data))))
 
 def rvfi_get_v2_trace_size (_ : Unit) : SailM (BitVec 64) := do
-  let trace_size : (BitVec 64) := (to_bits_unsafe (l := 64) 512)
+  let trace_size : (BitVec 64) := (to_bits (l := 64) 512)
   let trace_size ← do
     bif (← readReg rvfi_int_data_present)
     then (pure (BitVec.addInt trace_size 320))

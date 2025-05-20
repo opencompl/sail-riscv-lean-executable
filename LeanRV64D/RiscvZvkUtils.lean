@@ -206,31 +206,26 @@ def zvknhab_check_encdec (vs2 : vregidx) (vs1 : vregidx) (vd : vregidx) : SailM 
   (pure ((← (zvk_check_encdec SEW 4)) && ((zvk_valid_reg_overlap vs1 vd LMUL_pow) && (zvk_valid_reg_overlap
           vs2 vd LMUL_pow))))
 
-/-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
-def zvk_sig0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=
+/-- Type quantifiers: SEW : Nat, SEW ∈ {32, 64} -/
+def zvk_sig0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec SEW) :=
   match SEW with
-  | 32 =>
-    ((rotater x 7) ^^^ ((rotater x 18) ^^^ (shift_bits_right x
-          (to_bits_unsafe (l := (Sail.BitVec.length x)) 3))))
-  | _ => ((rotater x 1) ^^^ ((rotater x 8) ^^^ (shift_bits_right x (to_bits_unsafe (l := xlen) 7))))
+  | 32 => ((rotater x 7) ^^^ ((rotater x 18) ^^^ (shiftr x 3)))
+  | _ => ((rotater x 1) ^^^ ((rotater x 8) ^^^ (shiftr x 7)))
 
-/-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
-def zvk_sig1 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=
+/-- Type quantifiers: SEW : Nat, SEW ∈ {32, 64} -/
+def zvk_sig1 (x : (BitVec k_n)) (SEW : Nat) : (BitVec SEW) :=
   match SEW with
-  | 32 =>
-    ((rotater x 17) ^^^ ((rotater x 19) ^^^ (shift_bits_right x
-          (to_bits_unsafe (l := (Sail.BitVec.length x)) 10))))
-  | _ =>
-    ((rotater x 19) ^^^ ((rotater x 61) ^^^ (shift_bits_right x (to_bits_unsafe (l := xlen) 6))))
+  | 32 => ((rotater x 17) ^^^ ((rotater x 19) ^^^ (shiftr x 10)))
+  | _ => ((rotater x 19) ^^^ ((rotater x 61) ^^^ (shiftr x 6)))
 
-/-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
-def zvk_sum0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=
+/-- Type quantifiers: SEW : Nat, SEW ∈ {32, 64} -/
+def zvk_sum0 (x : (BitVec k_n)) (SEW : Nat) : (BitVec SEW) :=
   match SEW with
   | 32 => ((rotater x 2) ^^^ ((rotater x 13) ^^^ (rotater x 22)))
   | _ => ((rotater x 28) ^^^ ((rotater x 34) ^^^ (rotater x 39)))
 
-/-- Type quantifiers: k_n : Nat, SEW : Nat, k_n = SEW ∧ SEW = 32 ∨ SEW = 64 -/
-def zvk_sum1 (x : (BitVec k_n)) (SEW : Nat) : (BitVec k_n) :=
+/-- Type quantifiers: SEW : Nat, SEW ∈ {32, 64} -/
+def zvk_sum1 (x : (BitVec k_n)) (SEW : Nat) : (BitVec SEW) :=
   match SEW with
   | 32 => ((rotater x 6) ^^^ ((rotater x 11) ^^^ (rotater x 25)))
   | _ => ((rotater x 14) ^^^ ((rotater x 18) ^^^ (rotater x 41)))

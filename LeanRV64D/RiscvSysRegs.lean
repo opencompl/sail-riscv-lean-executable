@@ -2040,7 +2040,7 @@ def legalize_satp (arch : Architecture) (prev_value : (BitVec (2 ^ 3 * 8))) (wri
       | _ => (pure prev_value))
 
 def get_vlenb (_ : Unit) : (BitVec (2 ^ 3 * 8)) :=
-  (to_bits_unsafe (l := xlen) (Int.tdiv (2 ^i (get_vlen_pow ())) 8))
+  (to_bits (l := ((2 ^i 3) *i 8)) (Int.tdiv (2 ^i (get_vlen_pow ())) 8))
 
 def undefined_Vtype (_ : Unit) : SailM (BitVec (2 ^ 3 * 8)) := do
   (undefined_bitvector ((2 ^i 3) *i 8))
@@ -2140,26 +2140,10 @@ def get_sew_pow (_ : Unit) : SailM Int := do
                   throw Error.Exit))))
 
 def get_sew (_ : Unit) : SailM Int := do
-  match (← (get_sew_pow ())) with
-  | 3 => (pure 8)
-  | 4 => (pure 16)
-  | 5 => (pure 32)
-  | 6 => (pure 64)
-  | _ =>
-    (do
-      (internal_error "riscv_sys_regs.sail" 952 "invalid SEW")
-      (pure 8))
+  (pure (2 ^i (← (get_sew_pow ()))))
 
 def get_sew_bytes (_ : Unit) : SailM Int := do
-  match (← (get_sew_pow ())) with
-  | 3 => (pure 1)
-  | 4 => (pure 2)
-  | 5 => (pure 4)
-  | 6 => (pure 8)
-  | _ =>
-    (do
-      (internal_error "riscv_sys_regs.sail" 963 "invalid SEW")
-      (pure 1))
+  (pure (Int.tdiv (← (get_sew ())) 8))
 
 def get_lmul_pow (_ : Unit) : SailM Int := do
   let b__0 ← do (pure (_get_Vtype_vlmul (← readReg vtype)))
