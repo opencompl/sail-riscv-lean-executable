@@ -149,7 +149,6 @@ open amoop
 open agtype
 open WaitReason
 open TrapVectorMode
-open TR_Result
 open Step
 open SATPMode
 open Register
@@ -189,6 +188,7 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zicboz => true
   | Ext_Zicntr => true
   | Ext_Zicond => true
+  | Ext_Zicsr => true
   | Ext_Zifencei => true
   | Ext_Zihpm => true
   | Ext_Zimop => true

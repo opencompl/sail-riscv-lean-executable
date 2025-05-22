@@ -149,7 +149,6 @@ open amoop
 open agtype
 open WaitReason
 open TrapVectorMode
-open TR_Result
 open Step
 open SATPMode
 open Register
@@ -284,7 +283,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
           (Sail.BitVec.extractLsb v ((8 *i i) +i 7) (8 *i i))))
   (pure loop_vars)
 
-/-- Type quantifiers: k_ex369889# : Bool, k_ex369888# : Bool -/
+/-- Type quantifiers: k_ex370448# : Bool, k_ex370447# : Bool -/
 def pmpWriteAddr (locked : Bool) (tor_locked : Bool) (reg : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   bif (locked || tor_locked)
   then reg

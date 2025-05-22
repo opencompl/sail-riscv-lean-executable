@@ -149,7 +149,6 @@ open amoop
 open agtype
 open WaitReason
 open TrapVectorMode
-open TR_Result
 open Step
 open SATPMode
 open Register
@@ -190,8 +189,8 @@ def rvfi_fetch (_ : Unit) : SailM FetchResult := do
       else
         (do
           match (← (translateAddr use_pc (InstructionFetch ()))) with
-          | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
-          | .TR_Address (_, _) =>
+          | .Err (e, _) => (pure (F_Error (e, (← readReg PC))))
+          | .Ok (_, _) =>
             (do
               let i ← do
                 (pure (_get_RVFI_DII_Instruction_Packet_rvfi_insn (← readReg rvfi_instruction)))
@@ -207,6 +206,6 @@ def rvfi_fetch (_ : Unit) : SailM FetchResult := do
                   | .Ext_FetchAddr_OK use_pc_hi =>
                     (do
                       match (← (translateAddr use_pc_hi (InstructionFetch ()))) with
-                      | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
-                      | .TR_Address (_, _) => (pure (F_Base i)))))))
+                      | .Err (e, _) => (pure (F_Error (e, (← readReg PC))))
+                      | .Ok (_, _) => (pure (F_Base i)))))))
 

@@ -149,7 +149,6 @@ open amoop
 open agtype
 open WaitReason
 open TrapVectorMode
-open TR_Result
 open Step
 open SATPMode
 open Register
@@ -189,8 +188,8 @@ def fetch (_ : Unit) : SailM FetchResult := do
           else
             (do
               match (← (translateAddr use_pc (InstructionFetch ()))) with
-              | .TR_Failure (e, _) => (pure (F_Error (e, (← readReg PC))))
-              | .TR_Address (ppclo, _) =>
+              | .Err (e, _) => (pure (F_Error (e, (← readReg PC))))
+              | .Ok (ppclo, _) =>
                 (do
                   match (← (mem_read (InstructionFetch ()) ppclo 2 false false false)) with
                   | .Err e => (pure (F_Error (e, (← readReg PC))))
@@ -206,8 +205,8 @@ def fetch (_ : Unit) : SailM FetchResult := do
                           | .Ext_FetchAddr_OK use_pc_hi =>
                             (do
                               match (← (translateAddr use_pc_hi (InstructionFetch ()))) with
-                              | .TR_Failure (e, _) => (pure (F_Error (e, PC_hi)))
-                              | .TR_Address (ppchi, _) =>
+                              | .Err (e, _) => (pure (F_Error (e, PC_hi)))
+                              | .Ok (ppchi, _) =>
                                 (do
                                   match (← (mem_read (InstructionFetch ()) ppchi 2 false false
                                       false)) with

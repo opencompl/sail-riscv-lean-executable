@@ -149,7 +149,6 @@ open amoop
 open agtype
 open WaitReason
 open TrapVectorMode
-open TR_Result
 open Step
 open SATPMode
 open Register
@@ -341,7 +340,7 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionRes
     (do
       let res ← (( do
         match (← (translateAddr vaddr (Read Data))) with
-        | .TR_Address (paddr, _) =>
+        | .Ok (paddr, _) =>
           (do
             let ep ← do
               (effectivePrivilege (Read Data) (← readReg mstatus) (← readReg cur_privilege))
@@ -350,7 +349,7 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionRes
             match (exc_read, exc_write) with
             | (.some exc_read, .some exc_write) => (pure (some exc_write))
             | _ => (pure none))
-        | .TR_Failure (e, _) => (pure (some e)) ) : SailM (Option ExceptionType) )
+        | .Err (e, _) => (pure (some e)) ) : SailM (Option ExceptionType) )
       match res with
       | none => (pure RETIRE_SUCCESS)
       | .some e =>

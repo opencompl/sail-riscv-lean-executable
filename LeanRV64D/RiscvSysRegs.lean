@@ -149,7 +149,6 @@ open amoop
 open agtype
 open WaitReason
 open TrapVectorMode
-open TR_Result
 open Step
 open SATPMode
 open Register
@@ -690,28 +689,31 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   match merge_var with
   | Ext_Sstc => (pure (hartSupports Ext_Sstc))
   | Ext_U =>
-    (pure ((hartSupports Ext_U) && ((_get_Misa_U (← readReg misa)) == (0b1 : (BitVec 1)))))
+    (pure ((hartSupports Ext_U) && (((_get_Misa_U (← readReg misa)) == (0b1 : (BitVec 1))) && (← (currentlyEnabled
+              Ext_Zicsr)))))
   | Ext_S =>
-    (pure ((hartSupports Ext_S) && ((_get_Misa_S (← readReg misa)) == (0b1 : (BitVec 1)))))
+    (pure ((hartSupports Ext_S) && (((_get_Misa_S (← readReg misa)) == (0b1 : (BitVec 1))) && (← (currentlyEnabled
+              Ext_Zicsr)))))
   | Ext_Svbare => (currentlyEnabled Ext_S)
   | Ext_Sv32 => (pure ((hartSupports Ext_Sv32) && (← (currentlyEnabled Ext_S))))
   | Ext_Sv39 => (pure ((hartSupports Ext_Sv39) && (← (currentlyEnabled Ext_S))))
   | Ext_Sv48 => (pure ((hartSupports Ext_Sv48) && (← (currentlyEnabled Ext_S))))
   | Ext_Sv57 => (pure ((hartSupports Ext_Sv57) && (← (currentlyEnabled Ext_S))))
   | Ext_V =>
-    (pure ((hartSupports Ext_V) && (((_get_Misa_V (← readReg misa)) == (0b1 : (BitVec 1))) && ((_get_Mstatus_VS
-              (← readReg mstatus)) != (0b00 : (BitVec 2))))))
-  | Ext_Zihpm => (pure ((hartSupports Ext_Zihpm) && (← (currentlyEnabled Ext_Zicntr))))
+    (pure ((hartSupports Ext_V) && (((_get_Misa_V (← readReg misa)) == (0b1 : (BitVec 1))) && (((_get_Mstatus_VS
+                (← readReg mstatus)) != (0b00 : (BitVec 2))) && (← (currentlyEnabled Ext_Zicsr))))))
+  | Ext_Zihpm => (pure ((hartSupports Ext_Zihpm) && (← (currentlyEnabled Ext_Zicsr))))
   | Ext_Sscofpmf => (pure ((hartSupports Ext_Sscofpmf) && (← (currentlyEnabled Ext_Zihpm))))
   | Ext_Zkr => (pure (hartSupports Ext_Zkr))
-  | Ext_Zicntr => (pure (hartSupports Ext_Zicntr))
+  | Ext_Zicntr => (pure ((hartSupports Ext_Zicntr) && (← (currentlyEnabled Ext_Zicsr))))
   | Ext_F =>
-    (pure ((hartSupports Ext_F) && (((_get_Misa_F (← readReg misa)) == (0b1 : (BitVec 1))) && ((_get_Mstatus_FS
-              (← readReg mstatus)) != (0b00 : (BitVec 2))))))
+    (pure ((hartSupports Ext_F) && (((_get_Misa_F (← readReg misa)) == (0b1 : (BitVec 1))) && (((_get_Mstatus_FS
+                (← readReg mstatus)) != (0b00 : (BitVec 2))) && (← (currentlyEnabled Ext_Zicsr))))))
   | Ext_D =>
     (pure ((hartSupports Ext_D) && (((_get_Misa_D (← readReg misa)) == (0b1 : (BitVec 1))) && (((_get_Mstatus_FS
-                (← readReg mstatus)) != (0b00 : (BitVec 2))) && (flen ≥b 64)))))
-  | Ext_Zfinx => (pure (hartSupports Ext_Zfinx))
+                (← readReg mstatus)) != (0b00 : (BitVec 2))) && ((flen ≥b 64) && (← (currentlyEnabled
+                  Ext_Zicsr)))))))
+  | Ext_Zfinx => (pure ((hartSupports Ext_Zfinx) && (← (currentlyEnabled Ext_Zicsr))))
   | Ext_Smcntrpmf => (pure ((hartSupports Ext_Smcntrpmf) && (← (currentlyEnabled Ext_Zicntr))))
   | Ext_Svnapot => (pure false)
   | Ext_Svpbmt => (pure false)
@@ -728,6 +730,7 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_M =>
     (pure ((hartSupports Ext_M) && ((_get_Misa_M (← readReg misa)) == (0b1 : (BitVec 1)))))
   | Ext_Zmmul => (pure ((hartSupports Ext_Zmmul) || (← (currentlyEnabled Ext_M))))
+  | Ext_Zicsr => (pure (hartSupports Ext_Zicsr))
   | Ext_Zfh => (pure ((hartSupports Ext_Zfh) && (← (currentlyEnabled Ext_F))))
   | Ext_Zfhmin =>
     (pure (((hartSupports Ext_Zfhmin) && (← (currentlyEnabled Ext_F))) || (← (currentlyEnabled
