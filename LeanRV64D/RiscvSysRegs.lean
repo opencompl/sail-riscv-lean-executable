@@ -585,27 +585,18 @@ def _set_Misa_Z (r_ref : (RegisterRef (BitVec (2 ^ 3 * 8)))) (v : (BitVec 1)) : 
   let r ← do (reg_deref r_ref)
   writeRegRef r_ref (_update_Misa_Z r v)
 
-def sys_enable_writable_misa (_ : Unit) : Bool :=
-  true
+def sys_enable_writable_misa : Bool := true
 
-def sys_enable_writable_fiom (_ : Unit) : Bool :=
-  true
+def sys_enable_writable_fiom : Bool := true
 
-def sys_pmp_count (_ : Unit) : Int :=
-  16
-
-def sys_pmp_grain (_ : Unit) : Nat :=
-  0
-
-def sys_writable_hpm_counters (_ : Unit) : (BitVec 32) :=
-  (0xFFFFFFFF : (BitVec 32))
+def sys_writable_hpm_counters : (BitVec 32) := (0xFFFFFFFF : (BitVec 32))
 
 def ext_veto_disable_C (_ : Unit) : Bool :=
   false
 
 def legalize_misa (m : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : SailM (BitVec (2 ^ 3 * 8)) := do
   let v := (Mk_Misa v)
-  bif ((not (sys_enable_writable_misa ())) || (((_get_Misa_C v) == (0b0 : (BitVec 1))) && (((BitVec.access
+  bif ((not sys_enable_writable_misa) || (((_get_Misa_C v) == (0b0 : (BitVec 1))) && (((BitVec.access
                (← readReg nextPC) 1) == 1#1) || (ext_veto_disable_C ()))))
   then (pure m)
   else
@@ -1327,7 +1318,7 @@ def legalize_menvcfg (o : (BitVec 64)) (v : (BitVec 64)) : SailM (BitVec 64) := 
         (_update_MEnvcfg_CBCFE
           (_update_MEnvcfg_CBZE
             (_update_MEnvcfg_FIOM o
-              (bif (sys_enable_writable_fiom ())
+              (bif sys_enable_writable_fiom
               then (_get_MEnvcfg_FIOM v)
               else (0b0 : (BitVec 1))))
             (← do
@@ -1356,7 +1347,7 @@ def legalize_senvcfg (o : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : Sai
       (_update_SEnvcfg_CBCFE
         (_update_SEnvcfg_CBZE
           (_update_SEnvcfg_FIOM o
-            (bif (sys_enable_writable_fiom ())
+            (bif sys_enable_writable_fiom
             then (_get_SEnvcfg_FIOM v)
             else (0b0 : (BitVec 1))))
           (← do
@@ -1852,12 +1843,12 @@ def _set_Counteren_TM (r_ref : (RegisterRef (BitVec 32))) (v : (BitVec 1)) : Sai
 
 def legalize_scounteren (c : (BitVec 32)) (v : (BitVec (2 ^ 3 * 8))) : (BitVec 32) :=
   let supported_counters :=
-    ((Sail.BitVec.extractLsb (sys_writable_hpm_counters ()) 31 3) ++ (0b111 : (BitVec 3)))
+    ((Sail.BitVec.extractLsb sys_writable_hpm_counters 31 3) ++ (0b111 : (BitVec 3)))
   (Mk_Counteren ((Sail.BitVec.extractLsb v 31 0) &&& supported_counters))
 
 def legalize_mcounteren (c : (BitVec 32)) (v : (BitVec (2 ^ 3 * 8))) : (BitVec 32) :=
   let supported_counters :=
-    ((Sail.BitVec.extractLsb (sys_writable_hpm_counters ()) 31 3) ++ (0b111 : (BitVec 3)))
+    ((Sail.BitVec.extractLsb sys_writable_hpm_counters 31 3) ++ (0b111 : (BitVec 3)))
   (Mk_Counteren ((Sail.BitVec.extractLsb v 31 0) &&& supported_counters))
 
 def undefined_Counterin (_ : Unit) : SailM (BitVec 32) := do
@@ -1868,7 +1859,7 @@ def Mk_Counterin (v : (BitVec 32)) : (BitVec 32) :=
 
 def legalize_mcountinhibit (c : (BitVec 32)) (v : (BitVec (2 ^ 3 * 8))) : (BitVec 32) :=
   let supported_counters :=
-    ((Sail.BitVec.extractLsb (sys_writable_hpm_counters ()) 31 3) ++ (0b101 : (BitVec 3)))
+    ((Sail.BitVec.extractLsb sys_writable_hpm_counters 31 3) ++ (0b101 : (BitVec 3)))
   (Mk_Counterin ((Sail.BitVec.extractLsb v 31 0) &&& supported_counters))
 
 def undefined_Sstatus (_ : Unit) : SailM (BitVec 64) := do
@@ -2042,8 +2033,7 @@ def legalize_satp (arch : Architecture) (prev_value : (BitVec (2 ^ 3 * 8))) (wri
           else (pure prev_value))
       | _ => (pure prev_value))
 
-def get_vlenb (_ : Unit) : (BitVec (2 ^ 3 * 8)) :=
-  (to_bits (l := ((2 ^i 3) *i 8)) (Int.tdiv (2 ^i (get_vlen_pow ())) 8))
+def VLENB : xlenbits := (to_bits (l := ((2 ^i 3) *i 8)) (Int.tdiv (2 ^i VLEN_pow) 8))
 
 def undefined_Vtype (_ : Unit) : SailM (BitVec (2 ^ 3 * 8)) := do
   (undefined_bitvector ((2 ^i 3) *i 8))

@@ -1147,6 +1147,12 @@ inductive Register : Type where
   | htif_tohost
   | stimecmp
   | mtimecmp
+  | plat_clint_size
+  | plat_clint_base
+  | plat_rom_size
+  | plat_rom_base
+  | plat_ram_size
+  | plat_ram_base
   | minstretcfg
   | mcyclecfg
   | fcsr
@@ -1311,6 +1317,12 @@ abbrev RegisterType : Register → Type
   | .htif_tohost => (BitVec 64)
   | .stimecmp => (BitVec 64)
   | .mtimecmp => (BitVec 64)
+  | .plat_clint_size => (BitVec 64)
+  | .plat_clint_base => (BitVec 64)
+  | .plat_rom_size => (BitVec 64)
+  | .plat_rom_base => (BitVec 64)
+  | .plat_ram_size => (BitVec 64)
+  | .plat_ram_base => (BitVec 64)
   | .minstretcfg => (BitVec 64)
   | .mcyclecfg => (BitVec 64)
   | .fcsr => (BitVec 32)

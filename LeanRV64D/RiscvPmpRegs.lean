@@ -169,6 +169,10 @@ open ExceptionType
 open Architecture
 open AccessType
 
+def sys_pmp_count : Int := 16
+
+def sys_pmp_grain : Nat := 0
+
 def undefined_PmpAddrMatchType (_ : Unit) : SailM PmpAddrMatchType := do
   (internal_pick [OFF, TOR, NA4, NAPOT])
 
@@ -225,7 +229,7 @@ def pmpReadCfgReg (n : Nat) : SailM (BitVec (2 ^ 3 * 8)) := do
 
 /-- Type quantifiers: n : Nat, 0 ≤ n ∧ n ≤ 63 -/
 def pmpReadAddrReg (n : Nat) : SailM (BitVec (2 ^ 3 * 8)) := do
-  let G := (sys_pmp_grain ())
+  let G := sys_pmp_grain
   let match_type ← do (pure (_get_Pmpcfg_ent_A (GetElem?.getElem! (← readReg pmpcfg_n) n)))
   let addr ← do (pure (GetElem?.getElem! (← readReg pmpaddr_n) n))
   match (BitVec.access match_type 1) with
@@ -264,7 +268,7 @@ def pmpWriteCfg (n : Nat) (cfg : (BitVec 8)) (v : (BitVec 8)) : (BitVec 8) :=
           (_update_Pmpcfg_ent_W (_update_Pmpcfg_ent_X cfg (0b0 : (BitVec 1))) (0b0 : (BitVec 1)))
           (0b0 : (BitVec 1)))
       else cfg
-    bif (((sys_pmp_grain ()) ≥b 1) && ((pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) == NA4))
+    bif ((sys_pmp_grain ≥b 1) && ((pmpAddrMatchType_of_bits (_get_Pmpcfg_ent_A cfg)) == NA4))
     then (_update_Pmpcfg_ent_A cfg (pmpAddrMatchType_to_bits OFF))
     else cfg)
 
@@ -283,7 +287,7 @@ def pmpWriteCfgReg (n : Nat) (v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
           (Sail.BitVec.extractLsb v ((8 *i i) +i 7) (8 *i i))))
   (pure loop_vars)
 
-/-- Type quantifiers: k_ex370448# : Bool, k_ex370447# : Bool -/
+/-- Type quantifiers: k_ex370224# : Bool, k_ex370223# : Bool -/
 def pmpWriteAddr (locked : Bool) (tor_locked : Bool) (reg : (BitVec (2 ^ 3 * 8))) (v : (BitVec (2 ^ 3 * 8))) : (BitVec (2 ^ 3 * 8)) :=
   bif (locked || tor_locked)
   then reg

@@ -169,7 +169,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex432352# : Bool, step_no : Int -/
+/-- Type quantifiers: k_ex432061# : Bool, step_no : Int -/
 def run_hart_waiting (step_no : Int) (wr : WaitReason) (instbits : (BitVec 32)) (exit_wait : Bool) : SailM Step := do
   bif (← (shouldWakeForInterrupt ()))
   then
@@ -318,7 +318,7 @@ def wait_is_nop (wr : WaitReason) : Bool :=
   | WAIT_WRS_STO => false
   | WAIT_WRS_NTO => false
 
-/-- Type quantifiers: k_ex432389# : Bool, step_no : Nat, 0 ≤ step_no -/
+/-- Type quantifiers: k_ex432098# : Bool, step_no : Nat, 0 ≤ step_no -/
 def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))
@@ -386,7 +386,6 @@ def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
       (pure true))
 
 def loop (_ : Unit) : SailM Unit := do
-  let insns_per_tick := (plat_insns_per_tick ())
   let i : Nat := 0
   let step_no : Nat := 0
   let (i, step_no) ← (( do
@@ -420,7 +419,7 @@ def loop (_ : Unit) : SailM Unit := do
           else
             (do
               let i : Nat := (i +i 1)
-              bif (i == insns_per_tick)
+              bif (i == plat_insns_per_tick)
               then
                 (do
                   (tick_clock ())

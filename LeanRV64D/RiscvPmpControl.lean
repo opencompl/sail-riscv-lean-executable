@@ -217,7 +217,7 @@ def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (ent : (BitVe
           width)))
   | NA4 =>
     (do
-      assert ((sys_pmp_grain ()) <b 1) "NA4 cannot be selected when PMP grain G >= 1."
+      assert (sys_pmp_grain <b 1) "NA4 cannot be selected when PMP grain G >= 1."
       let begin := ((BitVec.toNat pmpaddr) *i 4)
       (pure (pmpRangeMatch begin (begin +i 4) addr width)))
   | NAPOT =>
@@ -282,7 +282,6 @@ def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : P
   else (pure (some (accessToFault acc)))
 
 def reset_pmp (_ : Unit) : SailM Unit := do
-  assert (((sys_pmp_count ()) == 0) || ((((sys_pmp_count ()) == 16) || (((sys_pmp_count ()) == 64) : Bool)) : Bool)) "sys_pmp_count() must be 0, 16, or 64"
   let loop_i_lower := 0
   let loop_i_upper := 63
   let mut loop_vars := ()

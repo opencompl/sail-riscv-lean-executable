@@ -169,11 +169,9 @@ open ExceptionType
 open Architecture
 open AccessType
 
-def get_elen_pow (_ : Unit) : Nat :=
-  6
+def ELEN_pow : Nat := 6
 
-def get_vlen_pow (_ : Unit) : Nat :=
-  9
+def VLEN_pow : Nat := 9
 
-def VLEN := (2 ^i (get_vlen_pow ()))
+def VLEN := (2 ^i VLEN_pow)
 

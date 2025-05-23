@@ -329,11 +329,10 @@ def cbop_priv_check (p : Privilege) : SailM checked_cbop := do
 
 def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionResult := do
   let rs1_val ← do (rX_bits rs1)
-  let cache_block_size_exp := (plat_cache_block_size_exp ())
-  let cache_block_size := (2 ^i cache_block_size_exp)
+  let cache_block_size := (2 ^i plat_cache_block_size_exp)
   let negative_offset :=
     ((rs1_val &&& (Complement.complement
-          (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := cache_block_size_exp))))) - rs1_val)
+          (zero_extend (m := ((2 ^i 3) *i 8)) (ones (n := plat_cache_block_size_exp))))) - rs1_val)
   match (← (ext_data_get_addr rs1 negative_offset (Read Data) cache_block_size)) with
   | .Ext_DataAddr_Error e => (pure (Ext_DataAddr_Check_Failure e))
   | .Ext_DataAddr_OK vaddr =>
@@ -361,7 +360,7 @@ def process_clean_inval (rs1 : regidx) (cbop : cbop_zicbom) : SailM ExecutionRes
             | .E_Load_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
             | .E_SAMO_Page_Fault () => (pure (E_SAMO_Page_Fault ()))
             | _ =>
-              (internal_error "riscv_insts_zicbom.sail" 125
+              (internal_error "riscv_insts_zicbom.sail" 124
                 "unexpected exception for cmo.clean/inval") ) : SailM ExceptionType )
           (pure (Memory_Exception ((sub_virtaddr_xlenbits vaddr negative_offset), e)))))
 

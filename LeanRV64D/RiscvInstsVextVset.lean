@@ -275,8 +275,7 @@ def handle_illegal_vtype (_ : Unit) : SailM Unit := do
   (csr_name_write_callback "vtype" (← readReg vtype))
   (csr_name_write_callback "vl" (← readReg vl))
 
-def vl_use_ceil (_ : Unit) : Bool :=
-  false
+def vl_use_ceil : Bool := false
 
 /-- Type quantifiers: VLMAX : Int, AVL : Int -/
 def calculate_new_vl (AVL : Int) (VLMAX : Int) : (BitVec (2 ^ 3 * 8)) :=
@@ -286,7 +285,7 @@ def calculate_new_vl (AVL : Int) (VLMAX : Int) : (BitVec (2 ^ 3 * 8)) :=
     else
       (bif (AVL <b (2 *i VLMAX))
       then
-        (bif (vl_use_ceil ())
+        (bif vl_use_ceil
         then (Int.tdiv (AVL +i 1) 2)
         else VLMAX)
       else VLMAX)
