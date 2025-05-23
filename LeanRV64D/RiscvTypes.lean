@@ -4532,13 +4532,13 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .C_SH (uimm, rs1c, rs2c) =>
     (pure (String.append "c.sh"
         (String.append (spc_forwards ())
-          (String.append (creg_name_forwards rs1c)
+          (String.append (creg_name_forwards rs2c)
             (String.append (sep_forwards ())
               (String.append (← (hex_bits_2_forwards uimm))
                 (String.append (opt_spc_forwards ())
                   (String.append "("
                     (String.append (opt_spc_forwards ())
-                      (String.append (creg_name_forwards rs2c)
+                      (String.append (creg_name_forwards rs1c)
                         (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))
   | .C_ZEXT_B rsdc =>
     (pure (String.append "c.zext.b"
