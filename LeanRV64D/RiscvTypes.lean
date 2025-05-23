@@ -5883,22 +5883,19 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
-              (String.append (vreg_name_forwards vs2)
-                (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
   | .VCTZ_V (vm, vs2, vd) =>
     (pure (String.append "vctz.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
-              (String.append (vreg_name_forwards vs2)
-                (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
   | .VCPOP_V (vm, vs2, vd) =>
     (pure (String.append "vcpop.v"
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
-              (String.append (vreg_name_forwards vs2)
-                (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))
+              (String.append (vreg_name_forwards vs2) (String.append (maybe_vmask_backwards vm) "")))))))
   | .VROL_VV (vm, vs1, vs2, vd) =>
     (pure (String.append "vrol.vv"
         (String.append (spc_forwards ())
@@ -5952,7 +5949,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ())
                   (String.append (vreg_name_forwards vs1)
-                    (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
   | .VWSLL_VX (vm, vs2, rs1, vd) =>
     (pure (String.append "vwsll.vx"
         (String.append (spc_forwards ())
@@ -5961,7 +5958,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ())
                   (String.append (← (reg_name_forwards rs1))
-                    (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
   | .VWSLL_VI (vm, vs2, uimm, vd) =>
     (pure (String.append "vwsll.vi"
         (String.append (spc_forwards ())
@@ -5970,7 +5967,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ())
                   (String.append (← (hex_bits_5_forwards uimm))
-                    (String.append (sep_forwards ()) (String.append (maybe_vmask_backwards vm) ""))))))))))
+                    (String.append (maybe_vmask_backwards vm) "")))))))))
   | .VCLMUL_VV (vm, vs2, vs1, vd) =>
     (pure (String.append "vclmul.vv"
         (String.append (spc_forwards ())
@@ -6021,7 +6018,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
     (pure (String.append (vaesef_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
-            (String.append (spc_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VAESEM (funct6, vs2, vd) =>
     (pure (String.append (vaesem_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
@@ -6029,21 +6026,21 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VAESKF1_VI (vs2, rnd, vd) =>
     (pure (String.append "vaeskf1.vi"
-        (String.append (sep_forwards ())
+        (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards rnd)) ""))))))))
   | .VAESKF2_VI (vs2, rnd, vd) =>
     (pure (String.append "vaeskf2.vi"
-        (String.append (sep_forwards ())
+        (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
                 (String.append (sep_forwards ()) (String.append (← (hex_bits_5_forwards rnd)) ""))))))))
   | .VAESZ_VS (vs2, vd) =>
     (pure (String.append "vaesz.vs"
-        (String.append (sep_forwards ())
+        (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VSHA2MS_VV (vs2, vs1, vd) =>
@@ -6056,9 +6053,9 @@ def assembly_forwards (arg_ : ast) : SailM String := do
     (pure (String.append (vsha2c_mnemonic_forwards funct6)
         (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
-            (String.append (spc_forwards ())
+            (String.append (sep_forwards ())
               (String.append (vreg_name_forwards vs2)
-                (String.append (spc_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
   | .VSM3ME_VV (vs2, vs1, vd) =>
     (pure (String.append "vsm3me.vv"
         (String.append (spc_forwards ())

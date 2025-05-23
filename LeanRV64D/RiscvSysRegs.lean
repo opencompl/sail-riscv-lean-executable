@@ -664,26 +664,26 @@ def _get_Mstatus_VS (v : (BitVec 64)) : (BitVec 2) :=
 
 def currentlyEnabled_measure (ext : extension) : Int :=
   match ext with
-  | Ext_A => 0
-  | Ext_B => 0
-  | Ext_C => 0
-  | Ext_D => 0
-  | Ext_F => 0
-  | Ext_M => 0
-  | Ext_S => 0
-  | Ext_V => 0
-  | Ext_Smcntrpmf => 2
-  | Ext_Zabha => 2
-  | Ext_Zcb => 2
-  | Ext_Zcd => 2
-  | Ext_Zcf => 2
-  | Ext_Zcmop => 2
-  | Ext_Zfhmin => 2
-  | Ext_Zhinx => 2
-  | Ext_Zihpm => 2
-  | Ext_Zvkb => 2
+  | Ext_Zicsr => 0
+  | Ext_A => 1
+  | Ext_B => 1
+  | Ext_C => 1
+  | Ext_D => 1
+  | Ext_F => 1
+  | Ext_M => 1
+  | Ext_S => 1
+  | Ext_V => 1
+  | Ext_Smcntrpmf => 3
+  | Ext_Zabha => 3
+  | Ext_Zcb => 3
+  | Ext_Zcd => 3
+  | Ext_Zcf => 3
+  | Ext_Zcmop => 3
+  | Ext_Zfhmin => 3
+  | Ext_Zhinx => 3
+  | Ext_Zvkb => 3
   | Ext_Sscofpmf => 3
-  | _ => 1
+  | _ => 2
 
 def currentlyEnabled (merge_var : extension) : SailM Bool := do
   match merge_var with

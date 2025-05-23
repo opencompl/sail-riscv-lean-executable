@@ -36,13 +36,72 @@
 ✔ [37/107] Built LeanRV64D.RiscvFregType
 ✔ [38/107] Built LeanRV64D.RiscvRegs
 ✔ [39/107] Built LeanRV64D.RiscvPcAccess
-✖ [40/107] Building LeanRV64D.RiscvSysRegs
-trace: .> LEAN_PATH=/home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean /home/runner/.elan/toolchains/leanprover--lean4-nightly---nightly-2025-05-14/bin/lean --tstack=400000 -Dweak.linter.style.nameCheck=false /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean -R /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D -o /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvSysRegs.olean -i /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/lib/lean/LeanRV64D/RiscvSysRegs.ilean -c /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/.lake/build/ir/LeanRV64D/RiscvSysRegs.c --json
-error: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvSysRegs.lean:692:98: failed to prove termination, possible solutions:
-  - Use `have`-expressions to prove the remaining goals
-  - Use `termination_by` to specify a different well-founded relation
-  - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
-⊢ max (currentlyEnabled_measure Ext_Zicsr) 0 < currentlyEnabled_measure Ext_U
-error: Lean exited with code 1
-Some required builds logged failures:
-- LeanRV64D.RiscvSysRegs
+✔ [40/107] Built LeanRV64D.RiscvSysRegs
+✔ [41/107] Built LeanRV64D.RiscvPmpRegs
+✔ [42/107] Built LeanRV64D.RiscvPmpControl
+✔ [43/107] Built LeanRV64D.RiscvExtRegs
+✔ [44/107] Built LeanRV64D.RiscvAddrChecks
+✔ [45/107] Built LeanRV64D.RiscvVregType
+✔ [46/107] Built LeanRV64D.RiscvVextRegs
+✔ [47/107] Built LeanRV64D.RiscvVextControl
+✔ [48/107] Built LeanRV64D.RiscvSysExceptions
+✔ [49/107] Built LeanRV64D.RiscvZihpm
+✔ [50/107] Built LeanRV64D.RiscvSscofpmf
+✔ [51/107] Built LeanRV64D.RiscvZkrControl
+✔ [52/107] Built LeanRV64D.RiscvSoftfloatInterface
+✔ [53/107] Built LeanRV64D.RiscvFdextRegs
+✔ [54/107] Built LeanRV64D.RiscvSmcntrpmf
+✔ [55/107] Built LeanRV64D.RiscvSysControl
+✔ [56/107] Built LeanRV64D.RiscvPlatform
+✔ [57/107] Built LeanRV64D.RiscvMem
+✔ [58/107] Built LeanRV64D.RiscvInstRetire
+✔ [59/107] Built LeanRV64D.RiscvVmemPte
+✔ [60/107] Built LeanRV64D.RiscvVmemPtw
+✔ [61/107] Built LeanRV64D.RiscvVmemTlb
+⚠ [62/107] Built LeanRV64D.RiscvVmem
+warning: /home/runner/work/sail-riscv-lean/sail-riscv-lean/sail-riscv/build/model/Lean_RV64D/LeanRV64D/RiscvVmem.lean:215:20: The `grind` tactic is experimental and still under development. Avoid using it in production projects.
+✔ [63/107] Built LeanRV64D.RiscvVmemUtils
+✔ [64/107] Built LeanRV64D.RiscvTypesKext
+✔ [65/107] Built LeanRV64D.RiscvZvkUtils
+✔ [66/107] Built LeanRV64D.RiscvInstsBase
+✔ [67/107] Built LeanRV64D.RiscvInstsZaamo
+✔ [68/107] Built LeanRV64D.RiscvInstsZalrsc
+✔ [69/107] Built LeanRV64D.RiscvInstsMext
+✔ [70/107] Built LeanRV64D.RiscvInstsZicsr
+✔ [71/107] Built LeanRV64D.RiscvInstsFext
+✔ [72/107] Built LeanRV64D.RiscvInstsDext
+✔ [73/107] Built LeanRV64D.RiscvInstsZba
+✔ [74/107] Built LeanRV64D.RiscvInstsZbb
+✔ [75/107] Built LeanRV64D.RiscvInstsZbs
+✔ [76/107] Built LeanRV64D.RiscvInstsZfh
+✔ [77/107] Built LeanRV64D.RiscvInstsZfa
+✔ [78/107] Built LeanRV64D.RiscvInstsZbkb
+✔ [79/107] Built LeanRV64D.RiscvInstsZicond
+✔ [80/107] Built LeanRV64D.RiscvInstsVextUtils
+✔ [81/107] Built LeanRV64D.RiscvInstsVextFpUtils
+✔ [82/107] Built LeanRV64D.RiscvInstsVextVset
+✔ [83/107] Built LeanRV64D.RiscvInstsVextArith
+✔ [84/107] Built LeanRV64D.RiscvInstsVextFp
+✔ [85/107] Built LeanRV64D.RiscvInstsVextMem
+✔ [86/107] Built LeanRV64D.RiscvInstsVextMask
+✔ [87/107] Built LeanRV64D.RiscvInstsVextVm
+✔ [88/107] Built LeanRV64D.RiscvInstsVextFpVm
+✔ [89/107] Built LeanRV64D.RiscvInstsVextRed
+✔ [90/107] Built LeanRV64D.RiscvInstsVextFpRed
+✔ [91/107] Built LeanRV64D.RiscvInstsZicbom
+✔ [92/107] Built LeanRV64D.RiscvInstsZicboz
+✔ [93/107] Built LeanRV64D.RiscvInstsZawrs
+✔ [94/107] Built LeanRV64D.RiscvInstsZvkned
+✔ [95/107] Built LeanRV64D.RiscvInstsZvknhab
+✔ [96/107] Built LeanRV64D.RiscvInstsEnd
+✔ [97/107] Built LeanRV64D.RiscvCsrEnd
+✔ [98/107] Built LeanRV64D.RiscvStepCommon
+✔ [99/107] Built LeanRV64D.RiscvStepExt
+✔ [100/107] Built LeanRV64D.RiscvDecodeExt
+✔ [101/107] Built LeanRV64D.RiscvFetchRvfi
+✔ [102/107] Built LeanRV64D.RiscvFetch
+✔ [103/107] Built LeanRV64D.RiscvStep
+✔ [104/107] Built LeanRV64D.RiscvTermination
+✔ [105/107] Built LeanRV64D.Main
+✔ [106/107] Built LeanRV64D
+Build completed successfully.
