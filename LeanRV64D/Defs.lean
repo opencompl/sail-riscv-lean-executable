@@ -529,7 +529,7 @@ inductive ast where
   | RTYPEW (_ : (regidx × regidx × regidx × ropw))
   | SHIFTIWOP (_ : ((BitVec 5) × regidx × regidx × sopw))
   | FENCE (_ : ((BitVec 4) × (BitVec 4)))
-  | FENCE_TSO (_ : ((BitVec 4) × (BitVec 4)))
+  | FENCE_TSO (_ : Unit)
   | ECALL (_ : Unit)
   | MRET (_ : Unit)
   | SRET (_ : Unit)

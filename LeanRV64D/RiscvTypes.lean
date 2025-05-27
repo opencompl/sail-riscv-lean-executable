@@ -2647,7 +2647,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex368140# : Bool -/
+/-- Type quantifiers: k_ex367974# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2686,19 +2686,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex368148# : Bool -/
+/-- Type quantifiers: k_ex367982# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex368149# : Bool -/
+/-- Type quantifiers: k_ex367983# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex368150# : Bool -/
+/-- Type quantifiers: k_ex367984# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3520,11 +3520,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (String.append (spc_forwards ())
           (String.append (fence_bits_forwards pred)
             (String.append (sep_forwards ()) (String.append (fence_bits_forwards succ) ""))))))
-  | .FENCE_TSO (pred, succ) =>
-    (pure (String.append "fence.tso"
-        (String.append (spc_forwards ())
-          (String.append (fence_bits_forwards pred)
-            (String.append (sep_forwards ()) (String.append (fence_bits_forwards succ) ""))))))
+  | .FENCE_TSO () => (pure "fence.tso")
   | .ECALL () => (pure "ecall")
   | .MRET () => (pure "mret")
   | .SRET () => (pure "sret")
@@ -4789,7 +4785,9 @@ def assembly_forwards (arg_ : ast) : SailM String := do
     (pure (String.append "fcvtmod.w.d"
         (String.append (spc_forwards ())
           (String.append (← (reg_name_forwards rd))
-            (String.append (sep_forwards ()) (String.append (freg_name_forwards rs1) ""))))))
+            (String.append (sep_forwards ())
+              (String.append (freg_name_forwards rs1)
+                (String.append (sep_forwards ()) (String.append "rtz" ""))))))))
   | .SHA256SIG0 (rs1, rd) =>
     (pure (String.append "sha256sig0"
         (String.append (spc_forwards ())

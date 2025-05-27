@@ -529,11 +529,11 @@ def rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   | "sra" => true
   | _ => false
 
-/-- Type quantifiers: k_ex374544# : Bool -/
+/-- Type quantifiers: k_ex374372# : Bool -/
 def valid_load_encdec (width : word_width) (is_unsigned : Bool) : Bool :=
   (((size_bytes_forwards width) <b xlen_bytes) || ((not is_unsigned) && (((size_bytes_forwards width) ≤b xlen_bytes) : Bool)))
 
-/-- Type quantifiers: k_ex374580# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
+/-- Type quantifiers: k_ex374408# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
 def extend_value (is_unsigned : Bool) (value : (BitVec k_n)) : (BitVec (2 ^ 3 * 8)) :=
   bif is_unsigned
   then (zero_extend (m := ((2 ^i 3) *i 8)) value)
@@ -548,7 +548,7 @@ def maybe_aq_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex374581# : Bool -/
+/-- Type quantifiers: k_ex374409# : Bool -/
 def maybe_aq_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -569,7 +569,7 @@ def maybe_rl_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex374582# : Bool -/
+/-- Type quantifiers: k_ex374410# : Bool -/
 def maybe_rl_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -590,7 +590,7 @@ def maybe_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex374583# : Bool -/
+/-- Type quantifiers: k_ex374411# : Bool -/
 def maybe_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -654,7 +654,7 @@ def shiftiwop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   | "sraiw" => true
   | _ => false
 
-/-- Type quantifiers: k_ex374584# : Bool -/
+/-- Type quantifiers: k_ex374412# : Bool -/
 def effective_fence_set (set : (BitVec 4)) (fiom : Bool) : (BitVec 4) :=
   bif fiom
   then
