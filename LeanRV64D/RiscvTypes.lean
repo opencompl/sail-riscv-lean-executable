@@ -3591,10 +3591,9 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (String.append (spc_forwards ())
           (String.append (creg_name_forwards rdc)
             (String.append (sep_forwards ())
-              (String.append (creg_name_forwards rsc)
-                (String.append (sep_forwards ())
-                  (String.append
-                    (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
+              (String.append
+                (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2)))))
+                (String.append "(" (String.append (creg_name_forwards rsc) (String.append ")" "")))))))))
   | .C_LD (uimm, rsc, rdc) =>
     (do
       bif (xlen == 64)
@@ -3603,10 +3602,10 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (spc_forwards ())
               (String.append (creg_name_forwards rdc)
                 (String.append (sep_forwards ())
-                  (String.append (creg_name_forwards rsc)
-                    (String.append (sep_forwards ())
-                      (String.append
-                        (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3))))) ""))))))))
+                  (String.append
+                    (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3)))))
+                    (String.append "("
+                      (String.append (creg_name_forwards rsc) (String.append ")" "")))))))))
       else
         (do
           assert false "Pattern match failure at unknown location"
@@ -3614,24 +3613,23 @@ def assembly_forwards (arg_ : ast) : SailM String := do
   | .C_SW (uimm, rsc1, rsc2) =>
     (pure (String.append "c.sw"
         (String.append (spc_forwards ())
-          (String.append (creg_name_forwards rsc1)
+          (String.append (creg_name_forwards rsc2)
             (String.append (sep_forwards ())
-              (String.append (creg_name_forwards rsc2)
-                (String.append (sep_forwards ())
-                  (String.append
-                    (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2))))) ""))))))))
+              (String.append
+                (← (hex_bits_7_forwards ((uimm : (BitVec 5)) ++ (0b00 : (BitVec 2)))))
+                (String.append "(" (String.append (creg_name_forwards rsc1) (String.append ")" "")))))))))
   | .C_SD (uimm, rsc1, rsc2) =>
     (do
       bif (xlen == 64)
       then
         (pure (String.append "c.sd"
             (String.append (spc_forwards ())
-              (String.append (creg_name_forwards rsc1)
+              (String.append (creg_name_forwards rsc2)
                 (String.append (sep_forwards ())
-                  (String.append (creg_name_forwards rsc2)
-                    (String.append (sep_forwards ())
-                      (String.append
-                        (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3))))) ""))))))))
+                  (String.append
+                    (← (hex_bits_8_forwards ((uimm : (BitVec 5)) ++ (0b000 : (BitVec 3)))))
+                    (String.append "("
+                      (String.append (creg_name_forwards rsc1) (String.append ")" "")))))))))
       else
         (do
           assert false "Pattern match failure at unknown location"
