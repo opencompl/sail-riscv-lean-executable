@@ -39,6 +39,13 @@ jobs:
         path: ~/.opam
         key: ${{ matrix.os }}-${{ matrix.version }}
 
+    - name: Restore cached lake directory
+      id: cache-lean-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: ~/.lake
+        key: ${{ matrix.os }}-${{ matrix.version }}
+
     - name: Setup opam
       if: steps.cache-opam-restore.outputs.cache-hit != 'true'
       run: |
@@ -89,6 +96,14 @@ jobs:
 
         ./report.py >> README.md
         cd ../../../..
+
+    - name: Save cached lake
+      if: steps.cache-lake-restore.outputs.cache-hit != 'true'
+      id: cache-lake-save
+      uses: actions/cache/save@v4
+      with:
+        path: ~/.lake
+        key: ${{ steps.cache-lake-restore.outputs.cache-primary-key }}
 
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
