@@ -708,11 +708,7 @@ def rX (app_0 : regno) : SailM (BitVec (2 ^ 3 * 8)) := do
     | 28 => readReg x28
     | 29 => readReg x29
     | 30 => readReg x30
-    | 31 => readReg x31
-    | _ =>
-      (do
-        assert false "invalid register number"
-        throw Error.Exit) ) : SailM regtype )
+    | _ => readReg x31 ) : SailM regtype )
   (pure (regval_from_reg v))
 
 def wX (typ_0 : regno) (in_v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
@@ -750,17 +746,18 @@ def wX (typ_0 : regno) (in_v : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
   | 28 => writeReg x28 v
   | 29 => writeReg x29 v
   | 30 => writeReg x30 v
-  | 31 => writeReg x31 v
-  | _ => assert false "invalid register number"
+  | _ => writeReg x31 v
   bif (r != 0)
-  then (xreg_write_callback (regno_to_regidx (Regno r)) in_v)
+  then (xreg_write_callback (Regidx (to_bits (l := 5) r)) in_v)
   else (pure ())
 
-def rX_bits (i : regidx) : SailM (BitVec (2 ^ 3 * 8)) := do
-  (rX (regidx_to_regno i))
+def rX_bits (app_0 : regidx) : SailM (BitVec (2 ^ 3 * 8)) := do
+  let .Regidx i := app_0
+  (rX (Regno (BitVec.toNat i)))
 
-def wX_bits (i : regidx) (data : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
-  (wX (regidx_to_regno i) data)
+def wX_bits (typ_0 : regidx) (data : (BitVec (2 ^ 3 * 8))) : SailM Unit := do
+  let .Regidx i : regidx := typ_0
+  (wX (Regno (BitVec.toNat i)) data)
 
 def encdec_reg_forwards (arg_ : regidx) : (BitVec 5) :=
   match arg_ with

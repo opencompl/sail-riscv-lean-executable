@@ -169,6 +169,19 @@ open ExceptionType
 open Architecture
 open AccessType
 
+/-- Type quantifiers: k_m : Nat, k_m ≥ 0 ∧ (k_m % 8) = 0 -/
+def brev8 (input : (BitVec k_m)) : (BitVec k_m) := Id.run do
+  let output : (BitVec k_m) := (zeros (n := (Sail.BitVec.length input)))
+  let loop_i_lower := 0
+  let loop_i_upper := ((Sail.BitVec.length output) -i 8)
+  let mut loop_vars := output
+  for i in [loop_i_lower:loop_i_upper:8]i do
+    let output := loop_vars
+    loop_vars :=
+      (Sail.BitVec.updateSubrange output (i +i 7) i
+        (reverse_bits (Sail.BitVec.extractLsb input (i +i 7) i)))
+  (pure loop_vars)
+
 /-- Type quantifiers: k_n : Nat, k_n > 0 -/
 def carryless_mul (a : (BitVec k_n)) (b : (BitVec k_n)) : (BitVec (2 * k_n)) := Id.run do
   let result : (BitVec (2 * k_n)) := (zeros (n := (2 *i (Sail.BitVec.length b))))
@@ -232,7 +245,7 @@ def count_ones (x : (BitVec k_n)) : SailM Nat := do
       then
         (do
           let new_count := (count +i 1)
-          assert (new_count ≤b (Sail.BitVec.length x)) "arithmetic.sail:58.28-58.29"
+          assert (new_count ≤b (Sail.BitVec.length x)) "arithmetic.sail:67.28-67.29"
           (pure new_count))
       else (pure count)
   (pure loop_vars)

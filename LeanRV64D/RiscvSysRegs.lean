@@ -760,6 +760,7 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
     (pure (((hartSupports Ext_Zvkb) || (← (currentlyEnabled Ext_Zvbb))) && (← (currentlyEnabled
             Ext_V))))
   | Ext_Zvbc => (pure ((hartSupports Ext_Zvbc) && (← (currentlyEnabled Ext_V))))
+  | Ext_Zvkg => (pure ((hartSupports Ext_Zvkg) && (← (currentlyEnabled Ext_V))))
   | Ext_Zvkned => (pure ((hartSupports Ext_Zvkned) && (← (currentlyEnabled Ext_V))))
   | Ext_Zvknha => (pure ((hartSupports Ext_Zvknha) && (← (currentlyEnabled Ext_V))))
   | Ext_Zvknhb => (pure ((hartSupports Ext_Zvknhb) && (← (currentlyEnabled Ext_V))))

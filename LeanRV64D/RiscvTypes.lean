@@ -185,14 +185,6 @@ def regidx_bits (app_0 : regidx) : (BitVec 5) :=
   let .Regidx b := app_0
   b
 
-def regidx_to_regno (app_0 : regidx) : regno :=
-  let .Regidx b := app_0
-  (Regno (BitVec.toNat b))
-
-def regno_to_regidx (app_0 : regno) : regidx :=
-  let .Regno b := app_0
-  (Regidx (to_bits (l := 5) b))
-
 def creg2reg_idx (app_0 : cregidx) : regidx :=
   let .Cregidx i := app_0
   (Regidx ((0b01 : (BitVec 2)) ++ i))
@@ -237,7 +229,7 @@ def architecture_backwards (arg_ : (BitVec 2)) : SailM Architecture := do
         (do
           bif (b__0 == (0b11 : (BitVec 2)))
           then (pure RV128)
-          else (internal_error "riscv_types.sail" 57 "architecture(0b00) is invalid")))
+          else (internal_error "riscv_types.sail" 54 "architecture(0b00) is invalid")))
 
 def architecture_forwards_matches (arg_ : Architecture) : Bool :=
   match arg_ with
@@ -295,7 +287,7 @@ def privLevel_bits_backwards (arg_ : (BitVec 2)) : SailM Privilege := do
           bif (b__0 == (0b11 : (BitVec 2)))
           then (pure Machine)
           else
-            (internal_error "riscv_types.sail" 69
+            (internal_error "riscv_types.sail" 66
               (HAppend.hAppend "Invalid privilege level: " (BitVec.toFormatted (0b10 : (BitVec 2)))))))
 
 def privLevel_bits_forwards_matches (arg_ : Privilege) : Bool :=
@@ -2647,7 +2639,7 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex367974# : Bool -/
+/-- Type quantifiers: k_ex370668# : Bool -/
 def maybe_aq_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".aq"
@@ -2686,19 +2678,19 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex367982# : Bool -/
+/-- Type quantifiers: k_ex370676# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex367983# : Bool -/
+/-- Type quantifiers: k_ex370677# : Bool -/
 def maybe_rl_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => ".rl"
   | false => ""
 
-/-- Type quantifiers: k_ex367984# : Bool -/
+/-- Type quantifiers: k_ex370678# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -6000,6 +5992,18 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                 (String.append (sep_forwards ())
                   (String.append (← (reg_name_forwards rs1))
                     (String.append (maybe_vmask_backwards vm) "")))))))))
+  | .VGHSH_VV (vs2, vs1, vd) =>
+    (pure (String.append "vghsh.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ())
+              (String.append (vreg_name_forwards vs2)
+                (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs1) ""))))))))
+  | .VGMUL_VV (vs2, vd) =>
+    (pure (String.append "vgmul.vv"
+        (String.append (spc_forwards ())
+          (String.append (vreg_name_forwards vd)
+            (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VAESDF (funct6, vs2, vd) =>
     (pure (String.append (vaesdf_mnemonic_forwards funct6)
         (String.append (sep_forwards ())
