@@ -2639,11 +2639,12 @@ def ma_flag_backwards (arg_ : (BitVec 1)) : String :=
   then (String.append (sep_forwards ()) (String.append "ma" ""))
   else (String.append (sep_forwards ()) (String.append "mu" ""))
 
-/-- Type quantifiers: k_ex370668# : Bool -/
-def maybe_aq_forwards (arg_ : Bool) : String :=
+def maybe_aqrl_forwards (arg_ : (Bool × Bool)) : String :=
   match arg_ with
-  | true => ".aq"
-  | false => ""
+  | (true, true) => ".aqrl"
+  | (true, false) => ".aq"
+  | (false, true) => ".rl"
+  | (false, false) => ""
 
 def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
   let b__0 := arg_
@@ -2678,19 +2679,13 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex370676# : Bool -/
+/-- Type quantifiers: k_ex370751# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex370677# : Bool -/
-def maybe_rl_forwards (arg_ : Bool) : String :=
-  match arg_ with
-  | true => ".rl"
-  | false => ""
-
-/-- Type quantifiers: k_ex370678# : Bool -/
+/-- Type quantifiers: k_ex370752# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3440,28 +3435,26 @@ def assembly_forwards (arg_ : ast) : SailM String := do
     (pure (String.append "l"
         (String.append (size_mnemonic_forwards width)
           (String.append (maybe_u_forwards is_unsigned)
-            (String.append (maybe_aq_forwards aq)
-              (String.append (maybe_rl_forwards rl)
-                (String.append (spc_forwards ())
-                  (String.append (← (reg_name_forwards rd))
-                    (String.append (sep_forwards ())
-                      (String.append (← (hex_bits_signed_12_forwards imm))
-                        (String.append "("
-                          (String.append (← (reg_name_forwards rs1)) (String.append ")" "")))))))))))))
+            (String.append (maybe_aqrl_forwards (aq, rl))
+              (String.append (spc_forwards ())
+                (String.append (← (reg_name_forwards rd))
+                  (String.append (sep_forwards ())
+                    (String.append (← (hex_bits_signed_12_forwards imm))
+                      (String.append "("
+                        (String.append (← (reg_name_forwards rs1)) (String.append ")" ""))))))))))))
   | .STORE (imm, rs2, rs1, width, aq, rl) =>
     (pure (String.append "s"
         (String.append (size_mnemonic_forwards width)
-          (String.append (maybe_aq_forwards aq)
-            (String.append (maybe_rl_forwards rl)
-              (String.append (spc_forwards ())
-                (String.append (← (reg_name_forwards rs2))
-                  (String.append (sep_forwards ())
-                    (String.append (← (hex_bits_signed_12_forwards imm))
-                      (String.append (opt_spc_forwards ())
-                        (String.append "("
-                          (String.append (opt_spc_forwards ())
-                            (String.append (← (reg_name_forwards rs1))
-                              (String.append (opt_spc_forwards ()) (String.append ")" "")))))))))))))))
+          (String.append (maybe_aqrl_forwards (aq, rl))
+            (String.append (spc_forwards ())
+              (String.append (← (reg_name_forwards rs2))
+                (String.append (sep_forwards ())
+                  (String.append (← (hex_bits_signed_12_forwards imm))
+                    (String.append (opt_spc_forwards ())
+                      (String.append "("
+                        (String.append (opt_spc_forwards ())
+                          (String.append (← (reg_name_forwards rs1))
+                            (String.append (opt_spc_forwards ()) (String.append ")" ""))))))))))))))
   | .ADDIW (imm, rs1, rd) =>
     (do
       bif (xlen == 64)
@@ -3528,30 +3521,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
     (pure (String.append (amo_mnemonic_forwards op)
         (String.append "."
           (String.append (size_mnemonic_forwards width)
-            (String.append (maybe_aq_forwards aq)
-              (String.append (maybe_rl_forwards rl)
-                (String.append (spc_forwards ())
-                  (String.append (← (reg_name_forwards rd))
-                    (String.append (sep_forwards ())
-                      (String.append (← (reg_name_forwards rs2))
-                        (String.append (sep_forwards ())
-                          (String.append "("
-                            (String.append (← (reg_name_forwards rs1)) (String.append ")" ""))))))))))))))
-  | .LOADRES (aq, rl, rs1, size, rd) =>
-    (pure (String.append "lr."
-        (String.append (size_mnemonic_forwards size)
-          (String.append (maybe_aq_forwards aq)
-            (String.append (maybe_rl_forwards rl)
-              (String.append (spc_forwards ())
-                (String.append (← (reg_name_forwards rd))
-                  (String.append (sep_forwards ())
-                    (String.append "("
-                      (String.append (← (reg_name_forwards rs1)) (String.append ")" "")))))))))))
-  | .STORECON (aq, rl, rs2, rs1, size, rd) =>
-    (pure (String.append "sc."
-        (String.append (size_mnemonic_forwards size)
-          (String.append (maybe_aq_forwards aq)
-            (String.append (maybe_rl_forwards rl)
+            (String.append (maybe_aqrl_forwards (aq, rl))
               (String.append (spc_forwards ())
                 (String.append (← (reg_name_forwards rd))
                   (String.append (sep_forwards ())
@@ -3559,6 +3529,26 @@ def assembly_forwards (arg_ : ast) : SailM String := do
                       (String.append (sep_forwards ())
                         (String.append "("
                           (String.append (← (reg_name_forwards rs1)) (String.append ")" "")))))))))))))
+  | .LOADRES (aq, rl, rs1, size, rd) =>
+    (pure (String.append "lr."
+        (String.append (size_mnemonic_forwards size)
+          (String.append (maybe_aqrl_forwards (aq, rl))
+            (String.append (spc_forwards ())
+              (String.append (← (reg_name_forwards rd))
+                (String.append (sep_forwards ())
+                  (String.append "("
+                    (String.append (← (reg_name_forwards rs1)) (String.append ")" ""))))))))))
+  | .STORECON (aq, rl, rs2, rs1, size, rd) =>
+    (pure (String.append "sc."
+        (String.append (size_mnemonic_forwards size)
+          (String.append (maybe_aqrl_forwards (aq, rl))
+            (String.append (spc_forwards ())
+              (String.append (← (reg_name_forwards rd))
+                (String.append (sep_forwards ())
+                  (String.append (← (reg_name_forwards rs2))
+                    (String.append (sep_forwards ())
+                      (String.append "("
+                        (String.append (← (reg_name_forwards rs1)) (String.append ")" ""))))))))))))
   | .C_NOP () => (pure "c.nop")
   | .C_ADDI4SPN (rdc, nzimm) =>
     (do

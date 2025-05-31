@@ -529,54 +529,38 @@ def rtype_mnemonic_backwards_matches (arg_ : String) : Bool :=
   | "sra" => true
   | _ => false
 
-/-- Type quantifiers: k_ex377069# : Bool -/
+/-- Type quantifiers: k_ex377143# : Bool -/
 def valid_load_encdec (width : word_width) (is_unsigned : Bool) : Bool :=
   (((size_bytes_forwards width) <b xlen_bytes) || ((not is_unsigned) && (((size_bytes_forwards width) ≤b xlen_bytes) : Bool)))
 
-/-- Type quantifiers: k_ex377105# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
+/-- Type quantifiers: k_ex377179# : Bool, k_n : Nat, 0 < k_n ∧ k_n ≤ xlen -/
 def extend_value (is_unsigned : Bool) (value : (BitVec k_n)) : (BitVec (2 ^ 3 * 8)) :=
   bif is_unsigned
   then (zero_extend (m := ((2 ^i 3) *i 8)) value)
   else (sign_extend (m := ((2 ^i 3) *i 8)) value)
 
-def maybe_aq_backwards (arg_ : String) : SailM Bool := do
+def maybe_aqrl_backwards (arg_ : String) : SailM (Bool × Bool) := do
   match arg_ with
-  | ".aq" => (pure true)
-  | "" => (pure false)
+  | ".aqrl" => (pure (true, true))
+  | ".aq" => (pure (true, false))
+  | ".rl" => (pure (false, true))
+  | "" => (pure (false, false))
   | _ =>
     (do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex377106# : Bool -/
-def maybe_aq_forwards_matches (arg_ : Bool) : Bool :=
+def maybe_aqrl_forwards_matches (arg_ : (Bool × Bool)) : Bool :=
   match arg_ with
-  | true => true
-  | false => true
+  | (true, true) => true
+  | (true, false) => true
+  | (false, true) => true
+  | (false, false) => true
 
-def maybe_aq_backwards_matches (arg_ : String) : Bool :=
+def maybe_aqrl_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
+  | ".aqrl" => true
   | ".aq" => true
-  | "" => true
-  | _ => false
-
-def maybe_rl_backwards (arg_ : String) : SailM Bool := do
-  match arg_ with
-  | ".rl" => (pure true)
-  | "" => (pure false)
-  | _ =>
-    (do
-      assert false "Pattern match failure at unknown location"
-      throw Error.Exit)
-
-/-- Type quantifiers: k_ex377107# : Bool -/
-def maybe_rl_forwards_matches (arg_ : Bool) : Bool :=
-  match arg_ with
-  | true => true
-  | false => true
-
-def maybe_rl_backwards_matches (arg_ : String) : Bool :=
-  match arg_ with
   | ".rl" => true
   | "" => true
   | _ => false
@@ -590,7 +574,7 @@ def maybe_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex377108# : Bool -/
+/-- Type quantifiers: k_ex377188# : Bool -/
 def maybe_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | true => true
@@ -654,7 +638,7 @@ def shiftiwop_mnemonic_backwards_matches (arg_ : String) : Bool :=
   | "sraiw" => true
   | _ => false
 
-/-- Type quantifiers: k_ex377109# : Bool -/
+/-- Type quantifiers: k_ex377189# : Bool -/
 def effective_fence_set (set : (BitVec 4)) (fiom : Bool) : (BitVec 4) :=
   bif fiom
   then
