@@ -40,13 +40,6 @@ jobs:
         path: ~/.opam
         key: ${{ matrix.os }}-${{ matrix.version }}
 
-    - name: Restore cached lake directory
-      id: cache-lake-restore
-      uses: actions/cache/restore@v4
-      with:
-        path: .lake
-        key: ${{ matrix.os }}-${{ matrix.version }}
-
     - name: Setup opam
       if: steps.cache-opam-restore.outputs.cache-hit != 'true'
       run: |
@@ -81,6 +74,14 @@ jobs:
         cmake --build build/ --target generated_lean_rv64d
         cd ..
 
+    - name: Restore cached lake directory
+      id: cache-lake-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: sail-riscv/build/model/Lean_RV64D/.lake
+        key: ${{ matrix.os }}-${{ matrix.version }}
+
+
     - name: Install elan
       run: |
         wget https://elan.lean-lang.org/elan-init.sh
@@ -103,7 +104,7 @@ jobs:
       id: cache-lake-save
       uses: actions/cache/save@v4
       with:
-        path: .lake
+        path: sail-riscv/build/model/Lean_RV64D/.lake
         key: ${{ steps.cache-lake-restore.outputs.cache-primary-key }}
 
     - name: Deploy
