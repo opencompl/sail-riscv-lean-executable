@@ -44,7 +44,7 @@ jobs:
       id: cache-lake-restore
       uses: actions/cache/restore@v4
       with:
-        path: ~/.lake
+        path: .lake
         key: ${{ matrix.os }}-${{ matrix.version }}
 
     - name: Setup opam
@@ -103,7 +103,7 @@ jobs:
       id: cache-lake-save
       uses: actions/cache/save@v4
       with:
-        path: ~/.lake
+        path: .lake
         key: ${{ steps.cache-lake-restore.outputs.cache-primary-key }}
 
     - name: Deploy
