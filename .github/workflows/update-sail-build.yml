@@ -41,7 +41,7 @@ jobs:
         key: ${{ matrix.os }}-${{ matrix.version }}
 
     - name: Restore cached lake directory
-      id: cache-lean-restore
+      id: cache-lake-restore
       uses: actions/cache/restore@v4
       with:
         path: ~/.lake
