@@ -5996,7 +5996,7 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VAESDF (funct6, vs2, vd) =>
     (pure (String.append (vaesdf_mnemonic_forwards funct6)
-        (String.append (sep_forwards ())
+        (String.append (spc_forwards ())
           (String.append (vreg_name_forwards vd)
             (String.append (sep_forwards ()) (String.append (vreg_name_forwards vs2) ""))))))
   | .VAESDM (funct6, vs2, vd) =>
