@@ -100,7 +100,6 @@ jobs:
         cd ../../../..
 
     - name: Save cached lake
-      if: steps.cache-lake-restore.outputs.cache-hit != 'true'
       id: cache-lake-save
       uses: actions/cache/save@v4
       with:
