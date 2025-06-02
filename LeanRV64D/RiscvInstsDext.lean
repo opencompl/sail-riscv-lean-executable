@@ -240,7 +240,7 @@ def feq_quiet_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) : (Bool × (BitVec 5)) :=
     else (zeros (n := 5))
   (result, fflags)
 
-/-- Type quantifiers: k_ex378668# : Bool -/
+/-- Type quantifiers: k_ex377477# : Bool -/
 def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
@@ -272,7 +272,7 @@ def flt_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (Bi
       else (zeros (n := 5)))
   (result, fflags)
 
-/-- Type quantifiers: k_ex378736# : Bool -/
+/-- Type quantifiers: k_ex377545# : Bool -/
 def fle_D (v1 : (BitVec 64)) (v2 : (BitVec 64)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_D v1)
   let (s2, e2, m2) := (fsplit_D v2)
@@ -310,22 +310,8 @@ def haveDoubleFPU (_ : Unit) : SailM Bool := do
   (pure ((← (currentlyEnabled Ext_D)) || (← (currentlyEnabled Ext_Zdinx))))
 
 /-- Type quantifiers: n : Nat, n > 0 -/
-def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : SailM Bool := SailME.run do
-  bif ((← (currentlyEnabled Ext_Zdinx)) && (xlen == 32))
-  then
-    (do
-      let loop_i_lower := 0
-      let loop_i_upper := (n -i 1)
-      let mut loop_vars := ()
-      for i in [loop_i_lower:loop_i_upper:1]i do
-        let () := loop_vars
-        loop_vars ← do
-          bif ((BitVec.access (fregidx_bits (GetElem?.getElem! regs i)) 0) == 1#1)
-          then SailME.throw (false : Bool)
-          else (pure ())
-      (pure loop_vars))
-  else (pure ())
-  (pure true)
+def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : Bool :=
+  true
 
 def f_madd_type_mnemonic_D_backwards (arg_ : String) : SailM f_madd_op_D := do
   match arg_ with
