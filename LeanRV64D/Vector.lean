@@ -1,4 +1,4 @@
-import LeanRV64D.Mapping
+import LeanRV64D.Flow
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000

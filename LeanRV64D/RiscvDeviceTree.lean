@@ -1,4 +1,5 @@
-import LeanRV64D.RiscvTermination
+import LeanRV64D.RiscvXlen
+import LeanRV64D.RiscvPlatform
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000

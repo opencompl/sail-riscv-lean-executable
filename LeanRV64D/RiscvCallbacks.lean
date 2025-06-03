@@ -1,4 +1,6 @@
-import LeanRV64D.RiscvVmemTypes
+import LeanRV64D.HexBits
+import LeanRV64D.RiscvXlen
+import LeanRV64D.RiscvTypes
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000

@@ -1,3 +1,19 @@
+import LeanRV64D.Prelude
+import LeanRV64D.Common
+import LeanRV64D.RiscvTypes
+import LeanRV64D.RiscvPcAccess
+import LeanRV64D.RiscvSysRegs
+import LeanRV64D.RiscvExtRegs
+import LeanRV64D.RiscvAddrChecks
+import LeanRV64D.RiscvSysExceptions
+import LeanRV64D.RiscvSmcntrpmf
+import LeanRV64D.RiscvSysControl
+import LeanRV64D.RiscvPlatform
+import LeanRV64D.RiscvVmem
+import LeanRV64D.RiscvInstsEnd
+import LeanRV64D.RiscvStepCommon
+import LeanRV64D.RiscvStepExt
+import LeanRV64D.RiscvDecodeExt
 import LeanRV64D.RiscvFetch
 
 set_option maxHeartbeats 1_000_000_000
@@ -168,7 +184,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex434087# : Bool, step_no : Int -/
+/-- Type quantifiers: k_ex433857# : Bool, step_no : Int -/
 def run_hart_waiting (step_no : Int) (wr : WaitReason) (instbits : (BitVec 32)) (exit_wait : Bool) : SailM Step := do
   bif (← (shouldWakeForInterrupt ()))
   then
@@ -317,7 +333,7 @@ def wait_is_nop (wr : WaitReason) : Bool :=
   | WAIT_WRS_STO => false
   | WAIT_WRS_NTO => false
 
-/-- Type quantifiers: k_ex434124# : Bool, step_no : Nat, 0 ≤ step_no -/
+/-- Type quantifiers: k_ex433894# : Bool, step_no : Nat, 0 ≤ step_no -/
 def try_step (step_no : Nat) (exit_wait : Bool) : SailM Bool := do
   let _ : Unit := (ext_pre_step_hook ())
   writeReg minstret_increment (← (should_inc_minstret (← readReg cur_privilege)))

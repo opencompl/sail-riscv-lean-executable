@@ -1,4 +1,12 @@
-import LeanRV64D.RiscvDecodeExt
+import LeanRV64D.Flow
+import LeanRV64D.Prelude
+import LeanRV64D.PreludeMemAddrtype
+import LeanRV64D.RvfiDii
+import LeanRV64D.RiscvTypes
+import LeanRV64D.RiscvPcAccess
+import LeanRV64D.RiscvSysRegs
+import LeanRV64D.RiscvAddrChecks
+import LeanRV64D.RiscvVmem
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000

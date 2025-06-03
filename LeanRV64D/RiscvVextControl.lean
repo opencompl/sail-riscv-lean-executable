@@ -1,3 +1,6 @@
+import LeanRV64D.Prelude
+import LeanRV64D.RiscvVlen
+import LeanRV64D.RiscvCallbacks
 import LeanRV64D.RiscvVextRegs
 
 set_option maxHeartbeats 1_000_000_000

@@ -1,4 +1,10 @@
-import LeanRV64D.RiscvPmpControl
+import LeanRV64D.Sail.Sail
+import LeanRV64D.Sail.BitVec
+import LeanRV64D.Sail.IntRange
+import LeanRV64D.Defs
+import LeanRV64D.Specialization
+import LeanRV64D.FakeReal
+import LeanRV64D.RiscvExtras
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -168,7 +174,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex371954# : Bool -/
+/-- Type quantifiers: k_ex371758# : Bool -/
 def ext_check_CSR (csrno : (BitVec 12)) (p : Privilege) (isWrite : Bool) : Bool :=
   true
 

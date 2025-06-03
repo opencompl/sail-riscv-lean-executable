@@ -1,4 +1,7 @@
-import LeanRV64D.RiscvInstRetire
+import LeanRV64D.Flow
+import LeanRV64D.Prelude
+import LeanRV64D.RiscvErrors
+import LeanRV64D.RiscvSysRegs
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -216,7 +219,7 @@ def pte_is_invalid (pte_flags : (BitVec 8)) (pte_ext : (BitVec 10)) : SailM Bool
                   (n := 2))) && (not (← (currentlyEnabled Ext_Svpbmt)))) || ((_get_PTE_Ext_reserved
                 pte_ext) != (zeros (n := 7))))))))
 
-/-- Type quantifiers: k_ex374626# : Bool, k_ex374625# : Bool -/
+/-- Type quantifiers: k_ex374430# : Bool, k_ex374429# : Bool -/
 def check_PTE_permission (ac : (AccessType Unit)) (priv : Privilege) (mxr : Bool) (do_sum : Bool) (pte_flags : (BitVec 8)) (ext : (BitVec 10)) (ext_ptw : Unit) : SailM PTE_Check := do
   let pte_U := (_get_PTE_Flags_U pte_flags)
   let pte_R := (_get_PTE_Flags_R pte_flags)

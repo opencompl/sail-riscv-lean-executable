@@ -1,3 +1,10 @@
+import LeanRV64D.Flow
+import LeanRV64D.Prelude
+import LeanRV64D.PreludeMemAddrtype
+import LeanRV64D.RiscvSysRegs
+import LeanRV64D.RiscvAddrChecks
+import LeanRV64D.RiscvMem
+import LeanRV64D.RiscvVmem
 import LeanRV64D.RiscvFetchRvfi
 
 set_option maxHeartbeats 1_000_000_000

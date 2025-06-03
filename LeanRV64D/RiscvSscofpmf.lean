@@ -1,3 +1,5 @@
+import LeanRV64D.RiscvErrors
+import LeanRV64D.RiscvSysRegs
 import LeanRV64D.RiscvZihpm
 
 set_option maxHeartbeats 1_000_000_000

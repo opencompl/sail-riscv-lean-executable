@@ -1,4 +1,5 @@
-import LeanRV64D.RiscvFdextRegs
+import LeanRV64D.RiscvSysRegs
+import LeanRV64D.RiscvZihpm
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000

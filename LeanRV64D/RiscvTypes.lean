@@ -1,3 +1,12 @@
+import LeanRV64D.Flow
+import LeanRV64D.Mapping
+import LeanRV64D.HexBits
+import LeanRV64D.HexBitsSigned
+import LeanRV64D.DecBits
+import LeanRV64D.Prelude
+import LeanRV64D.RiscvErrors
+import LeanRV64D.RiscvXlen
+import LeanRV64D.RiscvExtensions
 import LeanRV64D.RiscvTypesExt
 
 set_option maxHeartbeats 1_000_000_000
@@ -2678,13 +2687,13 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex369801# : Bool -/
+/-- Type quantifiers: k_ex369605# : Bool -/
 def maybe_not_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | false => "u"
   | true => ""
 
-/-- Type quantifiers: k_ex369802# : Bool -/
+/-- Type quantifiers: k_ex369606# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"

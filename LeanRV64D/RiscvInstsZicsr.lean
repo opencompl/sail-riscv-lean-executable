@@ -1,4 +1,22 @@
-import LeanRV64D.RiscvInstsMext
+import LeanRV64D.Prelude
+import LeanRV64D.RiscvErrors
+import LeanRV64D.RiscvXlen
+import LeanRV64D.RiscvTypes
+import LeanRV64D.RiscvCallbacks
+import LeanRV64D.RiscvRegs
+import LeanRV64D.RiscvSysRegs
+import LeanRV64D.RiscvPmpRegs
+import LeanRV64D.RiscvExtRegs
+import LeanRV64D.RiscvVextRegs
+import LeanRV64D.RiscvVextControl
+import LeanRV64D.RiscvSysExceptions
+import LeanRV64D.RiscvZihpm
+import LeanRV64D.RiscvSscofpmf
+import LeanRV64D.RiscvZkrControl
+import LeanRV64D.RiscvFdextRegs
+import LeanRV64D.RiscvSmcntrpmf
+import LeanRV64D.RiscvSysControl
+import LeanRV64D.RiscvInstRetire
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -1588,7 +1606,7 @@ def write_CSR (b__0 : (BitVec 12)) (value : (BitVec (2 ^ 3 * 8))) : SailM (BitVe
                                                                                                                                                                                                                                                         (BitVec.toFormatted
                                                                                                                                                                                                                                                           b__0)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
 
-/-- Type quantifiers: k_ex377271# : Bool -/
+/-- Type quantifiers: k_ex377075# : Bool -/
 def doCSR (csr : (BitVec 12)) (rs1_val : (BitVec (2 ^ 3 * 8))) (rd : regidx) (op : csrop) (is_CSR_Write : Bool) : SailM ExecutionResult := do
   bif (not (← (check_CSR csr (← readReg cur_privilege) is_CSR_Write)))
   then (pure (Illegal_Instruction ()))

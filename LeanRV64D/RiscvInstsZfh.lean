@@ -1,4 +1,7 @@
-import LeanRV64D.RiscvInstsZbs
+import LeanRV64D.Flow
+import LeanRV64D.Prelude
+import LeanRV64D.RiscvSysRegs
+import LeanRV64D.RiscvInstsFext
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -227,7 +230,7 @@ def f_is_NaN_H (xf16 : (BitVec 16)) : Bool :=
   let (sign, exp, mant) := (fsplit_H xf16)
   ((exp == (ones (n := 5))) && (mant != (zeros (n := 10))))
 
-/-- Type quantifiers: k_ex377894# : Bool -/
+/-- Type quantifiers: k_ex377698# : Bool -/
 def fle_H (v1 : (BitVec 16)) (v2 : (BitVec 16)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_H v1)
   let (s2, e2, m2) := (fsplit_H v2)
