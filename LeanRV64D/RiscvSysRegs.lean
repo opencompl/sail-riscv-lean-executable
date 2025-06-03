@@ -68,7 +68,6 @@ open rfvvfunct6
 open regno
 open regidx
 open read_kind
-open pmpMatch
 open pmpAddrMatch
 open physaddr
 open option
@@ -674,6 +673,7 @@ def currentlyEnabled_measure (ext : extension) : Int :=
   | Ext_Zhinx => 3
   | Ext_Zvkb => 3
   | Ext_Sscofpmf => 3
+  | Ext_Zhinxmin => 4
   | _ => 2
 
 def currentlyEnabled (merge_var : extension) : SailM Bool := do
@@ -744,6 +744,9 @@ def currentlyEnabled (merge_var : extension) : SailM Bool := do
   | Ext_Zbs => (pure ((hartSupports Ext_Zbs) || (← (currentlyEnabled Ext_B))))
   | Ext_Zcb => (pure ((hartSupports Ext_Zcb) && (← (currentlyEnabled Ext_Zca))))
   | Ext_Zhinx => (pure ((hartSupports Ext_Zhinx) && (← (currentlyEnabled Ext_Zfinx))))
+  | Ext_Zhinxmin =>
+    (pure (((hartSupports Ext_Zhinxmin) && (← (currentlyEnabled Ext_Zfinx))) || (← (currentlyEnabled
+            Ext_Zhinx))))
   | Ext_Zfa => (pure ((hartSupports Ext_Zfa) && (← (currentlyEnabled Ext_F))))
   | Ext_Zknh => (pure (hartSupports Ext_Zknh))
   | Ext_Zkne => (pure (hartSupports Ext_Zkne))

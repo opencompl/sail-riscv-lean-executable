@@ -1,4 +1,4 @@
-import LeanRV64D.RiscvTermination
+import LeanRV64D.RiscvDeviceTree
 
 set_option maxHeartbeats 1_000_000_000
 set_option maxRecDepth 1_000_000
@@ -68,7 +68,6 @@ open rfvvfunct6
 open regno
 open regidx
 open read_kind
-open pmpMatch
 open pmpAddrMatch
 open physaddr
 open option

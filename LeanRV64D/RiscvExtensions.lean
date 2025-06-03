@@ -68,7 +68,6 @@ open rfvvfunct6
 open regno
 open regidx
 open read_kind
-open pmpMatch
 open pmpAddrMatch
 open physaddr
 open option
@@ -224,6 +223,7 @@ def hartSupports (merge_var : extension) : Bool :=
   | Ext_Zksed => true
   | Ext_Zksh => true
   | Ext_Zhinx => false
+  | Ext_Zhinxmin => false
   | Ext_Zvbb => true
   | Ext_Zvkb => false
   | Ext_Zvbc => true

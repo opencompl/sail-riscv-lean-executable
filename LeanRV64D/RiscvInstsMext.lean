@@ -68,7 +68,6 @@ open rfvvfunct6
 open regno
 open regidx
 open read_kind
-open pmpMatch
 open pmpAddrMatch
 open physaddr
 open option
@@ -284,7 +283,7 @@ def maybe_not_u_backwards (arg_ : String) : SailM Bool := do
       assert false "Pattern match failure at unknown location"
       throw Error.Exit)
 
-/-- Type quantifiers: k_ex376105# : Bool -/
+/-- Type quantifiers: k_ex376285# : Bool -/
 def maybe_not_u_forwards_matches (arg_ : Bool) : Bool :=
   match arg_ with
   | false => true

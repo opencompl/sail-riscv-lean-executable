@@ -68,7 +68,6 @@ open rfvvfunct6
 open regno
 open regidx
 open read_kind
-open pmpMatch
 open pmpAddrMatch
 open physaddr
 open option
@@ -228,7 +227,7 @@ def f_is_NaN_H (xf16 : (BitVec 16)) : Bool :=
   let (sign, exp, mant) := (fsplit_H xf16)
   ((exp == (ones (n := 5))) && (mant != (zeros (n := 10))))
 
-/-- Type quantifiers: k_ex377714# : Bool -/
+/-- Type quantifiers: k_ex377894# : Bool -/
 def fle_H (v1 : (BitVec 16)) (v2 : (BitVec 16)) (is_quiet : Bool) : (Bool × (BitVec 5)) :=
   let (s1, e1, m1) := (fsplit_H v1)
   let (s2, e2, m2) := (fsplit_H v2)
@@ -266,7 +265,8 @@ def haveHalfFPU (_ : Unit) : SailM Bool := do
   (pure ((← (currentlyEnabled Ext_Zfh)) || (← (currentlyEnabled Ext_Zhinx))))
 
 def haveHalfMin (_ : Unit) : SailM Bool := do
-  (pure ((← (haveHalfFPU ())) || (← (currentlyEnabled Ext_Zfhmin))))
+  (pure ((← (haveHalfFPU ())) || ((← (currentlyEnabled Ext_Zfhmin)) || (← (currentlyEnabled
+            Ext_Zhinxmin)))))
 
 def f_bin_rm_type_mnemonic_H_backwards (arg_ : String) : SailM f_bin_rm_op_H := do
   match arg_ with

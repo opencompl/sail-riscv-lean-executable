@@ -68,7 +68,6 @@ open rfvvfunct6
 open regno
 open regidx
 open read_kind
-open pmpMatch
 open pmpAddrMatch
 open physaddr
 open option
@@ -226,31 +225,6 @@ def pmpMatchAddr (typ_0 : physaddr) (width : (BitVec (2 ^ 3 * 8))) (ent : (BitVe
     let end_words := ((begin_words +i (BitVec.toNat mask)) +i 1)
     (pure (pmpRangeMatch (begin_words *i 4) (end_words *i 4) addr width)))
 
-def undefined_pmpMatch (_ : Unit) : SailM pmpMatch := do
-  (internal_pick [PMP_Success, PMP_Continue, PMP_Fail])
-
-/-- Type quantifiers: arg_ : Nat, 0 ≤ arg_ ∧ arg_ ≤ 2 -/
-def pmpMatch_of_num (arg_ : Nat) : pmpMatch :=
-  match arg_ with
-  | 0 => PMP_Success
-  | 1 => PMP_Continue
-  | _ => PMP_Fail
-
-def num_of_pmpMatch (arg_ : pmpMatch) : Int :=
-  match arg_ with
-  | PMP_Success => 0
-  | PMP_Continue => 1
-  | PMP_Fail => 2
-
-def pmpMatchEntry (addr : physaddr) (width : (BitVec (2 ^ 3 * 8))) (acc : (AccessType Unit)) (priv : Privilege) (ent : (BitVec 8)) (pmpaddr : (BitVec (2 ^ 3 * 8))) (prev_pmpaddr : (BitVec (2 ^ 3 * 8))) : SailM pmpMatch := do
-  match (← (pmpMatchAddr addr width ent pmpaddr prev_pmpaddr)) with
-  | PMP_NoMatch => (pure PMP_Continue)
-  | PMP_PartialMatch => (pure PMP_Fail)
-  | PMP_Match =>
-    (bif ((pmpCheckRWX ent acc) || ((priv == Machine) && (not (pmpLocked ent))))
-    then (pure PMP_Success)
-    else (pure PMP_Fail))
-
 def accessToFault (acc : (AccessType Unit)) : ExceptionType :=
   match acc with
   | .Read _ => (E_Load_Access_Fault ())
@@ -271,11 +245,14 @@ def pmpCheck (addr : physaddr) (width : Nat) (acc : (AccessType Unit)) (priv : P
         bif (i >b 0)
         then (pmpReadAddrReg (i -i 1))
         else (pure (zeros (n := ((2 ^i 3) *i 8))))
-      match (← (pmpMatchEntry addr width acc priv (GetElem?.getElem! (← readReg pmpcfg_n) i)
-          (← (pmpReadAddrReg i)) prev_pmpaddr)) with
-      | PMP_Success => SailME.throw (none : (Option ExceptionType))
-      | PMP_Fail => SailME.throw ((some (accessToFault acc)) : (Option ExceptionType))
-      | PMP_Continue => (pure ())
+      let cfg ← do (pure (GetElem?.getElem! (← readReg pmpcfg_n) i))
+      match (← (pmpMatchAddr addr width cfg (← (pmpReadAddrReg i)) prev_pmpaddr)) with
+      | PMP_NoMatch => (pure ())
+      | PMP_PartialMatch => SailME.throw ((some (accessToFault acc)) : (Option ExceptionType))
+      | PMP_Match =>
+        SailME.throw (bif ((pmpCheckRWX cfg acc) || ((priv == Machine) && (not (pmpLocked cfg))))
+          then none
+          else (some (accessToFault acc)) : (Option ExceptionType))
   (pure loop_vars)
   bif (priv == Machine)
   then (pure none)
