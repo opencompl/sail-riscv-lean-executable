@@ -91,6 +91,7 @@ jobs:
         cp README.md sail-riscv/build/model/Lean_RV64D_executable
         cp report.py sail-riscv/build/model/Lean_RV64D_executable
         cd sail-riscv/build/model/Lean_RV64D_executable
+        sed -e 's/leanprover.//' -i sail-riscv/build/model/Lean_RV64D_executable/lean-toolchain
         echo TEST > build_log.text
         cd ../../../..
 
