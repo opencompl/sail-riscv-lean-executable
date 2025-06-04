@@ -69,7 +69,7 @@ jobs:
         cd sail-riscv
         eval $(opam config env)
         cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
-        cmake --build build/ --target generated_lean_rv64d
+        cmake --build build/ --target generated_lean_executable_rv64d
         cd ..
 
     - name: Restore cached lake directory
@@ -91,10 +91,7 @@ jobs:
         cp README.md sail-riscv/build/model/Lean_RV64D
         cp report.py sail-riscv/build/model/Lean_RV64D
         cd sail-riscv/build/model/Lean_RV64D
-        (lake build | tee build_log.txt || true)
-        sed -i '/Statistics/,$d' README.md
-
-        ./report.py >> README.md
+        echo TEST > build_log.text
         cd ../../../..
 
     - name: Save cached lake
