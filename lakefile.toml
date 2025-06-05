@@ -1,11 +1,11 @@
-name = "Lean_RV64D"
-defaultTargets = ["LeanRV64D"]
+name = "Lean_RV64D_executable"
+defaultTargets = ["LeanRV64DExecutable"]
 moreLeanArgs = ["--tstack=400000"]
 
 [[lean_lib]]
-name = "LeanRV64D"
+name = "LeanRV64DExecutable"
 leanOptions.weak.linter.style.nameCheck = false
 
 [[lean_exe]]
 name = "run"
-root = "LeanRV64D"
+root = "LeanRV64DExecutable"
