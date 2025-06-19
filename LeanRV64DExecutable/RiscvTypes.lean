@@ -2765,13 +2765,7 @@ def maybe_lmul_flag_backwards (arg_ : (BitVec 3)) : SailM String := do
                               assert false "Pattern match failure at unknown location"
                               throw Error.Exit)))))))
 
-/-- Type quantifiers: k_ex370516# : Bool -/
-def maybe_not_u_forwards (arg_ : Bool) : String :=
-  match arg_ with
-  | false => "u"
-  | true => ""
-
-/-- Type quantifiers: k_ex370517# : Bool -/
+/-- Type quantifiers: k_ex370443# : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -3999,17 +3993,17 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (sep_forwards ())
               (String.append (← (reg_name_forwards rs1))
                 (String.append (sep_forwards ()) (String.append (← (reg_name_forwards rs2)) ""))))))))
-  | .DIV (rs2, rs1, rd, s) =>
+  | .DIV (rs2, rs1, rd, is_unsigned) =>
     (pure (String.append "div"
-        (String.append (maybe_not_u_forwards s)
+        (String.append (maybe_u_forwards is_unsigned)
           (String.append (spc_forwards ())
             (String.append (← (reg_name_forwards rd))
               (String.append (sep_forwards ())
                 (String.append (← (reg_name_forwards rs1))
                   (String.append (sep_forwards ()) (String.append (← (reg_name_forwards rs2)) "")))))))))
-  | .REM (rs2, rs1, rd, s) =>
+  | .REM (rs2, rs1, rd, is_unsigned) =>
     (pure (String.append "rem"
-        (String.append (maybe_not_u_forwards s)
+        (String.append (maybe_u_forwards is_unsigned)
           (String.append (spc_forwards ())
             (String.append (← (reg_name_forwards rd))
               (String.append (sep_forwards ())
@@ -4030,12 +4024,12 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .DIVW (rs2, rs1, rd, s) =>
+  | .DIVW (rs2, rs1, rd, is_unsigned) =>
     (do
       bif (xlen == 64)
       then
         (pure (String.append "div"
-            (String.append (maybe_not_u_forwards s)
+            (String.append (maybe_u_forwards is_unsigned)
               (String.append "w"
                 (String.append (spc_forwards ())
                   (String.append (← (reg_name_forwards rd))
@@ -4047,12 +4041,12 @@ def assembly_forwards (arg_ : ast) : SailM String := do
         (do
           assert false "Pattern match failure at unknown location"
           throw Error.Exit))
-  | .REMW (rs2, rs1, rd, s) =>
+  | .REMW (rs2, rs1, rd, is_unsigned) =>
     (do
       bif (xlen == 64)
       then
         (pure (String.append "rem"
-            (String.append (maybe_not_u_forwards s)
+            (String.append (maybe_u_forwards is_unsigned)
               (String.append "w"
                 (String.append (spc_forwards ())
                   (String.append (← (reg_name_forwards rd))
