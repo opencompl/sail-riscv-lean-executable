@@ -15,7 +15,8 @@ open Sail
 
 namespace LeanRV64DExecutable.Functions
 
-open zvkfunct6
+open zvk_vsm4r_funct6
+open zvk_vsha2_funct6
 open zvk_vaesem_funct6
 open zvk_vaesef_funct6
 open zvk_vaesdm_funct6
@@ -173,7 +174,7 @@ open ExceptionType
 open Architecture
 open AccessType
 
-/-- Type quantifiers: k_ex369029# : Bool, k_ex369028# : Bool -/
+/-- Type quantifiers: k_ex373089# : Bool, k_ex373088# : Bool -/
 def neq_bool (x : Bool) (y : Bool) : Bool :=
   (! (x == y))
 
