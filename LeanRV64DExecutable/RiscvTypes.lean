@@ -4262,7 +4262,8 @@ def assembly_forwards (arg_ : ast) : SailM String := do
             (String.append (spc_forwards ())
               (String.append (← (freg_name_forwards rd))
                 (String.append (sep_forwards ())
-                  (String.append (← (hex_bits_6_forwards imm))
+                  (String.append
+                    (← (hex_bits_8_forwards ((imm : (BitVec 6)) ++ (0b00 : (BitVec 2)))))
                     (String.append "("
                       (String.append (← (sp_reg_name_forwards ())) (String.append ")" "")))))))))
       else
